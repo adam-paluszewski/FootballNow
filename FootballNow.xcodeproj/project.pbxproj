@@ -10,15 +10,27 @@
 		E9071C4528B3F7990082F483 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9071C4428B3F7990082F483 /* AppDelegate.swift */; };
 		E9071C4728B3F7990082F483 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9071C4628B3F7990082F483 /* SceneDelegate.swift */; };
 		E9071C4928B3F7990082F483 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9071C4828B3F7990082F483 /* ViewController.swift */; };
-		E9071C4C28B3F7990082F483 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9071C4A28B3F7990082F483 /* Main.storyboard */; };
 		E9071C4E28B3F79E0082F483 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9071C4D28B3F79E0082F483 /* Assets.xcassets */; };
 		E9071C5128B3F79E0082F483 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9071C4F28B3F79E0082F483 /* LaunchScreen.storyboard */; };
 		E9071C5B28B3F7FF0082F483 /* FNSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9071C5A28B3F7FF0082F483 /* FNSectionView.swift */; };
-		E96CE44728B7B08A00B7D08F /* GameOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE44628B7B08A00B7D08F /* GameOverviewCell.swift */; };
-		E96CE45228B7C24400B7D08F /* FNDefaultTextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE45128B7C24400B7D08F /* FNDefaultTextLabel.swift */; };
+		E96CE45228B7C24400B7D08F /* FNBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE45128B7C24400B7D08F /* FNBodyLabel.swift */; };
 		E96CE45528B7C54400B7D08F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE45428B7C54400B7D08F /* NetworkManager.swift */; };
 		E96CE45828B7C56F00B7D08F /* FNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE45728B7C56F00B7D08F /* FNError.swift */; };
 		E96CE45B28B7C58F00B7D08F /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE45A28B7C58F00B7D08F /* Fixtures.swift */; };
+		E96CE45F28B8B4EB00B7D08F /* FNGameOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE45E28B8B4EA00B7D08F /* FNGameOverviewView.swift */; };
+		E96CE46128B8B74600B7D08F /* FNDateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE46028B8B74600B7D08F /* FNDateFormatting.swift */; };
+		E96CE46328B8B74B00B7D08F /* FNGreetings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE46228B8B74B00B7D08F /* FNGreetings.swift */; };
+		E96CE46528B8B74F00B7D08F /* FNAttributedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE46428B8B74F00B7D08F /* FNAttributedStrings.swift */; };
+		E96CE46728B8B7AD00B7D08F /* FNFixtureMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE46628B8B7AD00B7D08F /* FNFixtureMethods.swift */; };
+		E96CE46C28B8C0DE00B7D08F /* FNCaptionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE46B28B8C0DE00B7D08F /* FNCaptionLabel.swift */; };
+		E96CE46E28B8C17F00B7D08F /* FNLargeTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE46D28B8C17F00B7D08F /* FNLargeTitleLabel.swift */; };
+		E96CE47028B8CA6100B7D08F /* FNMyTeamStandingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE46F28B8CA6100B7D08F /* FNMyTeamStandingsView.swift */; };
+		E96CE47228B8D6D700B7D08F /* FNTinyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47128B8D6D700B7D08F /* FNTinyLabel.swift */; };
+		E96CE47428B8D7FE00B7D08F /* Standings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47328B8D7FE00B7D08F /* Standings.swift */; };
+		E96CE47628B8EAB800B7D08F /* FNNextGameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47528B8EAB800B7D08F /* FNNextGameCell.swift */; };
+		E96CE47828B8FB9600B7D08F /* Squads.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47728B8FB9600B7D08F /* Squads.swift */; };
+		E96CE47C28B9070100B7D08F /* tshirt.png in Resources */ = {isa = PBXBuildFile; fileRef = E96CE47B28B9070100B7D08F /* tshirt.png */; };
+		E96CE47E28B90B4E00B7D08F /* FNPlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47D28B90B4E00B7D08F /* FNPlayerCell.swift */; };
 		E9A9710C28B7749700C3C4CA /* LastGameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710B28B7749700C3C4CA /* LastGameVC.swift */; };
 		E9A9710E28B77B9100C3C4CA /* NextGamesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710D28B77B9100C3C4CA /* NextGamesVC.swift */; };
 		E9A9711028B77C3A00C3C4CA /* StandingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710F28B77C3A00C3C4CA /* StandingsVC.swift */; };
@@ -30,16 +42,28 @@
 		E9071C4428B3F7990082F483 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E9071C4628B3F7990082F483 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E9071C4828B3F7990082F483 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		E9071C4B28B3F7990082F483 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E9071C4D28B3F79E0082F483 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E9071C5028B3F79E0082F483 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E9071C5228B3F79E0082F483 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9071C5A28B3F7FF0082F483 /* FNSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNSectionView.swift; sourceTree = "<group>"; };
-		E96CE44628B7B08A00B7D08F /* GameOverviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverviewCell.swift; sourceTree = "<group>"; };
-		E96CE45128B7C24400B7D08F /* FNDefaultTextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNDefaultTextLabel.swift; sourceTree = "<group>"; };
+		E96CE45128B7C24400B7D08F /* FNBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNBodyLabel.swift; sourceTree = "<group>"; };
 		E96CE45428B7C54400B7D08F /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E96CE45728B7C56F00B7D08F /* FNError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FNError.swift; sourceTree = "<group>"; };
 		E96CE45A28B7C58F00B7D08F /* Fixtures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		E96CE45E28B8B4EA00B7D08F /* FNGameOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNGameOverviewView.swift; sourceTree = "<group>"; };
+		E96CE46028B8B74600B7D08F /* FNDateFormatting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FNDateFormatting.swift; sourceTree = "<group>"; };
+		E96CE46228B8B74B00B7D08F /* FNGreetings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FNGreetings.swift; sourceTree = "<group>"; };
+		E96CE46428B8B74F00B7D08F /* FNAttributedStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FNAttributedStrings.swift; sourceTree = "<group>"; };
+		E96CE46628B8B7AD00B7D08F /* FNFixtureMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FNFixtureMethods.swift; sourceTree = "<group>"; };
+		E96CE46B28B8C0DE00B7D08F /* FNCaptionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNCaptionLabel.swift; sourceTree = "<group>"; };
+		E96CE46D28B8C17F00B7D08F /* FNLargeTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNLargeTitleLabel.swift; sourceTree = "<group>"; };
+		E96CE46F28B8CA6100B7D08F /* FNMyTeamStandingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNMyTeamStandingsView.swift; sourceTree = "<group>"; };
+		E96CE47128B8D6D700B7D08F /* FNTinyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNTinyLabel.swift; sourceTree = "<group>"; };
+		E96CE47328B8D7FE00B7D08F /* Standings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Standings.swift; sourceTree = "<group>"; };
+		E96CE47528B8EAB800B7D08F /* FNNextGameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNNextGameCell.swift; sourceTree = "<group>"; };
+		E96CE47728B8FB9600B7D08F /* Squads.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Squads.swift; sourceTree = "<group>"; };
+		E96CE47B28B9070100B7D08F /* tshirt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tshirt.png; sourceTree = "<group>"; };
+		E96CE47D28B90B4E00B7D08F /* FNPlayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNPlayerCell.swift; sourceTree = "<group>"; };
 		E9A9710B28B7749700C3C4CA /* LastGameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastGameVC.swift; sourceTree = "<group>"; };
 		E9A9710D28B77B9100C3C4CA /* NextGamesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextGamesVC.swift; sourceTree = "<group>"; };
 		E9A9710F28B77C3A00C3C4CA /* StandingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsVC.swift; sourceTree = "<group>"; };
@@ -76,13 +100,13 @@
 		E9071C4328B3F7990082F483 /* FootballNow */ = {
 			isa = PBXGroup;
 			children = (
-				E96CE45D28B7C9B000B7D08F /* Screens */,
 				E96CE44C28B7B88A00B7D08F /* CustomViews */,
 				E96CE45928B7C58700B7D08F /* Model */,
 				E96CE45328B7C53000B7D08F /* Managers */,
 				E96CE45628B7C56400B7D08F /* Utilities */,
 				E96CE45C28B7C98900B7D08F /* Support */,
 				E9071C5228B3F79E0082F483 /* Info.plist */,
+				E96CE45D28B7C9B000B7D08F /* Screens */,
 			);
 			path = FootballNow;
 			sourceTree = "<group>";
@@ -90,9 +114,9 @@
 		E96CE44C28B7B88A00B7D08F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
-				E96CE45028B7C21200B7D08F /* Labels */,
 				E96CE44F28B7C19C00B7D08F /* ViewControllers */,
 				E96CE44E28B7C19400B7D08F /* Views */,
+				E96CE45028B7C21200B7D08F /* Labels */,
 				E96CE44D28B7B8B400B7D08F /* Cells */,
 			);
 			path = CustomViews;
@@ -101,7 +125,8 @@
 		E96CE44D28B7B8B400B7D08F /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				E96CE44628B7B08A00B7D08F /* GameOverviewCell.swift */,
+				E96CE47528B8EAB800B7D08F /* FNNextGameCell.swift */,
+				E96CE47D28B90B4E00B7D08F /* FNPlayerCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -110,6 +135,8 @@
 			isa = PBXGroup;
 			children = (
 				E9071C5A28B3F7FF0082F483 /* FNSectionView.swift */,
+				E96CE45E28B8B4EA00B7D08F /* FNGameOverviewView.swift */,
+				E96CE46F28B8CA6100B7D08F /* FNMyTeamStandingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -128,7 +155,10 @@
 		E96CE45028B7C21200B7D08F /* Labels */ = {
 			isa = PBXGroup;
 			children = (
-				E96CE45128B7C24400B7D08F /* FNDefaultTextLabel.swift */,
+				E96CE45128B7C24400B7D08F /* FNBodyLabel.swift */,
+				E96CE46B28B8C0DE00B7D08F /* FNCaptionLabel.swift */,
+				E96CE46D28B8C17F00B7D08F /* FNLargeTitleLabel.swift */,
+				E96CE47128B8D6D700B7D08F /* FNTinyLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -144,7 +174,11 @@
 		E96CE45628B7C56400B7D08F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E96CE46628B8B7AD00B7D08F /* FNFixtureMethods.swift */,
 				E96CE45728B7C56F00B7D08F /* FNError.swift */,
+				E96CE46028B8B74600B7D08F /* FNDateFormatting.swift */,
+				E96CE46228B8B74B00B7D08F /* FNGreetings.swift */,
+				E96CE46428B8B74F00B7D08F /* FNAttributedStrings.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -152,7 +186,9 @@
 		E96CE45928B7C58700B7D08F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E96CE47328B8D7FE00B7D08F /* Standings.swift */,
 				E96CE45A28B7C58F00B7D08F /* Fixtures.swift */,
+				E96CE47728B8FB9600B7D08F /* Squads.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -163,7 +199,6 @@
 				E9071C4428B3F7990082F483 /* AppDelegate.swift */,
 				E9071C4628B3F7990082F483 /* SceneDelegate.swift */,
 				E9071C4F28B3F79E0082F483 /* LaunchScreen.storyboard */,
-				E9071C4A28B3F7990082F483 /* Main.storyboard */,
 				E9071C4D28B3F79E0082F483 /* Assets.xcassets */,
 			);
 			path = Support;
@@ -173,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				E9071C4828B3F7990082F483 /* ViewController.swift */,
+				E96CE47B28B9070100B7D08F /* tshirt.png */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -235,9 +271,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E96CE47C28B9070100B7D08F /* tshirt.png in Resources */,
 				E9071C5128B3F79E0082F483 /* LaunchScreen.storyboard in Resources */,
 				E9071C4E28B3F79E0082F483 /* Assets.xcassets in Resources */,
-				E9071C4C28B3F7990082F483 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,33 +284,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E96CE47828B8FB9600B7D08F /* Squads.swift in Sources */,
 				E9A9710C28B7749700C3C4CA /* LastGameVC.swift in Sources */,
 				E9A9710E28B77B9100C3C4CA /* NextGamesVC.swift in Sources */,
 				E9071C5B28B3F7FF0082F483 /* FNSectionView.swift in Sources */,
-				E96CE45228B7C24400B7D08F /* FNDefaultTextLabel.swift in Sources */,
+				E96CE45228B7C24400B7D08F /* FNBodyLabel.swift in Sources */,
+				E96CE46728B8B7AD00B7D08F /* FNFixtureMethods.swift in Sources */,
+				E96CE47428B8D7FE00B7D08F /* Standings.swift in Sources */,
 				E96CE45528B7C54400B7D08F /* NetworkManager.swift in Sources */,
+				E96CE46C28B8C0DE00B7D08F /* FNCaptionLabel.swift in Sources */,
 				E9071C4928B3F7990082F483 /* ViewController.swift in Sources */,
+				E96CE47028B8CA6100B7D08F /* FNMyTeamStandingsView.swift in Sources */,
+				E96CE46328B8B74B00B7D08F /* FNGreetings.swift in Sources */,
 				E96CE45828B7C56F00B7D08F /* FNError.swift in Sources */,
-				E96CE44728B7B08A00B7D08F /* GameOverviewCell.swift in Sources */,
+				E96CE47228B8D6D700B7D08F /* FNTinyLabel.swift in Sources */,
 				E9071C4528B3F7990082F483 /* AppDelegate.swift in Sources */,
+				E96CE45F28B8B4EB00B7D08F /* FNGameOverviewView.swift in Sources */,
+				E96CE46528B8B74F00B7D08F /* FNAttributedStrings.swift in Sources */,
+				E96CE47E28B90B4E00B7D08F /* FNPlayerCell.swift in Sources */,
 				E9071C4728B3F7990082F483 /* SceneDelegate.swift in Sources */,
+				E96CE46E28B8C17F00B7D08F /* FNLargeTitleLabel.swift in Sources */,
 				E96CE45B28B7C58F00B7D08F /* Fixtures.swift in Sources */,
 				E9A9711028B77C3A00C3C4CA /* StandingsVC.swift in Sources */,
+				E96CE46128B8B74600B7D08F /* FNDateFormatting.swift in Sources */,
 				E9A9711228B77C5200C3C4CA /* SquadVC.swift in Sources */,
+				E96CE47628B8EAB800B7D08F /* FNNextGameCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		E9071C4A28B3F7990082F483 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E9071C4B28B3F7990082F483 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		E9071C4F28B3F79E0082F483 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -412,7 +452,6 @@
 				INFOPLIST_FILE = FootballNow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -440,7 +479,6 @@
 				INFOPLIST_FILE = FootballNow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

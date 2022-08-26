@@ -10,40 +10,33 @@ import UIKit
 class ViewController: UIViewController {
     
     let scrollView = UIScrollView()
-    let lastGameSection = UIView()
-    let standingsSection = UIView()
-    let nextGamesSection = UIView()
-    let squadSection = UIView()
+    let lastGameSectionView = UIView()
+    let standingsSectionView = UIView()
+    let nextGamesSectionView = UIView()
+    let squadSectionView = UIView()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureAppearanceOfNavigationBar()
+        configureNavigationBar()
+        configureViewController()
         layoutUI()
-        fillSectionsWithChildViewControllers()
+        fetchDataForLastGameSection()
+        fetchDataForStandingsSection()
+        fetchDataForNextGamesSection()
+        fetchDataforSquadSection()
         
-        NetworkManager.shared.getFixtures(parameters: "team=3491&season=2022&last=1&timezone=Europe/Warsaw") { result in
-            switch result {
-                case .success(let fixtures):
-                    DispatchQueue.main.async {
-                        self.add(childVC: LastGameVC(lastGame: fixtures.response), to: self.lastGameSection)
-                    }
-                    
-                case .failure(let error):
-                    print(error)
-            }
-        }
+        
     }
     
     
-    func fillSectionsWithChildViewControllers() {
-        add(childVC: StandingsVC(), to: standingsSection)
-        add(childVC: NextGamesVC(), to: nextGamesSection)
-        add(childVC: SquadVC(), to: squadSection)
+    func configureViewController() {
+        view.backgroundColor = UIColor(named: "FNBackgroundColor")
+        scrollView.showsVerticalScrollIndicator = false
     }
     
     
-    func configureAppearanceOfNavigationBar() {
+    func configureNavigationBar() {
         setNavBarAppearance()
         setTitleForNavBar()
         setRightNavBarItem()
@@ -99,20 +92,78 @@ class ViewController: UIViewController {
     }
     
     
+    func fetchDataForLastGameSection() {
+        NetworkManager.shared.getFixtures(parameters: "team=3491&season=2022&last=1&timezone=Europe/Warsaw") { result in
+            switch result {
+                case .success(let fixtures):
+                    DispatchQueue.main.async {
+                        self.add(childVC: LastGameVC(lastGame: fixtures.response), to: self.lastGameSectionView)
+                    }
+                    
+                case .failure(let error):
+                    print(error)
+            }
+        }
+    }
+    
+    
+    func fetchDataForStandingsSection() {
+        NetworkManager.shared.getStandings(parameters: "season=2022&team=3491") { result in
+            switch result {
+                case .success(let standings):
+                    DispatchQueue.main.async {
+                        self.add(childVC: StandingsVC(yourTeamStandings: standings.response), to: self.standingsSectionView)
+                    }
+                    
+                case .failure(let error):
+                    print(error)
+            }
+        }
+    }
+
+    
+    func fetchDataForNextGamesSection() {
+        NetworkManager.shared.getFixtures(parameters: "team=3491&season=2022&next=3&timezone=Europe/Warsaw") { result in
+            switch result {
+                case .success(let fixtures):
+                    DispatchQueue.main.async {
+                        self.add(childVC: NextGamesVC(nextGames: fixtures.response), to: self.nextGamesSectionView)
+                    }
+                    
+                case .failure(let error):
+                    print(error)
+            }
+        }
+    }
+    
+    
+    func fetchDataforSquadSection() {
+        NetworkManager.shared.getSquads(parameters: "team=3491") { result in
+            switch result {
+                case .success(let squad):
+                    DispatchQueue.main.async {
+                        self.add(childVC: SquadVC(squad: squad.response), to: self.squadSectionView)
+                    }
+                    
+                case .failure(let error):
+                    print(error)
+            }
+        }
+    }
+    
+    
     func layoutUI() {
-        view.backgroundColor = .systemBackground  //UIColor(red: 225/255, green: 242/255, blue: 251/255, alpha: 1)
-        
         view.addSubview(scrollView)
-        scrollView.addSubview(lastGameSection)
-        scrollView.addSubview(standingsSection)
-        scrollView.addSubview(nextGamesSection)
-        scrollView.addSubview(squadSection)
+        scrollView.addSubview(lastGameSectionView)
+        scrollView.addSubview(standingsSectionView)
+        scrollView.addSubview(nextGamesSectionView)
+        scrollView.addSubview(squadSectionView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        lastGameSection.translatesAutoresizingMaskIntoConstraints = false
-        standingsSection.translatesAutoresizingMaskIntoConstraints = false
-        nextGamesSection.translatesAutoresizingMaskIntoConstraints = false
-        squadSection.translatesAutoresizingMaskIntoConstraints = false
+        lastGameSectionView.translatesAutoresizingMaskIntoConstraints = false
+        standingsSectionView.translatesAutoresizingMaskIntoConstraints = false
+        nextGamesSectionView.translatesAutoresizingMaskIntoConstraints = false
+        squadSectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -120,26 +171,26 @@ class ViewController: UIViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            lastGameSection.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
-            lastGameSection.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            lastGameSection.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            lastGameSection.heightAnchor.constraint(equalToConstant: 40+0.5+80),
+            lastGameSectionView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
+            lastGameSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            lastGameSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            lastGameSectionView.heightAnchor.constraint(equalToConstant: 40+0.5+100),
             
-            standingsSection.topAnchor.constraint(equalTo: lastGameSection.bottomAnchor, constant: 10),
-            standingsSection.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            standingsSection.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            standingsSection.heightAnchor.constraint(equalToConstant: 100),
+            standingsSectionView.topAnchor.constraint(equalTo: lastGameSectionView.bottomAnchor, constant: 10),
+            standingsSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            standingsSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            standingsSectionView.heightAnchor.constraint(equalToConstant: 40+0.5+80),
             
-            nextGamesSection.topAnchor.constraint(equalTo: standingsSection.bottomAnchor, constant: 10),
-            nextGamesSection.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            nextGamesSection.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            nextGamesSection.heightAnchor.constraint(equalToConstant: 300),
+            nextGamesSectionView.topAnchor.constraint(equalTo: standingsSectionView.bottomAnchor, constant: 10),
+            nextGamesSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            nextGamesSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            nextGamesSectionView.heightAnchor.constraint(equalToConstant: 40+0.5+3*80),
             
-            squadSection.topAnchor.constraint(equalTo: nextGamesSection.bottomAnchor, constant: 10),
-            squadSection.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            squadSection.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            squadSection.heightAnchor.constraint(equalToConstant: 200),
-            squadSection.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -10)
+            squadSectionView.topAnchor.constraint(equalTo: nextGamesSectionView.bottomAnchor, constant: 10),
+            squadSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            squadSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            squadSectionView.heightAnchor.constraint(equalToConstant: 40+0.5+210),
+            squadSectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -10)
         ])
     }
 }

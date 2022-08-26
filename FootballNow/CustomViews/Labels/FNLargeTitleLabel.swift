@@ -1,13 +1,13 @@
 //
-//  FNDefaultTextLabel.swift
+//  FNLargeTitleLabel.swift
 //  FootballNow
 //
-//  Created by Adam Paluszewski on 25/08/2022.
+//  Created by Adam Paluszewski on 26/08/2022.
 //
 
 import UIKit
 
-class FNDefaultTextLabel: UILabel {
+class FNLargeTitleLabel: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,6 +27,8 @@ class FNDefaultTextLabel: UILabel {
     
     
     func configure() {
-        font = .systemFont(ofSize: 14, weight: .regular)
+        self.translatesAutoresizingMaskIntoConstraints = false
+        font = .systemFont(ofSize: 22, weight: .regular)
     }
+
 }

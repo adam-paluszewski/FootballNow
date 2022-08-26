@@ -8,7 +8,7 @@
 import Foundation
 
 struct Fixtures: Codable {
-    var response: [GameData]
+    var response: [FixturesData]
     var results: Int
 }
 
@@ -16,7 +16,7 @@ struct Fixtures: Codable {
 
 
 
-struct GameData: Codable {
+struct FixturesData: Codable {
     var fixture: Fixture
     var teams: GameTeams
     var goals: Goals

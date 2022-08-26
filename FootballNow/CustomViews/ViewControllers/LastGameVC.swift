@@ -9,79 +9,62 @@ import UIKit
 
 class LastGameVC: UIViewController {
     
-    let section = FNSectionView(title: "Ostatni mecz", buttonText: "Więcej")
-    let tableView = UITableView()
+    let sectionView = FNSectionView(title: "Ostatni mecz", buttonText: "Więcej")
+    let gameOverviewView = FNGameOverviewView()
     
-    var lastGame: [GameData] = []
+    var lastGame: [FixturesData] = []
     
     
-    init(lastGame: [GameData]) {
+    init(lastGame: [FixturesData]) {
         super.init(nibName: nil, bundle: nil)
         self.lastGame = lastGame
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 225/255, green: 242/255, blue: 251/255, alpha: 1)
-        layoutUI()
-        tableView.register(GameOverviewCell.self, forCellReuseIdentifier: GameOverviewCell.cellId)
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        section.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        configure()
+        addSubviews()
+        addConstraints()
     }
     
-    
-    
-    
-    
-    func layoutUI() {
-        view.addSubview(section)
-        section.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-    
-        NSLayoutConstraint.activate([
-            section.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            section.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            section.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            section.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            
-            tableView.topAnchor.constraint(equalTo: section.bodyView.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: section.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: section.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: section.bodyView.bottomAnchor)
-        ])
-    }
-
     
     @objc func buttonPressed() {
         print("last")
     }
-}
-
-
-extension LastGameVC: UITableViewDataSource, UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+    
+    func configure() {
+        sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        gameOverviewView.set(game: lastGame[0])
     }
     
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+    func addSubviews() {
+        view.addSubview(sectionView)
+        sectionView.bodyView.addSubview(gameOverviewView)
     }
-
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: GameOverviewCell.cellId, for: indexPath) as! GameOverviewCell
-        cell.set(game: lastGame[0])
+    
+    func addConstraints() {
+        gameOverviewView.translatesAutoresizingMaskIntoConstraints = false
         
-        return cell
+        NSLayoutConstraint.activate([
+            sectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            sectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            sectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            sectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            
+            gameOverviewView.topAnchor.constraint(equalTo: sectionView.bodyView.topAnchor),
+            gameOverviewView.leadingAnchor.constraint(equalTo: sectionView.leadingAnchor),
+            gameOverviewView.trailingAnchor.constraint(equalTo: sectionView.trailingAnchor),
+            gameOverviewView.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor)
+        ])
     }
-    
-    
 }
+
