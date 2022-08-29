@@ -9,7 +9,7 @@ import UIKit
 
 class NextGamesVC: UIViewController {
 
-    let sectionView = FNSectionView(title: "Kolejne mecze", buttonText: "Rozwiń")
+    let sectionView = FNSectionView(title: "Kolejne mecze", buttonText: "Więcej")
     var nextGames: [FixturesData] = []
     let tableView = UITableView()
     
@@ -26,46 +26,52 @@ class NextGamesVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
-        addSubviews()
-        addConstraints()
+        configureViewController()
+        configureTableView()
     }
 
     
-    @objc func buttonPressed() {
-        
+    @objc func buttonPressed(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.1) {
+            sender.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+        } completion: { finished in
+            sender.transform = .identity
+            let nextGamesListVC = NextGamesListVC()
+            nextGamesListVC.nextGames = self.nextGames
+            self.navigationController?.pushViewController(nextGamesListVC, animated: true)
+        }
     }
-
     
-    func configure() {
-        sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+    
+    func configureTableView() {
         tableView.register(FNNextGameCell.self, forCellReuseIdentifier: FNNextGameCell.cellId)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .clear
         tableView.isScrollEnabled = false
-    }
-    
-    
-    func addSubviews() {
-        view.addSubview(sectionView)
+        
         sectionView.bodyView.addSubview(tableView)
-    }
-    
-    
-    func addConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: sectionView.bodyView.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: sectionView.bodyView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: sectionView.bodyView.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor)
+        ])
+    }
+
+    
+    func configureViewController() {
+        sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        
+        view.addSubview(sectionView)
         
         NSLayoutConstraint.activate([
             sectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             sectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             sectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             sectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            
-            tableView.topAnchor.constraint(equalTo: sectionView.bodyView.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: sectionView.bodyView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: sectionView.bodyView.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor)
         ])
     }
 }
@@ -74,7 +80,7 @@ class NextGamesVC: UIViewController {
 extension NextGamesVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return UIElementsSizes.nextGameCellHeight
     }
     
     
@@ -87,7 +93,7 @@ extension NextGamesVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNNextGameCell.cellId, for: indexPath) as! FNNextGameCell
         
         cell.set(nextGame: nextGames[indexPath.row])
-        
+        cell.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         return cell
     }
     

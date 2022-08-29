@@ -1,22 +1,23 @@
 //
-//  FNNextGameCell.swift
+//  FNLastGameCell.swift
 //  FootballNow
 //
-//  Created by Adam Paluszewski on 26/08/2022.
+//  Created by Adam Paluszewski on 29/08/2022.
 //
 
 import UIKit
 
-class FNNextGameCell: UITableViewCell {
+class FNLastGameCell: UITableViewCell {
 
-    static let cellId = "NextGamesCell"
+    static let cellId = "LastGamesCell"
     
     let gameDateLabel = UILabel()
     let homeTeamNameLabel = FNBodyLabel(allingment: .left)
     let homeTeamLogoImageView = UIImageView()
     let awayTeamNameLabel = FNBodyLabel(allingment: .left)
     let awayTeamLogoImageView = UIImageView()
-    let gameTimeLabel = FNBodyLabel(allingment: .center)
+    let homeTeamScoreLabel = FNBodyLabel(allingment: .center)
+    let awayTeamScoreLabel = FNBodyLabel(allingment: .center)
     let vLineView = UIView()
     
     
@@ -33,23 +34,29 @@ class FNNextGameCell: UITableViewCell {
     }
     
     
-    func set(nextGame: FixturesData) {
-        homeTeamNameLabel.text = nextGame.teams.home.name
-        awayTeamNameLabel.text = nextGame.teams.away.name
+    func set(lastGame: FixturesData) {
+        homeTeamNameLabel.text = lastGame.teams.home.name
+        awayTeamNameLabel.text = lastGame.teams.away.name
         
-        gameTimeLabel.text = FNFixtureMethods.getGameStartTime(timestamp: nextGame.fixture.timestamp, gameStatus: nextGame.fixture.status.short)
+        if let homeTeamGoals = lastGame.goals.home {
+            homeTeamScoreLabel.text = String(homeTeamGoals)
+        }
         
-        let dateString = FNDateFormatting.getDDMM(timestamp: nextGame.fixture.timestamp)
+        if let awayTeamGoals = lastGame.goals.away {
+            awayTeamScoreLabel.text = String(awayTeamGoals)
+        }
+        
+        let dateString = FNDateFormatting.getDDMM(timestamp: lastGame.fixture.timestamp)
         gameDateLabel.attributedText = FNAttributedStrings.getAttributedDate(for: dateString)
         
-        NetworkManager.shared.downloadImage(from: nextGame.teams.home.logo) { [weak self] image in
+        NetworkManager.shared.downloadImage(from: lastGame.teams.home.logo) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.homeTeamLogoImageView.image = image
             }
         }
         
-        NetworkManager.shared.downloadImage(from: nextGame.teams.away.logo) { [weak self] image in
+        NetworkManager.shared.downloadImage(from: lastGame.teams.away.logo) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.awayTeamLogoImageView.image = image
@@ -61,7 +68,6 @@ class FNNextGameCell: UITableViewCell {
     func configure() {
         backgroundColor = .clear
         gameDateLabel.numberOfLines = 2
-        gameTimeLabel.numberOfLines = 3
         vLineView.backgroundColor = .lightGray
     }
     
@@ -72,7 +78,8 @@ class FNNextGameCell: UITableViewCell {
         contentView.addSubview(homeTeamLogoImageView)
         contentView.addSubview(awayTeamNameLabel)
         contentView.addSubview(awayTeamLogoImageView)
-        contentView.addSubview(gameTimeLabel)
+        contentView.addSubview(homeTeamScoreLabel)
+        contentView.addSubview(awayTeamScoreLabel)
         contentView.addSubview(vLineView)
     }
     
@@ -109,9 +116,11 @@ class FNNextGameCell: UITableViewCell {
             vLineView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
             vLineView.widthAnchor.constraint(equalToConstant: 0.5),
             
-            gameTimeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            gameTimeLabel.leadingAnchor.constraint(equalTo: vLineView.trailingAnchor, constant: 10),
-            gameTimeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+            homeTeamScoreLabel.firstBaselineAnchor.constraint(equalTo: homeTeamNameLabel.firstBaselineAnchor),
+            homeTeamScoreLabel.leadingAnchor.constraint(equalTo: vLineView.trailingAnchor, constant: 45),
+            
+            awayTeamScoreLabel.firstBaselineAnchor.constraint(equalTo: awayTeamNameLabel.firstBaselineAnchor),
+            awayTeamScoreLabel.leadingAnchor.constraint(equalTo: vLineView.trailingAnchor, constant: 45),
         ])
     }
 }

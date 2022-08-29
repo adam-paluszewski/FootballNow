@@ -24,38 +24,77 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
         configureNavigationBar()
-        
-        
-        func createTeamDashboardNC() -> UINavigationController {
-            let teamDashboardVC = ViewController()
-//            teamDashboardVC.title = ""
-            teamDashboardVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
-            
-            return UINavigationController(rootViewController: teamDashboardVC)
-        }
-
-        
-        func configureNavigationBar() {
-            UINavigationBar.appearance().tintColor = .systemBlue
-        }
-        
-        
-        func createTabbar() -> UITabBarController {
-            let tabBar = UITabBarController()
-            tabBar.viewControllers = [createTeamDashboardNC()]
-            
-            let tabBarAppearance = UITabBarAppearance()
-            tabBarAppearance.configureWithOpaqueBackground()
-            tabBarAppearance.backgroundColor = .tertiarySystemBackground
-            tabBar.tabBar.standardAppearance = tabBarAppearance
-            tabBar.tabBar.scrollEdgeAppearance = tabBarAppearance
-            
-            return tabBar
-        }
-        
-        
+        configureUserIntefaceStyle()
     }
+    
+    
+    func createTabbar() -> UITabBarController {
+        let tabBar = UITabBarController()
+        tabBar.viewControllers = [createTeamDashboardNC(), createGamesNC(), createFavoritesNC(), createSearchNC()]
+        
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = UIColor(named: "FNNavBarColor")
+        tabBar.tabBar.standardAppearance = tabBarAppearance
+        tabBar.tabBar.scrollEdgeAppearance = tabBarAppearance
+        
+        return tabBar
+    }
+    
+    
+    func createTeamDashboardNC() -> UINavigationController {
+        let teamDashboardVC = TeamDashboardVC()
+        teamDashboardVC.tabBarItem = UITabBarItem(title: "Moja drużyna", image: UIImage(systemName: "person.2"),selectedImage: UIImage(systemName: "person.2.fill"))
+        teamDashboardVC.tabBarItem.tag = 0
+        
+        return UINavigationController(rootViewController: teamDashboardVC)
+    }
+    
+    
+    func createGamesNC() -> UINavigationController {
+        let gamesVC = GamesVC()
+        gamesVC.tabBarItem = UITabBarItem(title: "Rozgrywki", image: UIImage(systemName: "sportscourt"),selectedImage: UIImage(systemName: "sportscourt.fill"))
+        gamesVC.tabBarItem.tag = 1
+        
+        return UINavigationController(rootViewController: gamesVC)
+    }
+    
+    
+    func createFavoritesNC() -> UINavigationController {
+        let favoritesVC = FavoritesVC()
+        favoritesVC.tabBarItem = UITabBarItem(title: "Ulubione", image: UIImage(systemName: "heart"),selectedImage: UIImage(systemName: "heart.fill"))
+        favoritesVC.tabBarItem.tag = 2
+        
+        return UINavigationController(rootViewController: favoritesVC)
+    }
+    
+    
+    func createSearchNC() -> UINavigationController {
+        let searchVC = SearchVC()
+        searchVC.tabBarItem = UITabBarItem(title: "Odkrywaj", image: UIImage(systemName: "magnifyingglass"),selectedImage: UIImage(systemName: "magnifyingglass"))
+        searchVC.tabBarItem.tag = 3
+        
+        return UINavigationController(rootViewController: searchVC)
+    }
+    
+    
+    func configureUserIntefaceStyle() {
+        if UserDefaults.standard.value(forKey: "isUserIntefaceLight") != nil {
+            let isUserIntefaceLight = UserDefaults.standard.value(forKey: "isUserIntefaceLight") as! Bool
+            window!.overrideUserInterfaceStyle = isUserIntefaceLight ? .light : .dark
+        }
+    }
+    
+    
+    func configureNavigationBar() {
+        UINavigationBar.appearance().tintColor = .systemBlue
+    }
+    
+    
+    
 
+    
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
@@ -86,4 +125,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
+
+
 

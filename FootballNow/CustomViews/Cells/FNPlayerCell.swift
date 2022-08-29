@@ -11,6 +11,8 @@ class FNPlayerCell: UICollectionViewCell {
     
     static let cellId = "PlayerCell"
     
+    let cache = NetworkManager.shared.cache
+    
     let tshirtImageView = UIImageView()
     let photoImageView = UIImageView()
     let nameLabel = FNBodyLabel(allingment: .center)
@@ -30,14 +32,17 @@ class FNPlayerCell: UICollectionViewCell {
     
     
     func set(player: SquadsPlayer) {
-        if let photo = player.photo {
-            photoImageView.image = NetworkManager.shared.downloadImage(from: photo)
-        }
-        
         nameLabel.text = player.name
         positionLabel.text = player.position
         
-
+        if let photo =  player.photo {
+            NetworkManager.shared.downloadImage(from: photo) { [weak self] image in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.photoImageView.image = image
+                }
+            }
+        }
     }
     
     

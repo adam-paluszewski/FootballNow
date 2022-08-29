@@ -46,7 +46,6 @@ class NetworkManager {
                 completionHandler(.failure(.invalidData))
             }
         }
-
         task.resume()
     }
     
@@ -85,7 +84,6 @@ class NetworkManager {
                 completionHandler(.failure(.invalidData))
             }
         }
-
         task.resume()
     }
     
@@ -124,27 +122,69 @@ class NetworkManager {
                 completionHandler(.failure(.invalidData))
             }
         }
-
         task.resume()
     }
     
     
+    func getTeams(parameters: String, completionHandler: @escaping (Result<Teams, FNError>) -> Void) {
+        let endpoint = baseURL + "teams/?\(parameters)"
+        
+        guard let url = URL(string: endpoint) else {
+            completionHandler(.failure(.invalidUsername))
+            return
+        }
+        var request = URLRequest(url: url)
+        request.addValue("b1472209bfea9fee33f555e21eac2b9e", forHTTPHeaderField: "x-rapidapi-key")
+        request.addValue("v3.football.api-sports.io", forHTTPHeaderField: "x-rapidapi-host")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let _ = error {
+                completionHandler(.failure(.unableToComplete))
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completionHandler(.failure(.invalidResponse))
+                return
+            }
+            
+            guard let data = data else {
+                completionHandler(.failure(.invalidData))
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let teams = try decoder.decode(Teams.self, from: data)
+                completionHandler(.success(teams))
+            } catch {
+                completionHandler(.failure(.invalidData))
+            }
+        }
+        task.resume()
+    }
     
     
-    func downloadImage(from urlString: String) -> UIImage {
+    func downloadImage(from urlString: String, completionHandler: @escaping (UIImage) -> Void) {
         let cacheKey = NSString(string: urlString)
-
+        
         if let image = cache.object(forKey: cacheKey) {
-            return image
+            completionHandler(image)
         }
+        guard let url = URL(string: urlString) else { return }
 
-        let imageURL = URL(string: urlString)!
-        if let imageData = try? Data(contentsOf: imageURL) {
-            let image = UIImage(data: imageData)!
-            cache.setObject(image, forKey: cacheKey)
-            return image
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else { return }
+
+            if error != nil { return }
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
+            guard let data = data else { return }
+
+            guard let image = UIImage(data: data) else { return }
+            self.cache.setObject(image, forKey: cacheKey)
+            
+            completionHandler(image)
         }
-        return UIImage(named: "empty.jpg")!
+        task.resume()
     }
 }
 

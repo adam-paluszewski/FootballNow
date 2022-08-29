@@ -32,6 +32,11 @@ class FNSectionView: UIView {
     init(title: String) {
         super.init(frame: .zero)
         sectionTitleLabel.text = title
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        configure()
+        addSubviews()
+        addConstraints()
     }
     
     
@@ -48,6 +53,7 @@ class FNSectionView: UIView {
     
     
     func configure() {
+        
         headerView.backgroundColor = UIColor(named: "FNSectionColor")
         separatorView.backgroundColor = .lightGray
         bodyView.backgroundColor = UIColor(named: "FNSectionColor")
@@ -87,7 +93,7 @@ class FNSectionView: UIView {
             separatorView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 0),
             separatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
             separatorView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-            separatorView.heightAnchor.constraint(equalToConstant: 0.5),
+            separatorView.heightAnchor.constraint(equalToConstant: 1),
             
             bodyView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 0),
             bodyView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
@@ -96,7 +102,7 @@ class FNSectionView: UIView {
             
             sectionTitleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             sectionTitleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
-            sectionTitleLabel.widthAnchor.constraint(equalToConstant: 100),
+            sectionTitleLabel.widthAnchor.constraint(equalToConstant: 300),
             sectionTitleLabel.heightAnchor.constraint(equalToConstant: 20),
             
             button.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),

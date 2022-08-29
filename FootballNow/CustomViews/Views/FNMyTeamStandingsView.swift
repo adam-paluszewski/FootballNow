@@ -51,8 +51,14 @@ class FNMyTeamStandingsView: UIView {
         drawLabel.text = "\(standing.all.draw)"
         lostLabel.text = "\(standing.all.lose)"
         pointsLabel.text = "\(standing.points)"
-        teamLogoImageView.image = NetworkManager.shared.downloadImage(from: standing.team.logo)
         positionChangeImageView.image = getPositionChangeImage(change: standing.status)
+        
+        NetworkManager.shared.downloadImage(from: standing.team.logo) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.teamLogoImageView.image = image
+            }
+        }
     }
     
     
@@ -150,10 +156,10 @@ class FNMyTeamStandingsView: UIView {
             positionLabel.centerYAnchor.constraint(equalTo: standingsView.centerYAnchor),
             positionLabel.leadingAnchor.constraint(equalTo: standingsView.leadingAnchor, constant: 15),
             positionLabel.heightAnchor.constraint(equalToConstant: 30),
-            positionLabel.widthAnchor.constraint(equalToConstant: 20),
+            positionLabel.widthAnchor.constraint(equalToConstant: 25),
             
             positionChangeImageView.centerYAnchor.constraint(equalTo: standingsView.centerYAnchor),
-            positionChangeImageView.leadingAnchor.constraint(equalTo: positionLabel.trailingAnchor, constant: 3),
+            positionChangeImageView.leadingAnchor.constraint(equalTo: positionLabel.trailingAnchor, constant: 0),
             positionChangeImageView.widthAnchor.constraint(equalToConstant: 15),
             positionChangeImageView.heightAnchor.constraint(equalToConstant: 20),
 

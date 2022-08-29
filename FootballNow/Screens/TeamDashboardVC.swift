@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TeamDashboardVC.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 22/08/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class TeamDashboardVC: UIViewController {
     
     let scrollView = UIScrollView()
     let lastGameSectionView = UIView()
@@ -15,24 +15,25 @@ class ViewController: UIViewController {
     let nextGamesSectionView = UIView()
     let squadSectionView = UIView()
     
+    var myTeam: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
         configureViewController()
-        layoutUI()
+        createObservers()
+        checkForMyTeam()
         fetchDataForLastGameSection()
         fetchDataForStandingsSection()
         fetchDataForNextGamesSection()
         fetchDataforSquadSection()
-        
-        
     }
     
     
     func configureViewController() {
         view.backgroundColor = UIColor(named: "FNBackgroundColor")
         scrollView.showsVerticalScrollIndicator = false
+        layoutUI()
     }
     
     
@@ -53,26 +54,50 @@ class ViewController: UIViewController {
     
     
     func setRightNavBarItem() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "hammer"), style: .plain, target: self, action: #selector(openSettings))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "FNSettingsIcon"), style: .plain, target: self, action: #selector(openSettings))
     }
     
     
     func setNavBarAppearance() { //move somewhere else later
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = .tertiarySystemBackground
+        navBarAppearance.backgroundColor = UIColor(named: "FNNavBarColor")
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
     }
     
     
     @objc func openSettings() {
-        let ac = UIAlertController(title: "Wybierz pownownie drużynę", message: "Możesz zmieniać ją w dowolnej chwili", preferredStyle: .actionSheet)
-        ac.addAction(UIAlertAction(title: "Zmień", style: .destructive, handler: {_ in
-            self.performSegue(withIdentifier: "goToSelectTeam", sender: self)
-        }))
-        ac.addAction(UIAlertAction(title: "Anuluj", style: .cancel))
-        present(ac, animated: true)
+        let settingsVC = SettingsVC()
+        let navController = UINavigationController(rootViewController: settingsVC)
+        present(navController, animated: true)
+ 
+    }
+    
+    
+    func checkForMyTeam() {
+        if myTeam == nil {
+            let selectTeamVC = SelectTeamVC()
+            let navController = UINavigationController(rootViewController: selectTeamVC)
+            navController.isModalInPresentation = true
+            navigationController?.present(navController, animated: true)
+        }
+    }
+    
+    
+    func createObservers() {
+        let name = Notification.Name(NotificationKeys.teamIsSelectedNotificationKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(fireObserver), name: name, object: nil)
+    }
+    
+    
+    @objc func fireObserver(notification: NSNotification) {
+        self.myTeam = notification.object as? Int
+        removeChildren()
+        fetchDataForLastGameSection()
+        fetchDataForStandingsSection()
+        fetchDataForNextGamesSection()
+        fetchDataforSquadSection()
     }
     
     
@@ -92,8 +117,19 @@ class ViewController: UIViewController {
     }
     
     
+    func removeChildren() {
+        for childVC in children {
+            childVC.willMove(toParent: nil)
+            childVC.view.removeFromSuperview()
+            childVC.removeFromParent()
+        }
+    }
+    
+    
     func fetchDataForLastGameSection() {
-        NetworkManager.shared.getFixtures(parameters: "team=3491&season=2022&last=1&timezone=Europe/Warsaw") { result in
+        guard let myTeam = myTeam else { return }
+        NetworkManager.shared.getFixtures(parameters: "team=\(myTeam)&season=2022&last=10&timezone=Europe/Warsaw") { [weak self] result in
+            guard let self = self else { return }
             switch result {
                 case .success(let fixtures):
                     DispatchQueue.main.async {
@@ -108,7 +144,9 @@ class ViewController: UIViewController {
     
     
     func fetchDataForStandingsSection() {
-        NetworkManager.shared.getStandings(parameters: "season=2022&team=3491") { result in
+        guard let myTeam = myTeam else { return }
+        NetworkManager.shared.getStandings(parameters: "season=2022&team=\(myTeam)") { [weak self] result in
+            guard let self = self else { return }
             switch result {
                 case .success(let standings):
                     DispatchQueue.main.async {
@@ -123,7 +161,9 @@ class ViewController: UIViewController {
 
     
     func fetchDataForNextGamesSection() {
-        NetworkManager.shared.getFixtures(parameters: "team=3491&season=2022&next=3&timezone=Europe/Warsaw") { result in
+        guard let myTeam = myTeam else { return }
+        NetworkManager.shared.getFixtures(parameters: "team=\(myTeam)&season=2022&next=15&timezone=Europe/Warsaw") { [weak self] result in
+            guard let self = self else { return }
             switch result {
                 case .success(let fixtures):
                     DispatchQueue.main.async {
@@ -138,7 +178,9 @@ class ViewController: UIViewController {
     
     
     func fetchDataforSquadSection() {
-        NetworkManager.shared.getSquads(parameters: "team=3491") { result in
+        guard let myTeam = myTeam else { return }
+        NetworkManager.shared.getSquads(parameters: "team=\(myTeam)") { [weak self] result in
+            guard let self = self else { return }
             switch result {
                 case .success(let squad):
                     DispatchQueue.main.async {
@@ -171,27 +213,26 @@ class ViewController: UIViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            lastGameSectionView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
+            lastGameSectionView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
             lastGameSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             lastGameSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            lastGameSectionView.heightAnchor.constraint(equalToConstant: 40+0.5+100),
+            lastGameSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardLastGameHeight),
             
-            standingsSectionView.topAnchor.constraint(equalTo: lastGameSectionView.bottomAnchor, constant: 10),
+            standingsSectionView.topAnchor.constraint(equalTo: lastGameSectionView.bottomAnchor, constant: 15),
             standingsSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             standingsSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            standingsSectionView.heightAnchor.constraint(equalToConstant: 40+0.5+80),
+            standingsSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardStandingsHeight),
             
-            nextGamesSectionView.topAnchor.constraint(equalTo: standingsSectionView.bottomAnchor, constant: 10),
+            nextGamesSectionView.topAnchor.constraint(equalTo: standingsSectionView.bottomAnchor, constant: 15),
             nextGamesSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             nextGamesSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            nextGamesSectionView.heightAnchor.constraint(equalToConstant: 40+0.5+3*80),
+            nextGamesSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardNextGamesHeight),
             
-            squadSectionView.topAnchor.constraint(equalTo: nextGamesSectionView.bottomAnchor, constant: 10),
+            squadSectionView.topAnchor.constraint(equalTo: nextGamesSectionView.bottomAnchor, constant: 15),
             squadSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             squadSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            squadSectionView.heightAnchor.constraint(equalToConstant: 40+0.5+210),
-            squadSectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -10)
+            squadSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardSquadHeight),
+            squadSectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0)
         ])
     }
 }
-

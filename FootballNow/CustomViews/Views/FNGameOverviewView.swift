@@ -48,8 +48,19 @@ class FNGameOverviewView: UIView {
         
         gameStatusLabel.text = FNFixtureMethods.getGameStatus(for: status)
 
-        homeTeamLogoImageView.image = NetworkManager.shared.downloadImage(from: game.teams.home.logo)
-        awayTeamLogoImageView.image = NetworkManager.shared.downloadImage(from: game.teams.away.logo)
+        NetworkManager.shared.downloadImage(from: game.teams.home.logo) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.homeTeamLogoImageView.image = image
+            }
+        }
+        
+        NetworkManager.shared.downloadImage(from: game.teams.away.logo) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.awayTeamLogoImageView.image = image
+            }
+        }
     }
     
     
@@ -122,15 +133,15 @@ class FNGameOverviewView: UIView {
             gameScoreLabel.centerXAnchor.constraint(equalTo: scoreView.centerXAnchor),
             gameScoreLabel.centerYAnchor.constraint(equalTo: scoreView.centerYAnchor),
             
-            gameStatusLabel.topAnchor.constraint(equalTo: scoreView.topAnchor, constant: 3),
+            gameStatusLabel.topAnchor.constraint(equalTo: homeTeamLogoImageView.topAnchor),
             gameStatusLabel.leadingAnchor.constraint(equalTo: scoreView.leadingAnchor, constant: 3),
             gameStatusLabel.trailingAnchor.constraint(equalTo: scoreView.trailingAnchor, constant: -3),
-            gameStatusLabel.heightAnchor.constraint(equalToConstant: 18),
+            gameStatusLabel.heightAnchor.constraint(equalToConstant: 16),
             
-            timeElapsedLabel.bottomAnchor.constraint(equalTo: scoreView.bottomAnchor, constant: -3),
+            timeElapsedLabel.bottomAnchor.constraint(equalTo: homeTeamNameLabel.bottomAnchor),
             timeElapsedLabel.leadingAnchor.constraint(equalTo: scoreView.leadingAnchor, constant: 3),
             timeElapsedLabel.trailingAnchor.constraint(equalTo: scoreView.trailingAnchor, constant: -3),
-            timeElapsedLabel.heightAnchor.constraint(equalToConstant: 18)
+            timeElapsedLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
     }
 }

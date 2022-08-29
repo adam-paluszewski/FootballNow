@@ -10,7 +10,7 @@ import UIKit
 class SquadVC: UIViewController {
 
     let sectionView = FNSectionView(title: "Skład drużyny", buttonText: "Więcej")
-    var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    var collectionView: UICollectionView!
     
     var squad: [SquadsData] = []
     
@@ -33,22 +33,27 @@ class SquadVC: UIViewController {
     }
 
     
-    @objc func buttonPressed() {
-        print("squad")
+    @objc func buttonPressed(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.1) {
+            sender.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+        } completion: { finished in
+            sender.transform = .identity
+            let squadListVC = SquadListVC()
+            self.navigationController?.pushViewController(squadListVC, animated: true)
+        }
     }
     
     
     func createFlowLayout(view: UIView) -> UICollectionViewFlowLayout {
         let width = view.bounds.width
-        print(view.bounds.height)
-        print(view.bounds.width)
+
         let padding: CGFloat = 15
         let minimumItemSpacing: CGFloat = 10
         let availableWIdth = width - (padding * 2) - (minimumItemSpacing * 2)
         let itemWidth = availableWIdth / 3
         
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: itemWidth, height: 190)
+        flowLayout.itemSize = CGSize(width: itemWidth, height: UIElementsSizes.teamDashboardPlayerCellHeight)
         flowLayout.minimumInteritemSpacing = 5
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
         flowLayout.scrollDirection = .horizontal
@@ -60,40 +65,33 @@ class SquadVC: UIViewController {
     func configureViewController() {
         sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
-        addSubviews()
-        addConstraints()
+        view.addSubview(sectionView)
+        
+        NSLayoutConstraint.activate([
+            sectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            sectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            sectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            sectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+        ])
+
     }
     
     
     func configureCollectionView() {
-        sectionView.bodyView.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView = UICollectionView(frame: sectionView.bounds, collectionViewLayout: createFlowLayout(view: view))
         
-        collectionView.collectionViewLayout = createFlowLayout(view: view)
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
         collectionView.register(FNPlayerCell.self, forCellWithReuseIdentifier: FNPlayerCell.cellId)
+        
+        sectionView.bodyView.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: sectionView.bodyView.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: sectionView.bodyView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: sectionView.bodyView.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor)
-        ])
-    }
-    
-    
-    func addSubviews() {
-        view.addSubview(sectionView)
-    }
-    
-    
-    func addConstraints() {
-        NSLayoutConstraint.activate([
-            sectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            sectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            sectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            sectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
     }
 }

@@ -12,12 +12,12 @@ class LastGameVC: UIViewController {
     let sectionView = FNSectionView(title: "Ostatni mecz", buttonText: "Więcej")
     let gameOverviewView = FNGameOverviewView()
     
-    var lastGame: [FixturesData] = []
+    var lastGames: [FixturesData] = []
     
     
     init(lastGame: [FixturesData]) {
         super.init(nibName: nil, bundle: nil)
-        self.lastGame = lastGame
+        self.lastGames = lastGame
     }
     
     
@@ -28,30 +28,29 @@ class LastGameVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
-        addSubviews()
-        addConstraints()
+        configureViewController()
     }
     
     
-    @objc func buttonPressed() {
-        print("last")
+    @objc func buttonPressed(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.1) {
+            sender.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+        } completion: { finished in
+            sender.transform = .identity
+            let lastGamesListVC = LastGamesListVC()
+            lastGamesListVC.lastGames = self.lastGames
+            self.navigationController?.pushViewController(lastGamesListVC, animated: true)
+        }
     }
     
     
-    func configure() {
+    func configureViewController() {
         sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        gameOverviewView.set(game: lastGame[0])
-    }
-    
-    
-    func addSubviews() {
+        gameOverviewView.set(game: lastGames[0])
+        
         view.addSubview(sectionView)
         sectionView.bodyView.addSubview(gameOverviewView)
-    }
-    
-    
-    func addConstraints() {
+        
         gameOverviewView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

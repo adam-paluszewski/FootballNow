@@ -26,30 +26,28 @@ class StandingsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
-        addSubviews()
-        addConstraints()
+        configureViewController()
     }
     
     
-    @objc func buttonPressed() {
-        print("standings")
+    @objc func buttonPressed(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.1) {
+            sender.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+        } completion: { finished in
+            sender.transform = .identity
+            let leagueStandingsVC = LeagueStandingsVC()
+            self.navigationController?.pushViewController(leagueStandingsVC, animated: true)
+        }
     }
     
     
-    func configure() {
+    func configureViewController() {
         sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         standingsView.set(standing: standings[0].league.standings[0][0])
-    }
-    
-    
-    func addSubviews() {
+        
         view.addSubview(sectionView)
         sectionView.bodyView.addSubview(standingsView)
-    }
-    
-    
-    func addConstraints() {
+        
         NSLayoutConstraint.activate([
             sectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             sectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
@@ -62,8 +60,4 @@ class StandingsVC: UIViewController {
             standingsView.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor)
         ])
     }
-    
-
-
-
 }
