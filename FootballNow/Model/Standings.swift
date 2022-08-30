@@ -30,31 +30,32 @@ struct League: Codable {
 }
 
 struct Standing: Codable {
-    var rank: Int
-    var points: Int
-    var goalsDiff: Int
+    var rank: Int?
+    var points: Int?
+    var goalsDiff: Int?
     var description: String?
     var team: StandingTeam
-    var status: String
+    var status: String?
     var all: All
 }
 
 struct StandingTeam: Codable {
-    var name: String
-    var logo: String
+    var name: String?
+    var logo: String?
+    var id: Int?
 }
 
 struct All: Codable {
-    var played: Int
-    var win: Int
-    var draw: Int
-    var lose: Int
+    var played: Int?
+    var win: Int?
+    var draw: Int?
+    var lose: Int?
     var goals: GoalsStandings
 }
 
 struct GoalsStandings: Codable {
-    var ckey: Int
-    var against: Int
+    var ckey: Int?
+    var against: Int?
             
     enum CodingKeys: String, CodingKey {
         case ckey = "for"

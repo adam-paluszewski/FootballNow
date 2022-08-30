@@ -11,11 +11,12 @@ class StandingsSectionVC: UIViewController {
 
     let sectionView = FNSectionView(title: "Tabela ligowa", buttonText: "Więcej")
     let standingsView = FNMyTeamStandingsView()
-    var standings: [StandingsData] = []
+    var yourTeamStandings: [StandingsData] = []
+    var countryLeagueId: Int?
     
     init(yourTeamStandings: [StandingsData]) {
         super.init(nibName: nil, bundle: nil)
-        self.standings = yourTeamStandings
+        self.yourTeamStandings = yourTeamStandings
     }
     
     
@@ -27,6 +28,7 @@ class StandingsSectionVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        fetchDataForLeagues()
     }
     
     
@@ -36,14 +38,41 @@ class StandingsSectionVC: UIViewController {
         } completion: { finished in
             sender.transform = .identity
             let leagueStandingsVC = StandingsVC()
+            leagueStandingsVC.leagueId = self.countryLeagueId
             self.navigationController?.pushViewController(leagueStandingsVC, animated: true)
         }
     }
     
     
+    func fetchDataForLeagues() {
+        guard !yourTeamStandings.isEmpty else { return }
+        let myTeamId = String(yourTeamStandings[0].league.standings[0][0].team.id ?? 0)
+        NetworkManager.shared.getLeagues(parameters: "season=2022&team=\(myTeamId)") { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                case .success(let leagues):
+                    
+                    //Standings api returns [] of leagues w/o id
+                    //We need id to fetch data for League Standings(next screen) and to know which league to show (this screen)
+                    //Extra endpoint is needed, then we check which league is Country League and we show data from only this one
+                    let leagues = leagues.response
+                    let countryLeague = leagues.filter{$0.league.type == "League"}
+                    self.countryLeagueId = countryLeague[0].league.id
+                    let countryLeagueStanding = self.yourTeamStandings.filter{$0.league.id == self.countryLeagueId}
+                    
+                    DispatchQueue.main.async {
+                        self.standingsView.set(standing: countryLeagueStanding[0].league.standings[0][0])
+                    }
+                case .failure(let error):
+                    print(error)
+            }
+        }
+    }
+    
+    
     func configureViewController() {
+        
         sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        standingsView.set(standing: standings[0].league.standings[0][0])
         
         view.addSubview(sectionView)
         sectionView.bodyView.addSubview(standingsView)

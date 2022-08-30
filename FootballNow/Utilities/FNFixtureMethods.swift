@@ -3,15 +3,15 @@ import Foundation
 
 struct FNFixtureMethods {
     
-    static func getGameStartTime(timestamp: Double, gameStatus: String) -> String {
+    static func getGameStartTime(timestamp: Double, gameStatus: String) -> String? {
         
         switch gameStatus {
             case "TBD":
-                return "Godzina do ustalenia"
+                return nil
             case "PST":
-                return "Przełożony"
+                return nil
             case "CANC":
-                return "Anulowany"
+                return nil
                 
             default:
                 return FNDateFormatting.getHHMM(timestamp: timestamp)

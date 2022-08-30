@@ -17,6 +17,7 @@ class TeamDashboardVC: UIViewController {
     
     var myTeam: [String]? // [0]id, [1]logo, [2]name
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
@@ -27,6 +28,8 @@ class TeamDashboardVC: UIViewController {
         fetchDataForStandingsSection()
         fetchDataForNextGamesSection()
         fetchDataforSquadSection()
+        
+        print(myTeam)
     }
     
     
@@ -38,29 +41,14 @@ class TeamDashboardVC: UIViewController {
     
     
     func configureNavigationBar() {
-        setNavBarAppearance()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "FNSettingsIcon"), style: .plain, target: self, action: #selector(openSettings))
         setTitleForNavBar()
-        setRightNavBarItem()
     }
     
     
     func setTitleForNavBar() {
         guard let myTeam = myTeam else { return }
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationBarTitleView(image: myTeam[1], title: myTeam[2]))
-    }
-    
-    
-    func setRightNavBarItem() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "FNSettingsIcon"), style: .plain, target: self, action: #selector(openSettings))
-    }
-    
-    
-    func setNavBarAppearance() { //move somewhere else later
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = UIColor(named: "FNNavBarColor")
-        navigationController?.navigationBar.standardAppearance = navBarAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
     }
     
     

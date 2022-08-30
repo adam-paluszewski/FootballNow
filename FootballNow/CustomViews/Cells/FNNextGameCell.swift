@@ -11,7 +11,7 @@ class FNNextGameCell: UITableViewCell {
 
     static let cellId = "NextGamesCell"
     
-    let gameDateLabel = UILabel()
+    let gameDateLabel = FNBodyLabel(allingment: .center)
     let homeTeamNameLabel = FNBodyLabel(allingment: .left)
     let homeTeamLogoImageView = UIImageView()
     let awayTeamNameLabel = FNBodyLabel(allingment: .left)
@@ -19,6 +19,8 @@ class FNNextGameCell: UITableViewCell {
     let gameTimeLabel = FNBodyLabel(allingment: .center)
     let vLineView = UIView()
     let leagueLogoImageView = UIImageView()
+    let stackView = UIStackView()
+    let leagueBackgroundView = UIView()
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -38,10 +40,16 @@ class FNNextGameCell: UITableViewCell {
         homeTeamNameLabel.text = nextGame.teams.home.name
         awayTeamNameLabel.text = nextGame.teams.away.name
         
-        gameTimeLabel.text = FNFixtureMethods.getGameStartTime(timestamp: nextGame.fixture.timestamp, gameStatus: nextGame.fixture.status.short)
+        if let gameTime = FNFixtureMethods.getGameStartTime(timestamp: nextGame.fixture.timestamp, gameStatus: nextGame.fixture.status.short) {
+            gameTimeLabel.text = gameTime
+            gameTimeLabel.isHidden = false
+        } else {
+            gameTimeLabel.isHidden = true
+        }
         
-        let dateString = FNDateFormatting.getDDMM(timestamp: nextGame.fixture.timestamp)
-        gameDateLabel.attributedText = FNAttributedStrings.getAttributedDate(for: dateString)
+        
+        let dateString = FNDateFormatting.getDMMM(timestamp: nextGame.fixture.timestamp)
+        gameDateLabel.text = dateString
         
         NetworkManager.shared.downloadImage(from: nextGame.teams.home.logo) { [weak self] image in
             guard let self = self else { return }
@@ -68,39 +76,54 @@ class FNNextGameCell: UITableViewCell {
     
     func configure() {
         backgroundColor = .clear
-        gameDateLabel.numberOfLines = 2
-        gameDateLabel.textAlignment = .center
+        gameDateLabel.numberOfLines = 1
+        gameTimeLabel.textColor = .secondaryLabel
         gameTimeLabel.numberOfLines = 3
         vLineView.backgroundColor = .lightGray
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        leagueLogoImageView.sizeToFit()
+        leagueBackgroundView.backgroundColor = .systemGray2
+        leagueBackgroundView.clipsToBounds = true
+        leagueBackgroundView.layer.cornerRadius = 22.5
     }
     
     
     func addSubviews() {
-        addSubview(gameDateLabel)
         addSubview(homeTeamNameLabel)
         addSubview(homeTeamLogoImageView)
         addSubview(awayTeamNameLabel)
         addSubview(awayTeamLogoImageView)
-        addSubview(gameTimeLabel)
         addSubview(vLineView)
+        addSubview(leagueBackgroundView)
         addSubview(leagueLogoImageView)
+        addSubview(stackView)
+        stackView.addArrangedSubview(gameDateLabel)
+        stackView.addArrangedSubview(gameTimeLabel)
     }
     
     
     func addConstraints() {
-        gameDateLabel.translatesAutoresizingMaskIntoConstraints = false
         homeTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         awayTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         vLineView.translatesAutoresizingMaskIntoConstraints = false
         leagueLogoImageView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        leagueBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            gameDateLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            gameDateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-            gameDateLabel.widthAnchor.constraint(equalToConstant: 30),
+            leagueBackgroundView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            leagueBackgroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            leagueBackgroundView.widthAnchor.constraint(equalToConstant: 45),
+            leagueBackgroundView.heightAnchor.constraint(equalToConstant: 45),
+            
+            leagueLogoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            leagueLogoImageView.centerXAnchor.constraint(equalTo: leagueBackgroundView.centerXAnchor),
+            leagueLogoImageView.widthAnchor.constraint(equalToConstant: 30),
+            leagueLogoImageView.heightAnchor.constraint(equalToConstant: 30),
             
             homeTeamLogoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -15),
-            homeTeamLogoImageView.leadingAnchor.constraint(equalTo: gameDateLabel.trailingAnchor, constant: 15),
+            homeTeamLogoImageView.leadingAnchor.constraint(equalTo: leagueLogoImageView.trailingAnchor, constant: 20),
             homeTeamLogoImageView.widthAnchor.constraint(equalToConstant: 25),
             homeTeamLogoImageView.heightAnchor.constraint(equalToConstant: 25),
             
@@ -108,7 +131,7 @@ class FNNextGameCell: UITableViewCell {
             homeTeamNameLabel.leadingAnchor.constraint(equalTo: homeTeamLogoImageView.trailingAnchor, constant: 5),
             
             awayTeamLogoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 15),
-            awayTeamLogoImageView.leadingAnchor.constraint(equalTo: gameDateLabel.trailingAnchor, constant: 15),
+            awayTeamLogoImageView.leadingAnchor.constraint(equalTo: leagueLogoImageView.trailingAnchor, constant: 20),
             awayTeamLogoImageView.widthAnchor.constraint(equalToConstant: 25),
             awayTeamLogoImageView.heightAnchor.constraint(equalToConstant: 25),
             
@@ -120,14 +143,10 @@ class FNNextGameCell: UITableViewCell {
             vLineView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
             vLineView.widthAnchor.constraint(equalToConstant: 0.5),
             
-            gameTimeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            gameTimeLabel.leadingAnchor.constraint(equalTo: vLineView.trailingAnchor, constant: 10),
-            gameTimeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            
-            leagueLogoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            leagueLogoImageView.heightAnchor.constraint(equalToConstant: 35),
-            leagueLogoImageView.widthAnchor.constraint(equalToConstant: 35),
-            leagueLogoImageView.trailingAnchor.constraint(equalTo: vLineView.leadingAnchor, constant: -10)
+            stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 25),
+            stackView.leadingAnchor.constraint(equalTo: vLineView.trailingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),
         ])
     }
 }

@@ -106,7 +106,9 @@ extension SquadSectionVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FNCollectionPlayerCell.cellId, for: indexPath) as! FNCollectionPlayerCell
-        cell.set(player: squad[0].players[indexPath.row])
+        if !squad.isEmpty {
+            cell.set(player: squad[0].players[indexPath.row])
+        }
         return cell
     }
     

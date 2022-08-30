@@ -12,6 +12,7 @@ class StandingsVC: UIViewController {
     let tableView = UITableView()
     let tableViewHeaderView = FNStandingsHeaderView()
     var standings: [StandingsData] = []
+    var leagueId: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +47,8 @@ class StandingsVC: UIViewController {
 
     
     func fetchDataForStandings() {
-        NetworkManager.shared.getStandings(parameters: "league=106&season=2022") { [weak self] result in
+        guard leagueId != nil else { return }
+        NetworkManager.shared.getStandings(parameters: "league=\(leagueId!)&season=2022") { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let standings):

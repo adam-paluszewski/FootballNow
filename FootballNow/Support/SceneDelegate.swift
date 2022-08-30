@@ -44,7 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func createTeamDashboardNC() -> UINavigationController {
         let teamDashboardVC = TeamDashboardVC()
-        teamDashboardVC.tabBarItem = UITabBarItem(title: "Moja drużyna", image: UIImage(systemName: "person.2"),selectedImage: UIImage(systemName: "person.2.fill"))
+        teamDashboardVC.tabBarItem = UITabBarItem(title: "Moja drużyna", image: UIImage(systemName: "person.3"),selectedImage: UIImage(systemName: "person.3.fill"))
         teamDashboardVC.tabBarItem.tag = 0
         
         if let data = UserDefaults.standard.value(forKey: "myTeam") as? Data {

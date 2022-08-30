@@ -53,6 +53,9 @@
 		E990E8C528BE2B1300880FDE /* FNAgeSuffix.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8C428BE2B1300880FDE /* FNAgeSuffix.swift */; };
 		E990E8C928BE2C8300880FDE /* FNTranslateToPolish.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8C828BE2C8300880FDE /* FNTranslateToPolish.swift */; };
 		E990E8CB28BE2F9400880FDE /* FNNavigationBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8CA28BE2F9400880FDE /* FNNavigationBarTitleView.swift */; };
+		E990E8CD28BE6C1C00880FDE /* Leagues.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8CC28BE6C1C00880FDE /* Leagues.swift */; };
+		E990E8CF28BE7C3B00880FDE /* FNSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8CE28BE7C3B00880FDE /* FNSearchResultCell.swift */; };
+		E990E8D128BEB34B00880FDE /* Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8D028BEB34A00880FDE /* Favorites.swift */; };
 		E9A9710C28B7749700C3C4CA /* LastGameSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710B28B7749700C3C4CA /* LastGameSectionVC.swift */; };
 		E9A9710E28B77B9100C3C4CA /* NextGamesSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710D28B77B9100C3C4CA /* NextGamesSectionVC.swift */; };
 		E9A9711028B77C3A00C3C4CA /* StandingsSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710F28B77C3A00C3C4CA /* StandingsSectionVC.swift */; };
@@ -109,6 +112,9 @@
 		E990E8C428BE2B1300880FDE /* FNAgeSuffix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FNAgeSuffix.swift; sourceTree = "<group>"; };
 		E990E8C828BE2C8300880FDE /* FNTranslateToPolish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNTranslateToPolish.swift; sourceTree = "<group>"; };
 		E990E8CA28BE2F9400880FDE /* FNNavigationBarTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNNavigationBarTitleView.swift; sourceTree = "<group>"; };
+		E990E8CC28BE6C1C00880FDE /* Leagues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Leagues.swift; sourceTree = "<group>"; };
+		E990E8CE28BE7C3B00880FDE /* FNSearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNSearchResultCell.swift; sourceTree = "<group>"; };
+		E990E8D028BEB34A00880FDE /* Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorites.swift; sourceTree = "<group>"; };
 		E9A9710B28B7749700C3C4CA /* LastGameSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastGameSectionVC.swift; sourceTree = "<group>"; };
 		E9A9710D28B77B9100C3C4CA /* NextGamesSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextGamesSectionVC.swift; sourceTree = "<group>"; };
 		E9A9710F28B77C3A00C3C4CA /* StandingsSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsSectionVC.swift; sourceTree = "<group>"; };
@@ -177,6 +183,7 @@
 				E96CE49828BCE18F00B7D08F /* FNLastGameCell.swift */,
 				E990E8B628BD0F0300880FDE /* FNSelectTeamCell.swift */,
 				E990E8BA28BE0AF600880FDE /* FNStandingsCell.swift */,
+				E990E8CE28BE7C3B00880FDE /* FNSearchResultCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -244,9 +251,11 @@
 			children = (
 				E990E8C028BE231D00880FDE /* Players.swift */,
 				E96CE47328B8D7FE00B7D08F /* Standings.swift */,
+				E990E8CC28BE6C1C00880FDE /* Leagues.swift */,
 				E96CE45A28B7C58F00B7D08F /* Fixtures.swift */,
 				E96CE47728B8FB9600B7D08F /* Squads.swift */,
 				E990E8B428BD0AFB00880FDE /* Teams.swift */,
+				E990E8D028BEB34A00880FDE /* Favorites.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -383,6 +392,7 @@
 				E96CE48E28BBADBC00B7D08F /* FNSettingsCell.swift in Sources */,
 				E96CE48A28BB96D700B7D08F /* GamesVC.swift in Sources */,
 				E990E8CB28BE2F9400880FDE /* FNNavigationBarTitleView.swift in Sources */,
+				E990E8CF28BE7C3B00880FDE /* FNSearchResultCell.swift in Sources */,
 				E96CE47428B8D7FE00B7D08F /* Standings.swift in Sources */,
 				E96CE45528B7C54400B7D08F /* NetworkManager.swift in Sources */,
 				E96CE46C28B8C0DE00B7D08F /* FNCaptionLabel.swift in Sources */,
@@ -398,7 +408,9 @@
 				E96CE48028BA45FC00B7D08F /* FNConstants.swift in Sources */,
 				E96CE47228B8D6D700B7D08F /* FNTinyLabel.swift in Sources */,
 				E990E8BF28BE21FC00880FDE /* FNTablePlayerCell.swift in Sources */,
+				E990E8CD28BE6C1C00880FDE /* Leagues.swift in Sources */,
 				E9071C4528B3F7990082F483 /* AppDelegate.swift in Sources */,
+				E990E8D128BEB34B00880FDE /* Favorites.swift in Sources */,
 				E96CE45F28B8B4EB00B7D08F /* FNGameOverviewView.swift in Sources */,
 				E96CE48C28BB96E700B7D08F /* FavoritesVC.swift in Sources */,
 				E96CE49428BCC8DF00B7D08F /* NextGamesListVC.swift in Sources */,

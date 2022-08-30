@@ -79,10 +79,9 @@ class FNTablePlayerCell: UITableViewCell {
             nameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -10),
             nameLabel.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 10),
 
-            
             positionLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 10),
             positionLabel.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 10),
-            positionLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+            positionLabel.widthAnchor.constraint(equalToConstant: 100),
             
             ageLabel.firstBaselineAnchor.constraint(equalTo: nameLabel.firstBaselineAnchor),
             ageLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 5)

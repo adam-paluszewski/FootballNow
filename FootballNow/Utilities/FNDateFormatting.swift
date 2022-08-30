@@ -19,6 +19,16 @@ struct FNDateFormatting {
         return dateString
     }
     
+    static func getDMMM(timestamp: Double) -> String{
+        let matchDate = Date(timeIntervalSince1970: timestamp)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMM"
+            
+        let dateString = dateFormatter.string(from: matchDate)
+        
+        return dateString
+    }
+    
     
     
     static func getDDMM(timestamp: Double) -> String{

@@ -92,7 +92,10 @@ extension NextGamesSectionVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNNextGameCell.cellId, for: indexPath) as! FNNextGameCell
         
-        cell.set(nextGame: nextGames[indexPath.row])
+        if !nextGames.isEmpty {
+            cell.set(nextGame: nextGames[indexPath.row])
+        }
+
         cell.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         return cell
     }

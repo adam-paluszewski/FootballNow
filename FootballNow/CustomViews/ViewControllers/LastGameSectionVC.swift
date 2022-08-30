@@ -46,7 +46,11 @@ class LastGameSectionVC: UIViewController {
     
     func configureViewController() {
         sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        gameOverviewView.set(game: lastGames[0])
+        
+        if !lastGames.isEmpty {
+            gameOverviewView.set(game: lastGames[0])
+        }
+
         
         view.addSubview(sectionView)
         sectionView.bodyView.addSubview(gameOverviewView)
