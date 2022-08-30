@@ -47,6 +47,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         teamDashboardVC.tabBarItem = UITabBarItem(title: "Moja drużyna", image: UIImage(systemName: "person.2"),selectedImage: UIImage(systemName: "person.2.fill"))
         teamDashboardVC.tabBarItem.tag = 0
         
+        if let data = UserDefaults.standard.value(forKey: "myTeam") as? Data {
+            let decoder = JSONDecoder()
+            if let myTeam = try? decoder.decode([String].self, from: data) {
+                teamDashboardVC.myTeam = myTeam
+            }
+        }
+        
         return UINavigationController(rootViewController: teamDashboardVC)
     }
     

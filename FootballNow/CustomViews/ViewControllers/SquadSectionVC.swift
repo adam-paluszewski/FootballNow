@@ -1,5 +1,5 @@
 //
-//  SquadVC.swift
+//  SquadSectionVC.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 25/08/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SquadVC: UIViewController {
+class SquadSectionVC: UIViewController {
 
     let sectionView = FNSectionView(title: "Skład drużyny", buttonText: "Więcej")
     var collectionView: UICollectionView!
@@ -39,6 +39,7 @@ class SquadVC: UIViewController {
         } completion: { finished in
             sender.transform = .identity
             let squadListVC = SquadListVC()
+            squadListVC.squad = self.squad
             self.navigationController?.pushViewController(squadListVC, animated: true)
         }
     }
@@ -82,7 +83,7 @@ class SquadVC: UIViewController {
         
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
-        collectionView.register(FNPlayerCell.self, forCellWithReuseIdentifier: FNPlayerCell.cellId)
+        collectionView.register(FNCollectionPlayerCell.self, forCellWithReuseIdentifier: FNCollectionPlayerCell.cellId)
         
         sectionView.bodyView.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +97,7 @@ class SquadVC: UIViewController {
     }
 }
 
-extension SquadVC: UICollectionViewDataSource {
+extension SquadSectionVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return squad[0].players.count
@@ -104,10 +105,8 @@ extension SquadVC: UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FNPlayerCell.cellId, for: indexPath) as! FNPlayerCell
-
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FNCollectionPlayerCell.cellId, for: indexPath) as! FNCollectionPlayerCell
         cell.set(player: squad[0].players[indexPath.row])
-        
         return cell
     }
     

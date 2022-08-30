@@ -1,5 +1,5 @@
 //
-//  NextGamesVC.swift
+//  NextGamesSectionVC.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 25/08/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NextGamesVC: UIViewController {
+class NextGamesSectionVC: UIViewController {
 
     let sectionView = FNSectionView(title: "Kolejne mecze", buttonText: "Więcej")
     var nextGames: [FixturesData] = []
@@ -77,7 +77,7 @@ class NextGamesVC: UIViewController {
 }
 
 
-extension NextGamesVC: UITableViewDataSource, UITableViewDelegate {
+extension NextGamesSectionVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UIElementsSizes.nextGameCellHeight

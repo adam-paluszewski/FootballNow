@@ -18,6 +18,7 @@ class FNNextGameCell: UITableViewCell {
     let awayTeamLogoImageView = UIImageView()
     let gameTimeLabel = FNBodyLabel(allingment: .center)
     let vLineView = UIView()
+    let leagueLogoImageView = UIImageView()
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -55,25 +56,34 @@ class FNNextGameCell: UITableViewCell {
                 self.awayTeamLogoImageView.image = image
             }
         }
+        
+        NetworkManager.shared.downloadImage(from: nextGame.league.logo) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.leagueLogoImageView.image = image
+            }
+        }
     }
     
     
     func configure() {
         backgroundColor = .clear
         gameDateLabel.numberOfLines = 2
+        gameDateLabel.textAlignment = .center
         gameTimeLabel.numberOfLines = 3
         vLineView.backgroundColor = .lightGray
     }
     
     
     func addSubviews() {
-        contentView.addSubview(gameDateLabel)
-        contentView.addSubview(homeTeamNameLabel)
-        contentView.addSubview(homeTeamLogoImageView)
-        contentView.addSubview(awayTeamNameLabel)
-        contentView.addSubview(awayTeamLogoImageView)
-        contentView.addSubview(gameTimeLabel)
-        contentView.addSubview(vLineView)
+        addSubview(gameDateLabel)
+        addSubview(homeTeamNameLabel)
+        addSubview(homeTeamLogoImageView)
+        addSubview(awayTeamNameLabel)
+        addSubview(awayTeamLogoImageView)
+        addSubview(gameTimeLabel)
+        addSubview(vLineView)
+        addSubview(leagueLogoImageView)
     }
     
     
@@ -82,6 +92,7 @@ class FNNextGameCell: UITableViewCell {
         homeTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         awayTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         vLineView.translatesAutoresizingMaskIntoConstraints = false
+        leagueLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             gameDateLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
@@ -111,7 +122,12 @@ class FNNextGameCell: UITableViewCell {
             
             gameTimeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             gameTimeLabel.leadingAnchor.constraint(equalTo: vLineView.trailingAnchor, constant: 10),
-            gameTimeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+            gameTimeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            
+            leagueLogoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            leagueLogoImageView.heightAnchor.constraint(equalToConstant: 35),
+            leagueLogoImageView.widthAnchor.constraint(equalToConstant: 35),
+            leagueLogoImageView.trailingAnchor.constraint(equalTo: vLineView.leadingAnchor, constant: -10)
         ])
     }
 }

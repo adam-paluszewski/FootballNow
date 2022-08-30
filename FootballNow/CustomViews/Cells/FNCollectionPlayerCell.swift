@@ -7,9 +7,9 @@
 
 import UIKit
 
-class FNPlayerCell: UICollectionViewCell {
+class FNCollectionPlayerCell: UICollectionViewCell {
     
-    static let cellId = "PlayerCell"
+    static let cellId = "CollectionPlayerCell"
     
     let cache = NetworkManager.shared.cache
     
@@ -33,7 +33,7 @@ class FNPlayerCell: UICollectionViewCell {
     
     func set(player: SquadsPlayer) {
         nameLabel.text = player.name
-        positionLabel.text = player.position
+        positionLabel.text = FNTranslateToPolish.shared.translatePlayerPosition(from: player.position)
         
         if let photo =  player.photo {
             NetworkManager.shared.downloadImage(from: photo) { [weak self] image in

@@ -21,12 +21,18 @@ struct FixturesData: Codable {
     var teams: GameTeams
     var goals: Goals
     var events: [Events]?
+    var league: FixturesLeague
 }
 
 struct Fixture: Codable {
     var timestamp: Double
     var status: Status
     var id: Int
+}
+
+struct FixturesLeague: Codable {
+    var name: String
+    var logo: String
 }
 
 struct GameTeams: Codable {
@@ -67,13 +73,13 @@ struct Events: Codable {
 }
 
 struct Time: Codable {
-    var elapsed: Int
+    var elapsed: Int?
     var extra: Int?
 }
 
 struct Player: Codable {
     var id: Int?
-    var name: String
+    var name: String?
 }
 
 struct Assist: Codable {
@@ -82,8 +88,8 @@ struct Assist: Codable {
 }
 
 struct Team: Codable {
-    var id: Int
-    var name: String
+    var id: Int?
+    var name: String?
 }
 
 

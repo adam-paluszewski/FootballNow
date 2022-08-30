@@ -1,5 +1,5 @@
 //
-//  StandingsVC.swift
+//  StandingsSectionVC.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 25/08/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StandingsVC: UIViewController {
+class StandingsSectionVC: UIViewController {
 
     let sectionView = FNSectionView(title: "Tabela ligowa", buttonText: "Więcej")
     let standingsView = FNMyTeamStandingsView()
@@ -35,7 +35,7 @@ class StandingsVC: UIViewController {
             sender.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
         } completion: { finished in
             sender.transform = .identity
-            let leagueStandingsVC = LeagueStandingsVC()
+            let leagueStandingsVC = StandingsVC()
             self.navigationController?.pushViewController(leagueStandingsVC, animated: true)
         }
     }

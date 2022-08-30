@@ -1,5 +1,5 @@
 //
-//  LastGameVC.swift
+//  LastGameSectionVC.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 25/08/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LastGameVC: UIViewController {
+class LastGameSectionVC: UIViewController {
     
     let sectionView = FNSectionView(title: "Ostatni mecz", buttonText: "Więcej")
     let gameOverviewView = FNGameOverviewView()

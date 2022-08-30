@@ -17,12 +17,12 @@ struct SectionHeight {
 
 struct UIElementsSizes {
     static let teamDashboardPlayerCellHeight: Double = SectionHeight.teamDashboardSquadHeight - 70
-    static let nextGameCellHeight: Double = 100
+    static let nextGameCellHeight: Double = 90
     static let lastGameCellHeight: Double = nextGameCellHeight
     static let standardTableViewSeparatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
 }
 
 
 struct NotificationKeys {
-    static let teamIsSelectedNotificationKey = "com.adamp.temIsSelected"
+    static let selectedTeam = "com.adamp.selectedteam"
 }

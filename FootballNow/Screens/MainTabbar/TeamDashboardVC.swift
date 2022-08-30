@@ -15,7 +15,7 @@ class TeamDashboardVC: UIViewController {
     let nextGamesSectionView = UIView()
     let squadSectionView = UIView()
     
-    var myTeam: Int?
+    var myTeam: [String]? // [0]id, [1]logo, [2]name
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,11 +45,8 @@ class TeamDashboardVC: UIViewController {
     
     
     func setTitleForNavBar() {
-        let label = UILabel()
-        label.textColor = UIColor.label
-        label.font = .systemFont(ofSize: 18)
-        label.text = "Dzień dobry, kibicu Rakowa!"
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: label)
+        guard let myTeam = myTeam else { return }
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationBarTitleView(image: myTeam[1], title: myTeam[2]))
     }
     
     
@@ -86,14 +83,15 @@ class TeamDashboardVC: UIViewController {
     
     
     func createObservers() {
-        let name = Notification.Name(NotificationKeys.teamIsSelectedNotificationKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(fireObserver), name: name, object: nil)
+        let team = Notification.Name(NotificationKeys.selectedTeam)
+        NotificationCenter.default.addObserver(self, selector: #selector(fireObserver), name: team, object: nil)
     }
     
     
     @objc func fireObserver(notification: NSNotification) {
-        self.myTeam = notification.object as? Int
+        myTeam = notification.object as? [String]
         removeChildren()
+        setTitleForNavBar()
         fetchDataForLastGameSection()
         fetchDataForStandingsSection()
         fetchDataForNextGamesSection()
@@ -128,12 +126,12 @@ class TeamDashboardVC: UIViewController {
     
     func fetchDataForLastGameSection() {
         guard let myTeam = myTeam else { return }
-        NetworkManager.shared.getFixtures(parameters: "team=\(myTeam)&season=2022&last=10&timezone=Europe/Warsaw") { [weak self] result in
+        NetworkManager.shared.getFixtures(parameters: "team=\(myTeam[0])&season=2022&last=10&timezone=Europe/Warsaw") { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let fixtures):
                     DispatchQueue.main.async {
-                        self.add(childVC: LastGameVC(lastGame: fixtures.response), to: self.lastGameSectionView)
+                        self.add(childVC: LastGameSectionVC(lastGame: fixtures.response), to: self.lastGameSectionView)
                     }
                     
                 case .failure(let error):
@@ -145,12 +143,12 @@ class TeamDashboardVC: UIViewController {
     
     func fetchDataForStandingsSection() {
         guard let myTeam = myTeam else { return }
-        NetworkManager.shared.getStandings(parameters: "season=2022&team=\(myTeam)") { [weak self] result in
+        NetworkManager.shared.getStandings(parameters: "season=2022&team=\(myTeam[0])") { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let standings):
                     DispatchQueue.main.async {
-                        self.add(childVC: StandingsVC(yourTeamStandings: standings.response), to: self.standingsSectionView)
+                        self.add(childVC: StandingsSectionVC(yourTeamStandings: standings.response), to: self.standingsSectionView)
                     }
                     
                 case .failure(let error):
@@ -162,12 +160,12 @@ class TeamDashboardVC: UIViewController {
     
     func fetchDataForNextGamesSection() {
         guard let myTeam = myTeam else { return }
-        NetworkManager.shared.getFixtures(parameters: "team=\(myTeam)&season=2022&next=15&timezone=Europe/Warsaw") { [weak self] result in
+        NetworkManager.shared.getFixtures(parameters: "team=\(myTeam[0])&season=2022&next=15&timezone=Europe/Warsaw") { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let fixtures):
                     DispatchQueue.main.async {
-                        self.add(childVC: NextGamesVC(nextGames: fixtures.response), to: self.nextGamesSectionView)
+                        self.add(childVC: NextGamesSectionVC(nextGames: fixtures.response), to: self.nextGamesSectionView)
                     }
                     
                 case .failure(let error):
@@ -179,12 +177,12 @@ class TeamDashboardVC: UIViewController {
     
     func fetchDataforSquadSection() {
         guard let myTeam = myTeam else { return }
-        NetworkManager.shared.getSquads(parameters: "team=\(myTeam)") { [weak self] result in
+        NetworkManager.shared.getSquads(parameters: "team=\(myTeam[0])") { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let squad):
                     DispatchQueue.main.async {
-                        self.add(childVC: SquadVC(squad: squad.response), to: self.squadSectionView)
+                        self.add(childVC: SquadSectionVC(squad: squad.response), to: self.squadSectionView)
                     }
                     
                 case .failure(let error):

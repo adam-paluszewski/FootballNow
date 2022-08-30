@@ -18,7 +18,14 @@ struct Squads: Codable {
 
 
 struct SquadsData: Codable {
+    var team: SquadsTeam
     var players: [SquadsPlayer]
+}
+
+
+struct SquadsTeam: Codable {
+    var name: String?
+    var logo: String
 }
 
 
