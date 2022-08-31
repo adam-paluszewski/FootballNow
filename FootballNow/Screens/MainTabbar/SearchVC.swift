@@ -20,6 +20,12 @@ class SearchVC: UIViewController {
         configureViewController()
         configureSearchController()
         configureTableView()
+        checkForLastSearched()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     
@@ -50,6 +56,8 @@ class SearchVC: UIViewController {
     func configureSearchController() {
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
+        searchController.hidesNavigationBarDuringPresentation = true
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     
@@ -68,6 +76,17 @@ class SearchVC: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    
+    func checkForLastSearched() {
+        if let data = UserDefaults.standard.value(forKey: "LastSearched") as? Data {
+            let decoder = JSONDecoder()
+            if let lastSearched = try? decoder.decode([TeamsData].self, from: data) {
+                self.lastSearched = lastSearched
+                tableView.reloadData()
+            }
+        }
     }
 }
 
@@ -97,14 +116,9 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let arrayToPick = searchedTeams.isEmpty ? lastSearched : searchedTeams
-        
-        let selectedTeam = arrayToPick[indexPath.row].team
-        let teamId = String(selectedTeam.id)
-        let teamLogo = selectedTeam.logo
-        let teamName = selectedTeam.name
-        
-        let teamDashboardVC = TeamDashboardVC(isMyTeamShowing: false, team: [teamId, teamLogo, teamName])
+        let teamDashboardVC = TeamDashboardVC(isMyTeamShowing: false, team: arrayToPick[indexPath.row])
         navigationController?.pushViewController(teamDashboardVC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
@@ -125,7 +139,13 @@ extension SearchVC: UISearchBarDelegate, UISearchControllerDelegate {
                 case .success(let teams):
                     self.searchedTeams = teams.response
                     self.lastSearched = self.searchedTeams
-                    DispatchQueue.main.async { self.tableView.reloadData() }
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        
+                        let encoder = JSONEncoder()
+                        let data = try? encoder.encode(self.lastSearched)
+                        UserDefaults.standard.set(data, forKey: "LastSearched")
+                    }
                 case .failure(let error):
                     print(error)
             }

@@ -43,17 +43,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     func createTeamDashboardNC() -> UINavigationController {
-        var team: [String] = []
+        var team: TeamsData?
         
         if let data = UserDefaults.standard.value(forKey: "myTeam") as? Data {
             let decoder = JSONDecoder()
-            if let myTeam = try? decoder.decode([String].self, from: data) {
+            if let myTeam = try? decoder.decode(TeamsData.self, from: data) {
                 team = myTeam
             }
         }
         
         let teamDashboardVC = TeamDashboardVC(isMyTeamShowing: true, team: team)
-        teamDashboardVC.tabBarItem = UITabBarItem(title: "Moja drużyna", image: UIImage(systemName: "person.3"),selectedImage: UIImage(systemName: "person.3.fill"))
+        teamDashboardVC.tabBarItem = UITabBarItem(title: "Moja drużyna", image: UIImage(systemName: "person.2"),selectedImage: UIImage(systemName: "person.2.fill"))
         teamDashboardVC.tabBarItem.tag = 0
         
         return UINavigationController(rootViewController: teamDashboardVC)

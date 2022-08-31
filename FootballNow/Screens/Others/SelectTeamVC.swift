@@ -21,14 +21,12 @@ class SelectTeamVC: UIViewController {
     }
     
 
-    func passSelectedTeam(teamId: Int, teamLogo: String, teamName: String) {
-        let teamIdString = String(teamId)
+    func passSelectedTeam(teamData: TeamsData) {
         let team = Notification.Name(NotificationKeys.selectedTeam)
-        let myTeam = [teamIdString, teamLogo, teamName]
-        NotificationCenter.default.post(name: team, object: myTeam)
+        NotificationCenter.default.post(name: team, object: teamData)
         
         let encoder = JSONEncoder()
-        if let data = try? encoder.encode(myTeam) {
+        if let data = try? encoder.encode(teamData) {
             UserDefaults.standard.set(data, forKey: "myTeam")
         }
         
@@ -104,7 +102,7 @@ extension SelectTeamVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        passSelectedTeam(teamId: teams[indexPath.row].team.id, teamLogo: teams[indexPath.row].team.logo, teamName: teams[indexPath.row].team.name)
+        passSelectedTeam(teamData: teams[indexPath.row])
     }
     
 }

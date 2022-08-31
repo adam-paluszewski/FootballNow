@@ -93,5 +93,10 @@ extension FavoritesVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let teamDashboardVC = TeamDashboardVC(isMyTeamShowing: false, team: Favorites.shared.favoritesTeams[indexPath.row])
+        navigationController?.pushViewController(teamDashboardVC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
 }
