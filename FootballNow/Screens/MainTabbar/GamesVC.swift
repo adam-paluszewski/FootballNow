@@ -11,7 +11,7 @@ class GamesVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigationItem.backBarButtonItem = UIBarButtonItem()
         // Do any additional setup after loading the view.
     }
     

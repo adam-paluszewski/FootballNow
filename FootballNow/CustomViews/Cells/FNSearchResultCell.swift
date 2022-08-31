@@ -28,16 +28,9 @@ class FNSearchResultCell: UITableViewCell {
     }
     
     
-    @objc func addToFavoritesPressed() {
-        
-    }
-    
-    
     func configure() {
 //        self.accessoryType = .disclosureIndicator
         self.backgroundColor = UIColor(named: "FNSectionColor")
-        addToFavoritesButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        addToFavoritesButton.addTarget(self, action: #selector(addToFavoritesPressed), for: .touchUpInside)
         addToFavoritesButton.tintColor = .systemRed
     }
     
@@ -80,5 +73,13 @@ class FNSearchResultCell: UITableViewCell {
                 self.teamLogoImageView.image = image
             }
         }
+        
+        if Favorites.shared.favoritesTeams.contains(where: {$0.team.name == teams.team.name}) {
+            addToFavoritesButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            addToFavoritesButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
+            
+            
     }
 }

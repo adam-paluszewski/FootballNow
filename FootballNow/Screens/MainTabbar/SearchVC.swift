@@ -13,7 +13,7 @@ class SearchVC: UIViewController {
     let tableView = UITableView()
     
     var searchedTeams: [TeamsData] = []
-//    var lastSearched: [TeamsData] = []
+    var lastSearched: [TeamsData] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,9 +21,25 @@ class SearchVC: UIViewController {
         configureSearchController()
         configureTableView()
     }
+    
+    
+    @objc func addToFavoritesPressed(sender: UIButton) {
+        let teamIndex = sender.tag
+                    
+        if let index = Favorites.shared.favoritesTeams.firstIndex(where: {$0.team.name == lastSearched[teamIndex].team.name}) {
+            Favorites.shared.favoritesTeams.remove(at: index)
+            Favorites.shared.set("favoritesTeams", object: Favorites.shared.favoritesTeams)
+        } else {
+            Favorites.shared.favoritesTeams.append(lastSearched[teamIndex])
+            Favorites.shared.set("favoritesTeams", object: Favorites.shared.favoritesTeams)
+        }
+
+        tableView.reloadData()
+    }
 
     
     func configureViewController() {
+        navigationItem.backBarButtonItem = UIBarButtonItem()
         view.backgroundColor = UIColor(named: "FNBackgroundColor")
         navigationItem.title = "Szukaj klubu"
 
@@ -65,26 +81,35 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchedTeams.count
+        return searchedTeams.isEmpty ? lastSearched.count : searchedTeams.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNSearchResultCell.cellId, for: indexPath) as! FNSearchResultCell
-        cell.tag = indexPath.row
-        cell.set(teams: searchedTeams[indexPath.row])
+        cell.addToFavoritesButton.tag = indexPath.row
+        searchedTeams.isEmpty ? cell.set(teams: lastSearched[indexPath.row]) : cell.set(teams: searchedTeams[indexPath.row])
+        
+        cell.addToFavoritesButton.addTarget(self, action: #selector(addToFavoritesPressed), for: .touchUpInside)
+        
         return cell
     }
 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedTeam = searchedTeams[indexPath.row].team
+        let arrayToPick = searchedTeams.isEmpty ? lastSearched : searchedTeams
+        
+        let selectedTeam = arrayToPick[indexPath.row].team
         let teamId = String(selectedTeam.id)
         let teamLogo = selectedTeam.logo
         let teamName = selectedTeam.name
         
-        let teamDashboardVC = TeamDashboardVC()
-        teamDashboardVC.myTeam = [teamId, teamLogo, teamName]
+        let teamDashboardVC = TeamDashboardVC(isMyTeamShowing: false, team: [teamId, teamLogo, teamName])
         navigationController?.pushViewController(teamDashboardVC, animated: true)
+    }
+    
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return searchedTeams.isEmpty && !lastSearched.isEmpty ? "Ostatnio wyszukiwane" : nil
     }
 }
 
@@ -99,6 +124,7 @@ extension SearchVC: UISearchBarDelegate, UISearchControllerDelegate {
             switch result {
                 case .success(let teams):
                     self.searchedTeams = teams.response
+                    self.lastSearched = self.searchedTeams
                     DispatchQueue.main.async { self.tableView.reloadData() }
                 case .failure(let error):
                     print(error)
@@ -108,7 +134,7 @@ extension SearchVC: UISearchBarDelegate, UISearchControllerDelegate {
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        searchedTeams = []
-//        tableView.reloadData()
+        searchedTeams = []
+        tableView.reloadData()
     }
 }

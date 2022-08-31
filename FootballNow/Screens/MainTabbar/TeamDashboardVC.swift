@@ -16,11 +16,42 @@ class TeamDashboardVC: UIViewController {
     let squadSectionView = UIView()
     
     var myTeam: [String]? // [0]id, [1]logo, [2]name
+    var isTeamInFavorites = false
+    
+    
+    init(isMyTeamShowing: Bool, team: [String]) {
+        super.init(nibName: nil, bundle: nil)
+        self.myTeam = team
+        guard let myTeam = myTeam else { return }
+        
+        if isMyTeamShowing {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "FNSettingsIcon"), style: .plain, target: self, action: #selector(openSettings))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationBarTitleView(image: myTeam[1], title: myTeam[2]))
+        } else {
+            navigationItem.titleView = FNNavigationBarTitleView(image: myTeam[1], title: myTeam[2])
+            
+            isTeamInFavorites = Favorites.shared.isTeamInFavorites(id: Int(team[0])!)
+            var image = UIImage()
+            
+            if isTeamInFavorites {
+                image = UIImage(systemName: "heart.fill")!
+            } else {
+                image = UIImage(systemName: "heart")!
+            }
+            
+            let addToFavoritesButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addToFavorites))
+            addToFavoritesButton.tintColor = .red
+            navigationItem.rightBarButtonItem = addToFavoritesButton
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
         configureViewController()
         createObservers()
         checkForMyTeam()
@@ -34,21 +65,10 @@ class TeamDashboardVC: UIViewController {
     
     
     func configureViewController() {
+        navigationItem.backBarButtonItem = UIBarButtonItem()
         view.backgroundColor = UIColor(named: "FNBackgroundColor")
         scrollView.showsVerticalScrollIndicator = false
         layoutUI()
-    }
-    
-    
-    func configureNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "FNSettingsIcon"), style: .plain, target: self, action: #selector(openSettings))
-        setTitleForNavBar()
-    }
-    
-    
-    func setTitleForNavBar() {
-        guard let myTeam = myTeam else { return }
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationBarTitleView(image: myTeam[1], title: myTeam[2]))
     }
     
     
@@ -57,6 +77,21 @@ class TeamDashboardVC: UIViewController {
         let navController = UINavigationController(rootViewController: settingsVC)
         present(navController, animated: true)
  
+    }
+    
+    
+    @objc func addToFavorites() {
+        if isTeamInFavorites {
+            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
+            let index = Favorites.shared.favoritesTeams.firstIndex(where: {$0.team.name == myTeam![2]})!
+            Favorites.shared.favoritesTeams.remove(at: index)
+            Favorites.shared.set("favoritesTeams", object: Favorites.shared.favoritesTeams)
+        } else {
+            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+            Favorites.shared.favoritesTeams.append(lastSearched[teamIndex])
+            Favorites.shared.set("favoritesTeams", object: Favorites.shared.favoritesTeams)
+        }
+        isTeamInFavorites.toggle()
     }
     
     
@@ -79,11 +114,13 @@ class TeamDashboardVC: UIViewController {
     @objc func fireObserver(notification: NSNotification) {
         myTeam = notification.object as? [String]
         removeChildren()
-        setTitleForNavBar()
         fetchDataForLastGameSection()
         fetchDataForStandingsSection()
         fetchDataForNextGamesSection()
         fetchDataforSquadSection()
+    
+        guard let myTeam = myTeam else { return }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationBarTitleView(image: myTeam[1], title: myTeam[2]))
     }
     
     
