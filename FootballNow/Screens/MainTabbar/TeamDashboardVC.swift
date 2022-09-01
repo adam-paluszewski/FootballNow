@@ -30,9 +30,9 @@ class TeamDashboardVC: UIViewController {
         
         if isMyTeamShowing {
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "FNSettingsIcon"), style: .plain, target: self, action: #selector(openSettings))
-            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationBarTitleView(image: myTeam.team.logo, title: myTeam.team.name))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNTeamTitleView(image: myTeam.team.logo, title: myTeam.team.name))
         } else {
-            navigationItem.titleView = FNNavigationBarTitleView(image: myTeam.team.logo, title: myTeam.team.name)
+            navigationItem.titleView = FNTeamTitleView(image: myTeam.team.logo, title: myTeam.team.name)
             
             isTeamInFavorites = Favorites.shared.isTeamInFavorites(id: team!.team.id)
             var image = UIImage()
@@ -132,7 +132,7 @@ class TeamDashboardVC: UIViewController {
         fetchDataforSquadSection()
     
         guard let myTeam = myTeam else { return }
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationBarTitleView(image: myTeam.team.logo, title: myTeam.team.name))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNTeamTitleView(image: myTeam.team.logo, title: myTeam.team.name))
     }
     
     

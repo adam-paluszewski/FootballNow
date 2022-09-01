@@ -67,7 +67,7 @@ class StandingsVC: UIViewController {
     func setNavigationItemTitle(from standings: [StandingsData]) {
         let leagueName = standings[0].league.name ?? ""
         let leagueLogo = standings[0].league.logo ?? ""
-        navigationItem.titleView = FNNavigationBarTitleView(image: leagueLogo, title: leagueName)
+        navigationItem.titleView = FNTeamTitleView(image: leagueLogo, title: leagueName)
     }
 
 }

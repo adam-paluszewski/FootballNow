@@ -11,6 +11,7 @@ class LastGameSectionVC: UIViewController {
     
     let sectionView = FNSectionView(title: "Ostatni mecz", buttonText: "Więcej")
     let gameOverviewView = FNGameOverviewView()
+    let gameDetailsButton = UIButton()
     
     var lastGames: [FixturesData] = []
     
@@ -32,7 +33,13 @@ class LastGameSectionVC: UIViewController {
     }
     
     
-    @objc func buttonPressed(_ sender: UIButton) {
+    @objc func gameDetailsButtonPressed() {
+        let gameDetailsVC = GameDetailsVC(gameId: lastGames[0].fixture.id)
+        navigationController?.pushViewController(gameDetailsVC, animated: true)
+    }
+    
+    
+    @objc func showAllButtonPressed(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1) {
             sender.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
         } completion: { finished in
@@ -45,7 +52,8 @@ class LastGameSectionVC: UIViewController {
     
     
     func configureViewController() {
-        sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        sectionView.button.addTarget(self, action: #selector(showAllButtonPressed), for: .touchUpInside)
+        gameDetailsButton.addTarget(self, action: #selector(gameDetailsButtonPressed), for: .touchUpInside)
         
         if !lastGames.isEmpty {
             gameOverviewView.set(game: lastGames[0])
@@ -54,8 +62,10 @@ class LastGameSectionVC: UIViewController {
         
         view.addSubview(sectionView)
         sectionView.bodyView.addSubview(gameOverviewView)
+        sectionView.bodyView.addSubview(gameDetailsButton)
         
         gameOverviewView.translatesAutoresizingMaskIntoConstraints = false
+        gameDetailsButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             sectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
@@ -66,7 +76,12 @@ class LastGameSectionVC: UIViewController {
             gameOverviewView.topAnchor.constraint(equalTo: sectionView.bodyView.topAnchor),
             gameOverviewView.leadingAnchor.constraint(equalTo: sectionView.leadingAnchor),
             gameOverviewView.trailingAnchor.constraint(equalTo: sectionView.trailingAnchor),
-            gameOverviewView.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor)
+            gameOverviewView.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor),
+            
+            gameDetailsButton.topAnchor.constraint(equalTo: sectionView.bodyView.topAnchor, constant: 0),
+            gameDetailsButton.leadingAnchor.constraint(equalTo: sectionView.bodyView.leadingAnchor, constant: 0),
+            gameDetailsButton.trailingAnchor.constraint(equalTo: sectionView.bodyView.trailingAnchor, constant: 0),
+            gameDetailsButton.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor, constant: 0),
         ])
     }
 }

@@ -65,7 +65,7 @@ class FNGameOverviewView: UIView {
     
     
     func configure() {
-        
+        gameScoreLabel.font = .systemFont(ofSize: 22, weight: .bold)
     }
 
     

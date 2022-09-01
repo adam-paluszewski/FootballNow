@@ -1,5 +1,5 @@
 //
-//  FNNavigationBarTitleView.swift
+//  FNTeamTitleView.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 30/08/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FNNavigationBarTitleView: UIView {
+class FNTeamTitleView: UIView {
 
     let imageView = UIImageView()
     let titleLabel = UILabel()
