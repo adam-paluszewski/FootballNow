@@ -45,7 +45,10 @@ class StandingsSectionVC: UIViewController {
     
     
     func fetchDataForLeagues() {
-        guard !yourTeamStandings.isEmpty else { return }
+        guard !yourTeamStandings.isEmpty else {
+            preferredContentSize = CGSize(width: 0.01, height: 0)
+            return
+        }
         let myTeamId = String(yourTeamStandings[0].league.standings[0][0].team.id ?? 0)
         NetworkManager.shared.getLeagues(parameters: "season=2022&team=\(myTeamId)") { [weak self] result in
             guard let self = self else { return }
@@ -59,6 +62,7 @@ class StandingsSectionVC: UIViewController {
                     let countryLeague = leagues.filter{$0.league.type == "League"}
                     self.countryLeagueId = countryLeague[0].league.id
                     let countryLeagueStanding = self.yourTeamStandings.filter{$0.league.id == self.countryLeagueId}
+
                     
                     DispatchQueue.main.async {
                         self.standingsView.set(standing: countryLeagueStanding[0].league.standings[0][0])

@@ -30,12 +30,6 @@ class GameProgressVC: UIViewController {
         configureTableView()
     }
     
-    
-    override func viewDidAppear(_ animated: Bool) {
-        preferredContentSize = tableView.contentSize
-        print(preferredContentSize)
-    }
-    
 
     func configureViewController() {
         view.addSubview(tableView)
@@ -66,16 +60,27 @@ extension GameProgressVC: UITableViewDataSource, UITableViewDelegate {
         return 55
     }
     
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return game.events?.count ?? 0
+        guard let events = game.events else {
+            preferredContentSize = CGSize(width: 0.01, height: 0)
+            return 0
+        }
+        preferredContentSize = CGSize(width: view.frame.width, height: Double(events.count * 55))
+        return events.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNGameEventCell.cellId, for: indexPath) as! FNGameEventCell
+        cell.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         cell.set(game: game, indexPath: indexPath.row)
         return cell
     }
     
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
 }

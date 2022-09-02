@@ -22,6 +22,7 @@ class LastGamesListVC: UIViewController {
 
  
     func configureViewController() {
+        navigationItem.backBarButtonItem = UIBarButtonItem()
         navigationItem.title = "Ostatnie mecze"
     }
     
@@ -67,6 +68,8 @@ extension LastGamesListVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let gameId = lastGames[indexPath.row].fixture.id
+        navigationController?.pushViewController(GameDetailsVC(gameId: gameId), animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

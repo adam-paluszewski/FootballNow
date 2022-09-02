@@ -37,7 +37,6 @@ class FNGameEventCell: UITableViewCell {
     
     func configure() {
         self.backgroundColor = UIColor(named: "FNSectionColor")
-        
         homeStackView.axis = .vertical
         awayStackView.axis = .vertical
         homeStackView.distribution = .fillProportionally
@@ -72,26 +71,26 @@ class FNGameEventCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             homeEventTimeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            homeEventTimeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            homeEventTimeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             homeEventTimeLabel.widthAnchor.constraint(equalToConstant: 30),
             
             homeEventImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             homeEventImageView.leadingAnchor.constraint(equalTo: homeEventTimeLabel.trailingAnchor, constant: 10),
-            homeEventImageView.widthAnchor.constraint(equalToConstant: 15),
-            homeEventImageView.heightAnchor.constraint(equalToConstant: 15),
+            homeEventImageView.widthAnchor.constraint(equalToConstant: 25),
+            homeEventImageView.heightAnchor.constraint(equalToConstant: 25),
 
             homeStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             homeStackView.leadingAnchor.constraint(equalTo: homeEventImageView.trailingAnchor, constant: 15),
             homeStackView.heightAnchor.constraint(equalToConstant: 40),
             
             awayEventTimeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            awayEventTimeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
+            awayEventTimeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             awayEventTimeLabel.widthAnchor.constraint(equalToConstant: 30),
             
             awayEventImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             awayEventImageView.trailingAnchor.constraint(equalTo: awayEventTimeLabel.leadingAnchor, constant: -10),
-            awayEventImageView.widthAnchor.constraint(equalToConstant: 15),
-            awayEventImageView.heightAnchor.constraint(equalToConstant: 15),
+            awayEventImageView.widthAnchor.constraint(equalToConstant: 25),
+            awayEventImageView.heightAnchor.constraint(equalToConstant: 25),
 
             awayStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             awayStackView.trailingAnchor.constraint(equalTo: awayEventImageView.leadingAnchor, constant: -15),
@@ -138,14 +137,18 @@ class FNGameEventCell: UITableViewCell {
             
             switch event.type {
                 case "Goal":
-                    homeEventImageView.image = UIImage(named: "goal.png")
+                    if event.detail == "Penalty"{
+                        homeEventImageView.image = UIImage(named: "FNPenaltyGoal")
+                    } else {
+                        homeEventImageView.image = UIImage(named: "FNGoal")
+                    }
                 case "subst":
-                    homeEventImageView.image = UIImage(named: "substitute-player.png")
+                    homeEventImageView.image = UIImage(named: "FNSubstitution")
                 case "Card":
                     if event.detail == "Yellow Card"{
-                        homeEventImageView.image = UIImage(named: "yellow-card.png")
+                        homeEventImageView.image = UIImage(named: "FNYellowCard")
                     } else {
-                        homeEventImageView.image = UIImage(named: "red-card.png")
+                        homeEventImageView.image = UIImage(named: "FNRedCard")
                     }
                 default:
                     print("Incorrect api answer")
@@ -186,14 +189,18 @@ class FNGameEventCell: UITableViewCell {
             
             switch event.type {
                 case "Goal":
-                    awayEventImageView.image = UIImage(named: "goal.png")
+                    if event.detail == "Penalty"{
+                        awayEventImageView.image = UIImage(named: "FNPenaltyGoal")
+                    } else {
+                        awayEventImageView.image = UIImage(named: "FNGoal")
+                    }
                 case "subst":
-                    awayEventImageView.image = UIImage(named: "substitute-player.png")
+                    awayEventImageView.image = UIImage(named: "FNSubstitution")
                 case "Card":
                     if event.detail == "Yellow Card"{
-                        awayEventImageView.image = UIImage(named: "yellow-card.png")
+                        awayEventImageView.image = UIImage(named: "FNYellowCard")
                     } else {
-                        awayEventImageView.image = UIImage(named: "red-card.png")
+                        awayEventImageView.image = UIImage(named: "FNRedCard")
                     }
                 default:
                     print("Incorrect api answer")

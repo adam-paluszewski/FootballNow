@@ -8,8 +8,7 @@
 import UIKit
 
 class FavoritesVC: UIViewController {
-    
-    let favoritesTeamsSectionView = FNSectionView(title: "Ulubione drużyny", buttonText: "")
+
     let tableView = UITableView()
     
 
@@ -39,16 +38,9 @@ class FavoritesVC: UIViewController {
 
     func configureViewController() {
         navigationItem.backBarButtonItem = UIBarButtonItem()
-        navigationItem.title = "Ulubione"
+        navigationItem.title = "Ulubione drużyny"
         
-        view.addSubview(favoritesTeamsSectionView)
         
-        NSLayoutConstraint.activate([
-            favoritesTeamsSectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            favoritesTeamsSectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            favoritesTeamsSectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            favoritesTeamsSectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
     }
     
     
@@ -56,16 +48,17 @@ class FavoritesVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FNSearchResultCell.self, forCellReuseIdentifier: FNSearchResultCell.cellId)
-        tableView.isScrollEnabled = false
+        tableView.isScrollEnabled = true
         
-        favoritesTeamsSectionView.bodyView.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
+        view.addSubview(tableView)
+        
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: favoritesTeamsSectionView.bodyView.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: favoritesTeamsSectionView.bodyView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: favoritesTeamsSectionView.bodyView.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: favoritesTeamsSectionView.bodyView.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
@@ -86,6 +79,7 @@ extension FavoritesVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNSearchResultCell.cellId, for: indexPath) as! FNSearchResultCell
+        cell.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         cell.addToFavoritesButton.tag = indexPath.row
         cell.set(teams: Favorites.shared.favoritesTeams[indexPath.row])
         cell.addToFavoritesButton.addTarget(self, action: #selector(addToFavoritesPressed), for: .touchUpInside)

@@ -85,7 +85,11 @@ extension NextGamesSectionVC: UITableViewDataSource, UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        guard !nextGames.isEmpty else {
+            preferredContentSize = CGSize(width: 0.01, height: 0)
+            return 0
+        }
+        return nextGames.count
     }
     
     

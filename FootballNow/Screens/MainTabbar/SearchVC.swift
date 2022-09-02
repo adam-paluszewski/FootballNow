@@ -107,9 +107,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNSearchResultCell.cellId, for: indexPath) as! FNSearchResultCell
         cell.addToFavoritesButton.tag = indexPath.row
         searchedTeams.isEmpty ? cell.set(teams: lastSearched[indexPath.row]) : cell.set(teams: searchedTeams[indexPath.row])
-        
         cell.addToFavoritesButton.addTarget(self, action: #selector(addToFavoritesPressed), for: .touchUpInside)
-        
         return cell
     }
 

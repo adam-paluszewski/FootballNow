@@ -24,7 +24,7 @@ class StandingsVC: UIViewController {
     
     
     func configureViewController() {
-        
+        navigationItem.backBarButtonItem = UIBarButtonItem()
     }
     
     
@@ -93,6 +93,10 @@ extension StandingsVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let team = standings[0].league.standings[0][indexPath.row].team
+        let teamDetails = TeamDetails(id: team.id!, name: team.name!, logo: team.logo!)
+        let teamsData = TeamsData(team: teamDetails)
+        navigationController?.pushViewController(TeamDashboardVC(isMyTeamShowing: false, team: teamsData), animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

@@ -100,7 +100,11 @@ class SquadSectionVC: UIViewController {
 extension SquadSectionVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return !squad.isEmpty ? squad[0].players.count : 0
+        guard !squad.isEmpty else {
+            preferredContentSize = CGSize(width: 0.01, height: 0)
+            return 0
+        }
+        return squad[0].players.count
     }
     
     

@@ -10,6 +10,7 @@ import UIKit
 class TeamDashboardVC: UIViewController {
     
     let scrollView = UIScrollView()
+    let stackView = UIStackView()
     let lastGameSectionView = FNSectionView(title: "Ostatni mecz", buttonText: "Więcej")
     let standingsSectionView = FNSectionView(title: "Tabela ligowa", buttonText: "Więcej")
     let nextGamesSectionView = FNSectionView(title: "Kolejne mecze", buttonText: "Więcej")
@@ -72,6 +73,8 @@ class TeamDashboardVC: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem()
         view.backgroundColor = UIColor(named: "FNBackgroundColor")
         scrollView.showsVerticalScrollIndicator = false
+        stackView.axis = .vertical
+        stackView.spacing = 15
         layoutUI()
         
         let activityIndicators = [lastGameActivityIndicatorView, standingsActivityIndicatorView, nextGamesAactivityIndicatorView, squadActivityIndicatorView]
@@ -161,6 +164,21 @@ class TeamDashboardVC: UIViewController {
     }
     
     
+    override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+        super.preferredContentSizeDidChange(forChildContentContainer: container)
+        
+        if container as? NextGamesSectionVC != nil {
+            nextGamesSectionView.isHidden = true
+        } else if container as? LastGameSectionVC != nil {
+            
+        } else if container as? StandingsSectionVC != nil {
+            standingsSectionView.isHidden = true
+        } else if container as? SquadSectionVC != nil {
+            squadSectionView.isHidden = true
+        }
+    }
+    
+    
     func fetchDataForLastGameSection() {
         guard let myTeam = myTeam else { return }
         NetworkManager.shared.getFixtures(parameters: "team=\(myTeam.team.id)&season=2022&last=10&timezone=Europe/Warsaw") { [weak self] result in
@@ -235,20 +253,18 @@ class TeamDashboardVC: UIViewController {
     
     func layoutUI() {
         view.addSubview(scrollView)
-        scrollView.addSubview(lastGameSectionView)
-        scrollView.addSubview(standingsSectionView)
-        scrollView.addSubview(nextGamesSectionView)
-        scrollView.addSubview(squadSectionView)
-        lastGameSectionView.addSubview(lastGameActivityIndicatorView)
-        standingsSectionView.addSubview(standingsActivityIndicatorView)
-        nextGamesSectionView.addSubview(nextGamesAactivityIndicatorView)
-        squadSectionView.addSubview(squadActivityIndicatorView)
+        scrollView.addSubview(stackView)
+        stackView.addArrangedSubview(lastGameSectionView)
+        stackView.addArrangedSubview(standingsSectionView)
+        stackView.addArrangedSubview(nextGamesSectionView)
+        stackView.addArrangedSubview(squadSectionView)
+        scrollView.addSubview(lastGameActivityIndicatorView)
+        scrollView.addSubview(standingsActivityIndicatorView)
+        scrollView.addSubview(nextGamesAactivityIndicatorView)
+        scrollView.addSubview(squadActivityIndicatorView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        lastGameSectionView.translatesAutoresizingMaskIntoConstraints = false
-        standingsSectionView.translatesAutoresizingMaskIntoConstraints = false
-        nextGamesSectionView.translatesAutoresizingMaskIntoConstraints = false
-        squadSectionView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         lastGameActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         standingsActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         nextGamesAactivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -260,42 +276,32 @@ class TeamDashboardVC: UIViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            lastGameSectionView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
-            lastGameSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            lastGameSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
             lastGameSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardLastGameHeight),
+            standingsSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardStandingsHeight),
+            nextGamesSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardNextGamesHeight),
+            squadSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardSquadHeight),
             
             lastGameActivityIndicatorView.topAnchor.constraint(equalTo: lastGameSectionView.bodyView.topAnchor),
             lastGameActivityIndicatorView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             lastGameActivityIndicatorView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             lastGameActivityIndicatorView.bottomAnchor.constraint(equalTo: lastGameSectionView.bottomAnchor),
-            
-            standingsSectionView.topAnchor.constraint(equalTo: lastGameSectionView.bottomAnchor, constant: 15),
-            standingsSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            standingsSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            standingsSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardStandingsHeight),
-            
+
             standingsActivityIndicatorView.topAnchor.constraint(equalTo: standingsSectionView.bodyView.topAnchor),
             standingsActivityIndicatorView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             standingsActivityIndicatorView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             standingsActivityIndicatorView.bottomAnchor.constraint(equalTo: standingsSectionView.bottomAnchor),
-            
-            nextGamesSectionView.topAnchor.constraint(equalTo: standingsSectionView.bottomAnchor, constant: 15),
-            nextGamesSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            nextGamesSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            nextGamesSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardNextGamesHeight),
-            
+
             nextGamesAactivityIndicatorView.topAnchor.constraint(equalTo: nextGamesSectionView.bodyView.topAnchor),
             nextGamesAactivityIndicatorView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             nextGamesAactivityIndicatorView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             nextGamesAactivityIndicatorView.bottomAnchor.constraint(equalTo: nextGamesSectionView.bottomAnchor),
-            
-            squadSectionView.topAnchor.constraint(equalTo: nextGamesSectionView.bottomAnchor, constant: 15),
-            squadSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            squadSectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            squadSectionView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardSquadHeight),
-            squadSectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0),
-            
+
             squadActivityIndicatorView.topAnchor.constraint(equalTo: squadSectionView.bodyView.topAnchor),
             squadActivityIndicatorView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             squadActivityIndicatorView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),

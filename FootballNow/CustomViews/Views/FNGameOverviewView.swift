@@ -20,6 +20,9 @@ class FNGameOverviewView: UIView {
     let gameScoreLabel = FNLargeTitleLabel(allingment: .center)
     let timeElapsedLabel = FNCaptionLabel(allingment: .center)
     
+    let homeTeamButton = UIButton()
+    let awayTeamButton = UIButton()
+    
     let cache = NetworkManager.shared.cache
 
     
@@ -64,6 +67,9 @@ class FNGameOverviewView: UIView {
     }
     
     
+
+    
+    
     func configure() {
         gameScoreLabel.font = .systemFont(ofSize: 22, weight: .bold)
     }
@@ -76,9 +82,11 @@ class FNGameOverviewView: UIView {
         
         homeTeamView.addSubview(homeTeamLogoImageView)
         homeTeamView.addSubview(homeTeamNameLabel)
+        homeTeamView.addSubview(homeTeamButton)
         
         awayTeamView.addSubview(awayTeamLogoImageView)
-        homeTeamView.addSubview(awayTeamNameLabel)
+        awayTeamView.addSubview(awayTeamNameLabel)
+        awayTeamView.addSubview(awayTeamButton)
         
         scoreView.addSubview(gameStatusLabel)
         scoreView.addSubview(gameScoreLabel)
@@ -93,6 +101,8 @@ class FNGameOverviewView: UIView {
         scoreView.translatesAutoresizingMaskIntoConstraints = false
         homeTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         awayTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
+        homeTeamButton.translatesAutoresizingMaskIntoConstraints = false
+        awayTeamButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             scoreView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -115,6 +125,10 @@ class FNGameOverviewView: UIView {
             homeTeamLogoImageView.heightAnchor.constraint(equalToConstant: 40),
             homeTeamLogoImageView.centerXAnchor.constraint(equalTo: homeTeamView.centerXAnchor),
             
+            homeTeamButton.widthAnchor.constraint(equalTo: homeTeamView.widthAnchor),
+            homeTeamButton.heightAnchor.constraint(equalTo: homeTeamView.heightAnchor),
+            homeTeamButton.centerXAnchor.constraint(equalTo: homeTeamView.centerXAnchor),
+            
             homeTeamNameLabel.leadingAnchor.constraint(equalTo: homeTeamView.leadingAnchor, constant: 10),
             homeTeamNameLabel.trailingAnchor.constraint(equalTo: homeTeamView.trailingAnchor, constant: -10),
             homeTeamNameLabel.heightAnchor.constraint(equalToConstant: 18),
@@ -124,6 +138,10 @@ class FNGameOverviewView: UIView {
             awayTeamLogoImageView.widthAnchor.constraint(equalToConstant: 40),
             awayTeamLogoImageView.heightAnchor.constraint(equalToConstant: 40),
             awayTeamLogoImageView.centerXAnchor.constraint(equalTo: awayTeamView.centerXAnchor),
+            
+            awayTeamButton.widthAnchor.constraint(equalTo: awayTeamView.widthAnchor),
+            awayTeamButton.heightAnchor.constraint(equalTo: awayTeamView.heightAnchor),
+            awayTeamButton.centerXAnchor.constraint(equalTo: awayTeamView.centerXAnchor),
             
             awayTeamNameLabel.leadingAnchor.constraint(equalTo: awayTeamView.leadingAnchor, constant: 10),
             awayTeamNameLabel.trailingAnchor.constraint(equalTo: awayTeamView.trailingAnchor, constant: -10),

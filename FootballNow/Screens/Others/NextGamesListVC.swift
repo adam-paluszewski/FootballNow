@@ -22,6 +22,7 @@ class NextGamesListVC: UIViewController {
 
  
     func configureViewController() {
+        navigationItem.backBarButtonItem = UIBarButtonItem()
         navigationItem.title = "Kolejne mecze"
     }
     

@@ -143,6 +143,7 @@ struct Team: Codable {
 enum MetadataType: Codable {
   case int(Int)
   case string(String)
+    
 
   init(from decoder: Decoder) throws {
     let container = try decoder.singleValueContainer()

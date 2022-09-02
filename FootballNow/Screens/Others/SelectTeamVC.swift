@@ -35,6 +35,7 @@ class SelectTeamVC: UIViewController {
   
     
     func configureViewController() {
+        navigationItem.backBarButtonItem = UIBarButtonItem()
         view.backgroundColor = UIColor(named: "FNBackgroundColor")
         navigationItem.title = "Wybierz swoją drużynę"
         navigationController?.navigationBar.backgroundColor = UIColor(named: "FNNavBarColor")

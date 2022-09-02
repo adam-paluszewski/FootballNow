@@ -22,6 +22,7 @@ class SquadListVC: UIViewController {
     
 
     func configureViewController() {
+        navigationItem.backBarButtonItem = UIBarButtonItem()
         navigationItem.title = "Skład drużyny"
     }
     

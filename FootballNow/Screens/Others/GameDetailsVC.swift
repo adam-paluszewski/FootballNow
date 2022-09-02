@@ -38,6 +38,7 @@ class GameDetailsVC: UIViewController {
         fetchDataForGame()
     }
     
+    
     @objc func segmentedControlValueChanged() {
         switch segmentedControl.selectedSegmentIndex {
             case 0:
@@ -85,7 +86,7 @@ class GameDetailsVC: UIViewController {
                         self.headerView.set(game: fixture.response[0])
                         
                         self.add(childVC: GameProgressVC(game: fixture.response[0]), to: self.progressView)
-                        self.progressView.heightAnchor.constraint(equalToConstant: CGFloat(fixture.response[0].events!.count*40)).isActive = true
+//                        self.progressView.heightAnchor.constraint(equalToConstant: CGFloat(fixture.response[0].events!.count*55)).isActive = true
                         
                         self.add(childVC: GameStatisticsVC(statistics: fixture.response[0].statistics), to: self.statisticsView)
                         
@@ -104,17 +105,40 @@ class GameDetailsVC: UIViewController {
     }
     
     
-//    override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
-//        if container as? GameProgressVC != nil {
-//            let containerHeight = container.preferredContentSize.height
-//            stackView.heightAnchor.constraint(equalToConstant: containerHeight).isActive = true
-//        }
-//    }
+    override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+        super.preferredContentSizeDidChange(forChildContentContainer: container)
+        if container as? GameProgressVC != nil {
+            progressView.heightAnchor.constraint(equalToConstant: container.preferredContentSize.height).isActive = true
+        } else if container as? GameStatisticsVC != nil {
+            statisticsView.heightAnchor.constraint(equalToConstant: container.preferredContentSize.height).isActive = true
+        } else if container as? GameFormationsVC != nil {
+            formationsView.heightAnchor.constraint(equalToConstant: container.preferredContentSize.height).isActive = true
+        }
+    }
+    
+    
+    @objc func homeButtonPressed() {
+        let teamDetails = TeamDetails(id: game[0].teams.home.id, name: game[0].teams.home.name, logo: game[0].teams.home.logo)
+        let team = TeamsData(team: teamDetails)
+        navigationController?.pushViewController(TeamDashboardVC(isMyTeamShowing: false, team: team), animated: true)
+    }
+    
+    @objc func awayButtonPressed() {
+        let teamDetails = TeamDetails(id: game[0].teams.away.id, name: game[0].teams.away.name, logo: game[0].teams.away.logo)
+        let team = TeamsData(team: teamDetails)
+        navigationController?.pushViewController(TeamDashboardVC(isMyTeamShowing: false, team: team), animated: true)
+    }
  
     
     func configureViewController() {
+        navigationItem.backBarButtonItem = UIBarButtonItem()
         view.backgroundColor = UIColor(named: "FNBackgroundColor")
         scrollView.delegate = self
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        
+        headerView.homeTeamButton.addTarget(self, action: #selector(homeButtonPressed), for: .touchUpInside)
+        headerView.awayTeamButton.addTarget(self, action: #selector(awayButtonPressed), for: .touchUpInside)
         
         view.addSubview(scrollView)
         scrollView.addSubview(headerView)
@@ -149,9 +173,10 @@ class GameDetailsVC: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-//            stackView.heightAnchor.constraint(equalToConstant: 0)
-        ])
+            
 
+        ])
+            
     }
     
     

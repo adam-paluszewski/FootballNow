@@ -29,7 +29,6 @@
 		E96CE47428B8D7FE00B7D08F /* Standings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47328B8D7FE00B7D08F /* Standings.swift */; };
 		E96CE47628B8EAB800B7D08F /* FNNextGameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47528B8EAB800B7D08F /* FNNextGameCell.swift */; };
 		E96CE47828B8FB9600B7D08F /* Squads.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47728B8FB9600B7D08F /* Squads.swift */; };
-		E96CE47C28B9070100B7D08F /* tshirt.png in Resources */ = {isa = PBXBuildFile; fileRef = E96CE47B28B9070100B7D08F /* tshirt.png */; };
 		E96CE47E28B90B4E00B7D08F /* FNCollectionPlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47D28B90B4E00B7D08F /* FNCollectionPlayerCell.swift */; };
 		E96CE48028BA45FC00B7D08F /* FNConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE47F28BA45FC00B7D08F /* FNConstants.swift */; };
 		E96CE48228BA4B3500B7D08F /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE48128BA4B3400B7D08F /* SearchVC.swift */; };
@@ -62,11 +61,11 @@
 		E990E8D928C0B53A00880FDE /* GameStatisticsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8D828C0B53A00880FDE /* GameStatisticsVC.swift */; };
 		E990E8DB28C0B55200880FDE /* GameFormationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8DA28C0B55200880FDE /* GameFormationsVC.swift */; };
 		E990E8DD28C0E2CA00880FDE /* FNGameScoreTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8DC28C0E2CA00880FDE /* FNGameScoreTitleView.swift */; };
-		E990E8E428C12A7D00880FDE /* goal.png in Resources */ = {isa = PBXBuildFile; fileRef = E990E8E028C12A7D00880FDE /* goal.png */; };
-		E990E8E528C12A7D00880FDE /* substitute-player.png in Resources */ = {isa = PBXBuildFile; fileRef = E990E8E128C12A7D00880FDE /* substitute-player.png */; };
-		E990E8E628C12A7D00880FDE /* red-card.png in Resources */ = {isa = PBXBuildFile; fileRef = E990E8E228C12A7D00880FDE /* red-card.png */; };
-		E990E8E728C12A7D00880FDE /* yellow-card.png in Resources */ = {isa = PBXBuildFile; fileRef = E990E8E328C12A7D00880FDE /* yellow-card.png */; };
 		E990E8E928C12BC300880FDE /* FNDefaultLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8E828C12BC300880FDE /* FNDefaultLabel.swift */; };
+		E990E8EB28C131C300880FDE /* FNGameStatisticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8EA28C131C300880FDE /* FNGameStatisticsCell.swift */; };
+		E990E8ED28C21EA600880FDE /* FNNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8EC28C21EA600880FDE /* FNNoResultsView.swift */; };
+		E990E8EF28C2679100880FDE /* FNFormationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8EE28C2679100880FDE /* FNFormationCell.swift */; };
+		E990E8F128C2706B00880FDE /* FNFormationsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8F028C2706B00880FDE /* FNFormationsHeaderView.swift */; };
 		E9A9710C28B7749700C3C4CA /* LastGameSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710B28B7749700C3C4CA /* LastGameSectionVC.swift */; };
 		E9A9710E28B77B9100C3C4CA /* NextGamesSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710D28B77B9100C3C4CA /* NextGamesSectionVC.swift */; };
 		E9A9711028B77C3A00C3C4CA /* StandingsSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710F28B77C3A00C3C4CA /* StandingsSectionVC.swift */; };
@@ -98,7 +97,6 @@
 		E96CE47328B8D7FE00B7D08F /* Standings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Standings.swift; sourceTree = "<group>"; };
 		E96CE47528B8EAB800B7D08F /* FNNextGameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNNextGameCell.swift; sourceTree = "<group>"; };
 		E96CE47728B8FB9600B7D08F /* Squads.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Squads.swift; sourceTree = "<group>"; };
-		E96CE47B28B9070100B7D08F /* tshirt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tshirt.png; sourceTree = "<group>"; };
 		E96CE47D28B90B4E00B7D08F /* FNCollectionPlayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNCollectionPlayerCell.swift; sourceTree = "<group>"; };
 		E96CE47F28BA45FC00B7D08F /* FNConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNConstants.swift; sourceTree = "<group>"; };
 		E96CE48128BA4B3400B7D08F /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
@@ -132,11 +130,11 @@
 		E990E8D828C0B53A00880FDE /* GameStatisticsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatisticsVC.swift; sourceTree = "<group>"; };
 		E990E8DA28C0B55200880FDE /* GameFormationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameFormationsVC.swift; sourceTree = "<group>"; };
 		E990E8DC28C0E2CA00880FDE /* FNGameScoreTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNGameScoreTitleView.swift; sourceTree = "<group>"; };
-		E990E8E028C12A7D00880FDE /* goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goal.png; sourceTree = "<group>"; };
-		E990E8E128C12A7D00880FDE /* substitute-player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "substitute-player.png"; sourceTree = "<group>"; };
-		E990E8E228C12A7D00880FDE /* red-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red-card.png"; sourceTree = "<group>"; };
-		E990E8E328C12A7D00880FDE /* yellow-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow-card.png"; sourceTree = "<group>"; };
 		E990E8E828C12BC300880FDE /* FNDefaultLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNDefaultLabel.swift; sourceTree = "<group>"; };
+		E990E8EA28C131C300880FDE /* FNGameStatisticsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNGameStatisticsCell.swift; sourceTree = "<group>"; };
+		E990E8EC28C21EA600880FDE /* FNNoResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNNoResultsView.swift; sourceTree = "<group>"; };
+		E990E8EE28C2679100880FDE /* FNFormationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNFormationCell.swift; sourceTree = "<group>"; };
+		E990E8F028C2706B00880FDE /* FNFormationsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNFormationsHeaderView.swift; sourceTree = "<group>"; };
 		E9A9710B28B7749700C3C4CA /* LastGameSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastGameSectionVC.swift; sourceTree = "<group>"; };
 		E9A9710D28B77B9100C3C4CA /* NextGamesSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextGamesSectionVC.swift; sourceTree = "<group>"; };
 		E9A9710F28B77C3A00C3C4CA /* StandingsSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsSectionVC.swift; sourceTree = "<group>"; };
@@ -207,6 +205,8 @@
 				E990E8BA28BE0AF600880FDE /* FNStandingsCell.swift */,
 				E990E8CE28BE7C3B00880FDE /* FNSearchResultCell.swift */,
 				E990E8D228C0A96100880FDE /* FNGameEventCell.swift */,
+				E990E8EA28C131C300880FDE /* FNGameStatisticsCell.swift */,
+				E990E8EE28C2679100880FDE /* FNFormationCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -221,6 +221,8 @@
 				E990E8C228BE26ED00880FDE /* FNPlayerDetailsView.swift */,
 				E990E8CA28BE2F9400880FDE /* FNTeamTitleView.swift */,
 				E990E8DC28C0E2CA00880FDE /* FNGameScoreTitleView.swift */,
+				E990E8EC28C21EA600880FDE /* FNNoResultsView.swift */,
+				E990E8F028C2706B00880FDE /* FNFormationsHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -302,11 +304,6 @@
 		E96CE45D28B7C9B000B7D08F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				E96CE47B28B9070100B7D08F /* tshirt.png */,
-				E990E8E028C12A7D00880FDE /* goal.png */,
-				E990E8E228C12A7D00880FDE /* red-card.png */,
-				E990E8E128C12A7D00880FDE /* substitute-player.png */,
-				E990E8E328C12A7D00880FDE /* yellow-card.png */,
 				E990E8B828BE088800880FDE /* MainTabbar */,
 				E990E8B928BE08B400880FDE /* Others */,
 			);
@@ -397,12 +394,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E96CE47C28B9070100B7D08F /* tshirt.png in Resources */,
 				E9071C5128B3F79E0082F483 /* LaunchScreen.storyboard in Resources */,
-				E990E8E528C12A7D00880FDE /* substitute-player.png in Resources */,
-				E990E8E628C12A7D00880FDE /* red-card.png in Resources */,
-				E990E8E728C12A7D00880FDE /* yellow-card.png in Resources */,
-				E990E8E428C12A7D00880FDE /* goal.png in Resources */,
 				E9071C4E28B3F79E0082F483 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,6 +425,7 @@
 				E990E8D528C0B17C00880FDE /* GameDetailsVC.swift in Sources */,
 				E990E8CF28BE7C3B00880FDE /* FNSearchResultCell.swift in Sources */,
 				E96CE47428B8D7FE00B7D08F /* Standings.swift in Sources */,
+				E990E8EF28C2679100880FDE /* FNFormationCell.swift in Sources */,
 				E96CE45528B7C54400B7D08F /* NetworkManager.swift in Sources */,
 				E96CE46C28B8C0DE00B7D08F /* FNCaptionLabel.swift in Sources */,
 				E9071C4928B3F7990082F483 /* TeamDashboardVC.swift in Sources */,
@@ -452,6 +445,7 @@
 				E990E8CD28BE6C1C00880FDE /* Leagues.swift in Sources */,
 				E9071C4528B3F7990082F483 /* AppDelegate.swift in Sources */,
 				E990E8D128BEB34B00880FDE /* Favorites.swift in Sources */,
+				E990E8ED28C21EA600880FDE /* FNNoResultsView.swift in Sources */,
 				E96CE45F28B8B4EB00B7D08F /* FNGameOverviewView.swift in Sources */,
 				E96CE48C28BB96E700B7D08F /* FavoritesVC.swift in Sources */,
 				E96CE49428BCC8DF00B7D08F /* NextGamesListVC.swift in Sources */,
@@ -462,6 +456,7 @@
 				E96CE46E28B8C17F00B7D08F /* FNLargeTitleLabel.swift in Sources */,
 				E990E8D728C0B51C00880FDE /* GameProgressVC.swift in Sources */,
 				E96CE45B28B7C58F00B7D08F /* Fixtures.swift in Sources */,
+				E990E8EB28C131C300880FDE /* FNGameStatisticsCell.swift in Sources */,
 				E990E8D328C0A96100880FDE /* FNGameEventCell.swift in Sources */,
 				E9A9711028B77C3A00C3C4CA /* StandingsSectionVC.swift in Sources */,
 				E96CE49228BCC8C600B7D08F /* StandingsVC.swift in Sources */,
@@ -469,6 +464,7 @@
 				E96CE46128B8B74600B7D08F /* FNDateFormatting.swift in Sources */,
 				E9A9711228B77C5200C3C4CA /* SquadSectionVC.swift in Sources */,
 				E990E8C128BE231D00880FDE /* Players.swift in Sources */,
+				E990E8F128C2706B00880FDE /* FNFormationsHeaderView.swift in Sources */,
 				E96CE49628BCC8F100B7D08F /* SquadListVC.swift in Sources */,
 				E96CE47628B8EAB800B7D08F /* FNNextGameCell.swift in Sources */,
 			);

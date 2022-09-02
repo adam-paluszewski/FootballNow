@@ -18,12 +18,12 @@ struct Teams: Codable {
 
 
 struct TeamsData: Codable {
-    var team: TeamT
+    var team: TeamDetails
 }
 
 
 
-struct TeamT: Codable {
+struct TeamDetails: Codable {
     var id: Int
     var name: String
     var code: String?

@@ -88,12 +88,12 @@ class FNSectionView: UIView {
             headerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
             headerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
             headerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-            headerView.heightAnchor.constraint(equalToConstant: 40),
+            headerView.heightAnchor.constraint(lessThanOrEqualToConstant: 40),
             
             separatorView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 0),
             separatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
             separatorView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-            separatorView.heightAnchor.constraint(equalToConstant: 1),
+            separatorView.heightAnchor.constraint(lessThanOrEqualToConstant: 1),
             
             bodyView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 0),
             bodyView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
@@ -103,12 +103,12 @@ class FNSectionView: UIView {
             sectionTitleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             sectionTitleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
             sectionTitleLabel.widthAnchor.constraint(equalToConstant: 300),
-            sectionTitleLabel.heightAnchor.constraint(equalToConstant: 20),
+            sectionTitleLabel.heightAnchor.constraint(lessThanOrEqualToConstant: 20),
             
             button.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             button.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -15),
             button.widthAnchor.constraint(equalToConstant: 100),
-            button.heightAnchor.constraint(equalToConstant: 20),
+            button.heightAnchor.constraint(lessThanOrEqualToConstant: 20),
         ])
     }
 }

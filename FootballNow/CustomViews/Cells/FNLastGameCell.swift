@@ -49,7 +49,7 @@ class FNLastGameCell: UITableViewCell {
         }
         
         let dateString = FNDateFormatting.getDMMM(timestamp: lastGame.fixture.timestamp)
-        gameDateLabel.text = dateString + " Zakończony"
+        gameDateLabel.text = "Zakończony" + dateString
         
         NetworkManager.shared.downloadImage(from: lastGame.teams.home.logo) { [weak self] image in
             guard let self = self else { return }
