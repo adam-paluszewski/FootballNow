@@ -13,11 +13,10 @@ class Favorites {
     var favoritesTeams: [TeamsData] = []
     
     
-    
     //saving and loading (in appdelegate) Favorites data
     private let manager = UserDefaults.standard
     
-    func get(_ key: String) {
+    func getFavoritesTeams(_ key: String) {
         if let data = manager.data(forKey: key) {
             let decoder = JSONDecoder()
             
@@ -28,7 +27,7 @@ class Favorites {
     }
     
     
-    func set(_ key: String, object: [TeamsData]) {
+    func setFavoritesTeams(_ key: String, object: [TeamsData]) {
         let encoder = JSONEncoder()
         let data = try? encoder.encode(object)
         
@@ -39,4 +38,5 @@ class Favorites {
     func isTeamInFavorites(id: Int) -> Bool {
         return favoritesTeams.filter{$0.team.id == id}.count == 0 ? false : true
     }
+    
 }

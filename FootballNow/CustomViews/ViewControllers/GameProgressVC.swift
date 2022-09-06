@@ -30,6 +30,11 @@ class GameProgressVC: UIViewController {
         configureTableView()
     }
     
+    
+    override func viewDidLayoutSubviews() {
+        preferredContentSize = tableView.contentSize
+    }
+    
 
     func configureViewController() {
         view.addSubview(tableView)
@@ -49,7 +54,9 @@ class GameProgressVC: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.isScrollEnabled = false
-        tableView.backgroundColor = UIColor(named: "FNSectionColor")
+        tableView.backgroundColor = FNColors.sectionColor
+        tableView.prepareForDynamicHeight()
+        tableView.isUserInteractionEnabled = false
     }
 }
 
@@ -66,7 +73,6 @@ extension GameProgressVC: UITableViewDataSource, UITableViewDelegate {
             preferredContentSize = CGSize(width: 0.01, height: 0)
             return 0
         }
-        preferredContentSize = CGSize(width: view.frame.width, height: Double(events.count * 55))
         return events.count
     }
     
@@ -78,9 +84,5 @@ extension GameProgressVC: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
     
 }

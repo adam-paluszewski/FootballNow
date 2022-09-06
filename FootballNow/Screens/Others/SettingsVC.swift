@@ -68,7 +68,7 @@ class SettingsVC: UIViewController {
     func configureViewController() {
         navigationItem.title = "Ustawienia"
         navigationController?.navigationBar.backgroundColor = UIColor(named: "FNNavBarColor")
-        view.backgroundColor = UIColor(named: "FNBackgroundColor")
+        view.backgroundColor = FNColors.backgroundColor
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Gotowe", style: .plain, target: self, action: #selector(dismissVC))
         
         view.addSubview(segmentedControlSectionView)

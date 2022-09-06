@@ -17,6 +17,8 @@ class GameDetailsVC: UIViewController {
     let statisticsView = UIView()
     let formationsView = UIView()
     
+    let activityIndicatorView = UIActivityIndicatorView(style: .large)
+    
     var gameId: Int!
     var game: [FixturesData] = []
     
@@ -40,6 +42,8 @@ class GameDetailsVC: UIViewController {
     
     
     @objc func segmentedControlValueChanged() {
+        let haptic = UISelectionFeedbackGenerator()
+        haptic.selectionChanged()
         switch segmentedControl.selectedSegmentIndex {
             case 0:
                 progressView.isHidden = false
@@ -56,7 +60,7 @@ class GameDetailsVC: UIViewController {
             default:
                 print("error")
         }
-        
+
     }
     
     
@@ -84,9 +88,9 @@ class GameDetailsVC: UIViewController {
                     DispatchQueue.main.async {
                         self.game = fixture.response
                         self.headerView.set(game: fixture.response[0])
-                        
+                        self.activityIndicatorView.stopAnimating()
                         self.add(childVC: GameProgressVC(game: fixture.response[0]), to: self.progressView)
-//                        self.progressView.heightAnchor.constraint(equalToConstant: CGFloat(fixture.response[0].events!.count*55)).isActive = true
+
                         
                         self.add(childVC: GameStatisticsVC(statistics: fixture.response[0].statistics), to: self.statisticsView)
                         
@@ -132,16 +136,21 @@ class GameDetailsVC: UIViewController {
     
     func configureViewController() {
         navigationItem.backBarButtonItem = UIBarButtonItem()
-        view.backgroundColor = UIColor(named: "FNBackgroundColor")
+        view.backgroundColor = FNColors.backgroundColor
         scrollView.delegate = self
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
+        
+        activityIndicatorView.backgroundColor = .systemBackground
+        activityIndicatorView.alpha = 0.6
+        activityIndicatorView.startAnimating()
         
         headerView.homeTeamButton.addTarget(self, action: #selector(homeButtonPressed), for: .touchUpInside)
         headerView.awayTeamButton.addTarget(self, action: #selector(awayButtonPressed), for: .touchUpInside)
         
         view.addSubview(scrollView)
         scrollView.addSubview(headerView)
+        scrollView.addSubview(activityIndicatorView)
         scrollView.addSubview(segmentedControl)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(progressView)
@@ -151,6 +160,7 @@ class GameDetailsVC: UIViewController {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -169,12 +179,15 @@ class GameDetailsVC: UIViewController {
             segmentedControl.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -15),
             segmentedControl.heightAnchor.constraint(equalToConstant: 40),
             
-            stackView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
+            stackView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 15),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             
-
+            activityIndicatorView.topAnchor.constraint(equalTo: headerView.topAnchor),
+            activityIndicatorView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            activityIndicatorView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            activityIndicatorView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
         ])
             
     }

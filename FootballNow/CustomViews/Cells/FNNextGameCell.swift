@@ -75,11 +75,11 @@ class FNNextGameCell: UITableViewCell {
     
     
     func configure() {
-        backgroundColor = .clear
-        gameDateLabel.numberOfLines = 1
+        backgroundColor = FNColors.sectionColor
+        gameDateLabel.numberOfLines = 2
         gameTimeLabel.textColor = .secondaryLabel
-        gameTimeLabel.numberOfLines = 3
-        vLineView.backgroundColor = .lightGray
+        gameTimeLabel.numberOfLines = 1
+        vLineView.backgroundColor = FNColors.separatorColor
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         leagueLogoImageView.sizeToFit()
@@ -144,8 +144,8 @@ class FNNextGameCell: UITableViewCell {
             vLineView.widthAnchor.constraint(equalToConstant: 0.5),
             
             stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 25),
-            stackView.leadingAnchor.constraint(equalTo: vLineView.trailingAnchor, constant: 10),
-            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            stackView.leadingAnchor.constraint(equalTo: vLineView.trailingAnchor, constant: 5),
+            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
             stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),
         ])
     }

@@ -22,7 +22,7 @@ struct FNDateFormatting {
     static func getDMMM(timestamp: Double) -> String{
         let matchDate = Date(timeIntervalSince1970: timestamp)
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d MMM"
+        dateFormatter.dateFormat = "E d MMM"
             
         let dateString = dateFormatter.string(from: matchDate)
         

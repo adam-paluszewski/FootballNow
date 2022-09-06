@@ -56,7 +56,9 @@ class FNGameStatisticsCell: UITableViewCell {
     
     
     func configure() {
-        self.backgroundColor = UIColor(named: "FNSectionColor")
+        self.backgroundColor = FNColors.sectionColor
+        homeStatisticLabel.font = .systemFont(ofSize: 16, weight: .bold)
+        awayStatisticLabel.font = .systemFont(ofSize: 16, weight: .bold)
     }
     
     
@@ -70,13 +72,15 @@ class FNGameStatisticsCell: UITableViewCell {
     func addConstraints() {
         NSLayoutConstraint.activate([
             homeStatisticLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            homeStatisticLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 25),
+            homeStatisticLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            homeStatisticLabel.widthAnchor.constraint(equalToConstant: 40),
             
             statisticInfoLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             statisticInfoLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             awayStatisticLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            awayStatisticLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -25),
+            awayStatisticLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
+            awayStatisticLabel.widthAnchor.constraint(equalToConstant: 40),
         ])
     }
 }

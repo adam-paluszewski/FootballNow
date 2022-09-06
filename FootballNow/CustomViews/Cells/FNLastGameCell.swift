@@ -76,7 +76,7 @@ class FNLastGameCell: UITableViewCell {
     
     func configure() {
         backgroundColor = .clear
-        vLineView.backgroundColor = .lightGray
+        vLineView.backgroundColor = FNColors.backgroundColor
         gameDateLabel.textColor = .secondaryLabel
         gameDateLabel.numberOfLines = 2
         leagueBackgroundView.backgroundColor = .systemGray2

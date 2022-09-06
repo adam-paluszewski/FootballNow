@@ -32,7 +32,7 @@ class StandingsVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FNStandingsCell.self, forCellReuseIdentifier: FNStandingsCell.cellId)
-        tableView.backgroundColor = UIColor(named: "FNSectionColor")
+        tableView.backgroundColor = FNColors.sectionColor
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false

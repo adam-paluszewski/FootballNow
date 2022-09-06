@@ -42,9 +42,9 @@ class FNTranslateToPolish {
             case "Blocked Shots":
                 return "Strzały obronione"
             case "Shots insidebox":
-                return "Shots insidebox"
+                return "Strzały z pola karnego"
             case "Shots outsidebox":
-                return "Shots outsidebox"
+                return "Strzały spoza pola karnego"
             case "Fouls":
                 return "Faule"
             case "Corner Kicks":

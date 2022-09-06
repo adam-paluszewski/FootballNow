@@ -82,6 +82,7 @@ class SquadSectionVC: UIViewController {
         collectionView = UICollectionView(frame: sectionView.bounds, collectionViewLayout: createFlowLayout(view: view))
         
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.backgroundColor = .clear
         collectionView.register(FNCollectionPlayerCell.self, forCellWithReuseIdentifier: FNCollectionPlayerCell.cellId)
         
@@ -97,7 +98,7 @@ class SquadSectionVC: UIViewController {
     }
 }
 
-extension SquadSectionVC: UICollectionViewDataSource {
+extension SquadSectionVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard !squad.isEmpty else {
@@ -111,9 +112,19 @@ extension SquadSectionVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FNCollectionPlayerCell.cellId, for: indexPath) as! FNCollectionPlayerCell
         if !squad.isEmpty {
-            cell.set(player: squad[0].players[indexPath.row])
+            cell.set(player: squad[0].players[indexPath.item])
         }
         return cell
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let playerId = squad[0].players[indexPath.item].id
+        let playerNumber = squad[0].players[indexPath.item].number
+        let playerPosition = squad[0].players[indexPath.item].position
+        
+        let playerVC = PlayerVC(id: playerId, number: playerNumber, position: playerPosition)
+        navigationController?.pushViewController(playerVC, animated: true)
     }
     
     

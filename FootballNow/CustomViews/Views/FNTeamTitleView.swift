@@ -15,6 +15,9 @@ class FNTeamTitleView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configure()
+        addSubviews()
+        addConstraints()
     }
     
     
@@ -64,7 +67,7 @@ class FNTeamTitleView: UIView {
             
             titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 5),
-            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
     }
 }

@@ -30,6 +30,7 @@ struct SquadsTeam: Codable {
 
 
 struct SquadsPlayer: Codable {
+    var id: Int
     var name: String
     var number: Int?
     var age: Int?

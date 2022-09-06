@@ -30,7 +30,7 @@ class FNSearchResultCell: UITableViewCell {
     
     func configure() {
 //        self.accessoryType = .disclosureIndicator
-        self.backgroundColor = UIColor(named: "FNSectionColor")
+        self.backgroundColor = FNColors.sectionColor
         addToFavoritesButton.tintColor = .systemRed
     }
     

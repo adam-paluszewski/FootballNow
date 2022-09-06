@@ -71,7 +71,7 @@ class TeamDashboardVC: UIViewController {
     
     func configureViewController() {
         navigationItem.backBarButtonItem = UIBarButtonItem()
-        view.backgroundColor = UIColor(named: "FNBackgroundColor")
+        view.backgroundColor = FNColors.backgroundColor
         scrollView.showsVerticalScrollIndicator = false
         stackView.axis = .vertical
         stackView.spacing = 15
@@ -100,11 +100,11 @@ class TeamDashboardVC: UIViewController {
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
             let index = Favorites.shared.favoritesTeams.firstIndex(where: {$0.team.name == myTeam?.team.name})!
             Favorites.shared.favoritesTeams.remove(at: index)
-            Favorites.shared.set("favoritesTeams", object: Favorites.shared.favoritesTeams)
+            Favorites.shared.setFavoritesTeams("favoritesTeams", object: Favorites.shared.favoritesTeams)
         } else {
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
             Favorites.shared.favoritesTeams.append(myTeam!)
-            Favorites.shared.set("favoritesTeams", object: Favorites.shared.favoritesTeams)
+            Favorites.shared.setFavoritesTeams("favoritesTeams", object: Favorites.shared.favoritesTeams)
         }
         isTeamInFavorites.toggle()
     }

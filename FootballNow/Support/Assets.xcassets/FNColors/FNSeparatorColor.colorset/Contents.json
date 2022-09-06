@@ -20,8 +20,11 @@
         }
       ],
       "color" : {
-        "platform" : "ios",
-        "reference" : "systemBackgroundColor"
+        "color-space" : "gray-gamma-22",
+        "components" : {
+          "alpha" : "1.000",
+          "white" : "0.846"
+        }
       },
       "idiom" : "universal"
     },
@@ -33,8 +36,8 @@
         }
       ],
       "color" : {
-        "platform" : "ios",
-        "reference" : "tertiarySystemBackgroundColor"
+        "platform" : "tvos",
+        "reference" : "separatorColor"
       },
       "idiom" : "universal"
     }

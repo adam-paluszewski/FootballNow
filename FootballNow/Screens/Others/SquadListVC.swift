@@ -17,7 +17,6 @@ class SquadListVC: UIViewController {
         super.viewDidLoad()
         configureViewController()
         configureTableView()
-        
     }
     
 
@@ -31,7 +30,7 @@ class SquadListVC: UIViewController {
         tableView.register(FNTablePlayerCell.self, forCellReuseIdentifier: FNTablePlayerCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor(named: "FNSectionColor")
+        tableView.backgroundColor = FNColors.sectionColor
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,6 +66,12 @@ extension SquadListVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let playerId = squad[0].players[indexPath.row].id
+        let playerNumber = squad[0].players[indexPath.row].number
+        let playerPosition = squad[0].players[indexPath.row].position
+        
+        let playerVC = PlayerVC(id: playerId, number: playerNumber, position: playerPosition)
+        navigationController?.pushViewController(playerVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

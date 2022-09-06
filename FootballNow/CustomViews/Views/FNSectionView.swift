@@ -54,15 +54,15 @@ class FNSectionView: UIView {
     
     func configure() {
         
-        headerView.backgroundColor = UIColor(named: "FNSectionColor")
-        separatorView.backgroundColor = .lightGray
-        bodyView.backgroundColor = UIColor(named: "FNSectionColor")
+        headerView.backgroundColor = FNColors.sectionColor
+        separatorView.backgroundColor = FNColors.separatorColor
+        bodyView.backgroundColor = FNColors.sectionColor
         
         sectionTitleLabel.font = .systemFont(ofSize: 14, weight: .regular)
         sectionTitleLabel.textColor = .label
         
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
-        button.setTitleColor(.label, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.contentHorizontalAlignment = .trailing
     }
     
@@ -107,7 +107,7 @@ class FNSectionView: UIView {
             
             button.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             button.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -15),
-            button.widthAnchor.constraint(equalToConstant: 100),
+//            button.widthAnchor.constraint(equalToConstant: 100),
             button.heightAnchor.constraint(lessThanOrEqualToConstant: 20),
         ])
     }

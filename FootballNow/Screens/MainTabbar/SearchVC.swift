@@ -34,10 +34,10 @@ class SearchVC: UIViewController {
                     
         if let index = Favorites.shared.favoritesTeams.firstIndex(where: {$0.team.name == lastSearched[teamIndex].team.name}) {
             Favorites.shared.favoritesTeams.remove(at: index)
-            Favorites.shared.set("favoritesTeams", object: Favorites.shared.favoritesTeams)
+            Favorites.shared.setFavoritesTeams("favoritesTeams", object: Favorites.shared.favoritesTeams)
         } else {
             Favorites.shared.favoritesTeams.append(lastSearched[teamIndex])
-            Favorites.shared.set("favoritesTeams", object: Favorites.shared.favoritesTeams)
+            Favorites.shared.setFavoritesTeams("favoritesTeams", object: Favorites.shared.favoritesTeams)
         }
 
         tableView.reloadData()
@@ -46,7 +46,7 @@ class SearchVC: UIViewController {
     
     func configureViewController() {
         navigationItem.backBarButtonItem = UIBarButtonItem()
-        view.backgroundColor = UIColor(named: "FNBackgroundColor")
+        view.backgroundColor = FNColors.backgroundColor
         navigationItem.title = "Szukaj klubu"
 
         
@@ -65,7 +65,7 @@ class SearchVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FNSearchResultCell.self, forCellReuseIdentifier: FNSearchResultCell.cellId)
-        tableView.backgroundColor = UIColor(named: "FNSectionColor")
+        tableView.backgroundColor = FNColors.sectionColor
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false

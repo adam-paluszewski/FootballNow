@@ -31,7 +31,7 @@ class FNStandingsHeaderView: UIView {
     
     
     func configure() {
-        backgroundColor = UIColor(named: "FNSectionColor")
+        backgroundColor = FNColors.sectionColor
         
         positionLabel.text = "Pozycja"
         gamesPlayedLabel.text = "RM"

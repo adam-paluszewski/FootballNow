@@ -7,15 +7,10 @@
 
 import UIKit
 
-enum ImagePosition {
-    case left, top
-}
-
 class FNNoResultsView: UIView {
 
     let textLabel = UILabel()
     let imageView = UIImageView()
-    let stackView = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,17 +21,11 @@ class FNNoResultsView: UIView {
     }
     
     
-    init(text: String, image: UIImage, imagePosition: ImagePosition) {
+    init(text: String, image: UIImage) {
         super.init(frame: .zero)
         textLabel.text = text
         imageView.image = image
-        
-        switch imagePosition {
-            case .left:
-                stackView.axis = .horizontal
-            case .top:
-                stackView.axis = .vertical
-        }
+
         
         configure()
         addSubviews()
@@ -48,23 +37,30 @@ class FNNoResultsView: UIView {
         textLabel.textAlignment = .center
         textLabel.font = .systemFont(ofSize: 14, weight: .regular)
         textLabel.textColor = .label
-        stackView.spacing = 20
+        textLabel.numberOfLines = 0
     }
     
     
     func addSubviews() {
-        addSubview(stackView)
-        stackView.addArrangedSubview(imageView)
-        stackView.addArrangedSubview(textLabel)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(imageView)
+        addSubview(textLabel)
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     
     
     func addConstraints() {
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -80),
+            imageView.widthAnchor.constraint(equalToConstant: 150),
+            imageView.heightAnchor.constraint(equalToConstant: 150),
+
+            textLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            textLabel.widthAnchor.constraint(equalToConstant: 200),
+            textLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor)
             
         ])
     }

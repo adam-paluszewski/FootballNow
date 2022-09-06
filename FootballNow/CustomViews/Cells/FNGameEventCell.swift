@@ -36,7 +36,7 @@ class FNGameEventCell: UITableViewCell {
     
     
     func configure() {
-        self.backgroundColor = UIColor(named: "FNSectionColor")
+        self.backgroundColor = FNColors.sectionColor
         homeStackView.axis = .vertical
         awayStackView.axis = .vertical
         homeStackView.distribution = .fillProportionally
@@ -46,6 +46,9 @@ class FNGameEventCell: UITableViewCell {
         homeExtraInfoLabel.font = .systemFont(ofSize: 11, weight: .light)
         awayEventPlayerLabel.font = .systemFont(ofSize: 14)
         awayExtraInfoLabel.font = .systemFont(ofSize: 11, weight: .light)
+        
+        homeEventTimeLabel.font = .systemFont(ofSize: 16, weight: .bold)
+        awayEventTimeLabel.font = .systemFont(ofSize: 16, weight: .bold)
     }
     
     
@@ -72,7 +75,7 @@ class FNGameEventCell: UITableViewCell {
         NSLayoutConstraint.activate([
             homeEventTimeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             homeEventTimeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            homeEventTimeLabel.widthAnchor.constraint(equalToConstant: 30),
+            homeEventTimeLabel.widthAnchor.constraint(equalToConstant: 35),
             
             homeEventImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             homeEventImageView.leadingAnchor.constraint(equalTo: homeEventTimeLabel.trailingAnchor, constant: 10),
@@ -85,7 +88,7 @@ class FNGameEventCell: UITableViewCell {
             
             awayEventTimeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             awayEventTimeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            awayEventTimeLabel.widthAnchor.constraint(equalToConstant: 30),
+            awayEventTimeLabel.widthAnchor.constraint(equalToConstant: 35),
             
             awayEventImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             awayEventImageView.trailingAnchor.constraint(equalTo: awayEventTimeLabel.leadingAnchor, constant: -10),

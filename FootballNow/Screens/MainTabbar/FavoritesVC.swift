@@ -21,7 +21,6 @@ class FavoritesVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()
-        print(Favorites.shared.favoritesTeams.count)
     }
     
     
@@ -29,7 +28,7 @@ class FavoritesVC: UIViewController {
         let teamIndex = sender.tag
                     
         Favorites.shared.favoritesTeams.remove(at: teamIndex)
-        Favorites.shared.set("favoritesTeams", object: Favorites.shared.favoritesTeams)
+        Favorites.shared.setFavoritesTeams("favoritesTeams", object: Favorites.shared.favoritesTeams)
         tableView.deleteRows(at: [IndexPath(row: teamIndex, section: 0)], with: .left)
         DispatchQueue.main.asyncAfter(deadline: .now()+0.2) { self.tableView.reloadData() }
         

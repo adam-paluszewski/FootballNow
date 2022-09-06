@@ -49,7 +49,7 @@ class FNTablePlayerCell: UITableViewCell {
     
     
     func configure() {
-        backgroundColor = UIColor(named: "FNSectionColor")
+        backgroundColor = FNColors.sectionColor
         accessoryType = .disclosureIndicator
         photoImageView.clipsToBounds = true
         photoImageView.layer.cornerRadius = 30

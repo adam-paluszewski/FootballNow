@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appearance.compactScrollEdgeAppearance = navBarAppearance
 
         //getting favorites from singleton
-        Favorites.shared.get("favoritesTeams")
+        Favorites.shared.getFavoritesTeams("favoritesTeams")
 
         return true
     }

@@ -1,35 +1,41 @@
 //
-//  SelectTeamVC.swift
+//  SelectLeagueVC.swift
 //  FootballNow
 //
-//  Created by Adam Paluszewski on 29/08/2022.
+//  Created by Adam Paluszewski on 06/09/2022.
 //
 
 import UIKit
 
-class SelectTeamVC: UIViewController {
+class SelectLeagueVC: UIViewController {
 
     let tableView = UITableView()
-    var teams: [TeamsData] = []
+    var leagues: [LeaguesData] = []
+    var observedLeagues: [LeaguesData] = []
     var isCancelable = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
         configureTableView()
-        fetchDataForTeams()
+        configureSearchController()
+        fetchDataForTeams(parameters: "season=2022")
     }
     
 
-    func passSelectedTeam(teamData: TeamsData) {
-        let team = Notification.Name(NotificationKeys.selectedTeam)
-        NotificationCenter.default.post(name: team, object: teamData)
+    func passSelectedLeague(leagueData: LeaguesData) {
+        observedLeagues.append(leagueData)
+        
+        let leagues = Notification.Name(NotificationKeys.myLeaguesChanged)
+        NotificationCenter.default.post(name: leagues, object: observedLeagues)
         
         let encoder = JSONEncoder()
-        if let data = try? encoder.encode(teamData) {
-            UserDefaults.standard.set(data, forKey: "myTeam")
+        if let data = try? encoder.encode(observedLeagues) {
+            UserDefaults.standard.set(data, forKey: "myLeagues")
         }
         
+        
+
         dismiss(animated: true)
     }
   
@@ -37,12 +43,22 @@ class SelectTeamVC: UIViewController {
     func configureViewController() {
         navigationItem.backBarButtonItem = UIBarButtonItem()
         view.backgroundColor = FNColors.backgroundColor
-        navigationItem.title = "Wybierz swoją drużynę"
+        navigationItem.title = "Wybierz ligę"
         navigationController?.navigationBar.backgroundColor = UIColor(named: "FNNavBarColor")
         
         if isCancelable {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Anuluj", style: .plain, target: self, action: #selector(dismissVC))
         }
+        
+        
+    }
+    
+    
+    func configureSearchController() {
+        let searchController = UISearchController()
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.searchBar.delegate = self
     }
     
     
@@ -52,7 +68,7 @@ class SelectTeamVC: UIViewController {
     
     
     func configureTableView() {
-        tableView.register(FNSelectTeamCell.self, forCellReuseIdentifier: FNSelectTeamCell.cellId)
+        tableView.register(FNSelectLeagueCell.self, forCellReuseIdentifier: FNSelectLeagueCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor(named: "FNSectionBackground")
@@ -68,12 +84,12 @@ class SelectTeamVC: UIViewController {
         ])
     }
     
-    func fetchDataForTeams() {
-            NetworkManager.shared.getTeams(parameters: "league=106&season=2022") { [weak self] result in
+    func fetchDataForTeams(parameters: String) {
+            NetworkManager.shared.getLeagues(parameters: parameters) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
-                    case .success(let teams):
-                        self.teams = teams.response
+                    case .success(let leagues):
+                        self.leagues = leagues.response
                         DispatchQueue.main.async { self.tableView.reloadData() }
                     case .failure(let error):
                         print(error)
@@ -83,7 +99,7 @@ class SelectTeamVC: UIViewController {
 }
 
 
-extension SelectTeamVC: UITableViewDelegate, UITableViewDataSource {
+extension SelectLeagueVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
@@ -91,19 +107,28 @@ extension SelectTeamVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return teams.count
+        return leagues.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: FNSelectTeamCell.cellId, for: indexPath) as! FNSelectTeamCell
-        cell.set(teams: teams[indexPath.row])
+        let cell = tableView.dequeueReusableCell(withIdentifier: FNSelectLeagueCell.cellId, for: indexPath) as! FNSelectLeagueCell
+        cell.set(league: leagues[indexPath.row])
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        passSelectedTeam(teamData: teams[indexPath.row])
+        passSelectedLeague(leagueData: leagues[indexPath.row])
     }
     
+}
+
+
+extension SelectLeagueVC: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searched = searchBar.text else { return }
+        fetchDataForTeams(parameters: "search=\(searched)")
+    }
 }

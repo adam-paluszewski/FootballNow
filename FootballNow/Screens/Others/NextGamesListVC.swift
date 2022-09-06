@@ -31,8 +31,9 @@ class NextGamesListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FNNextGameCell.self, forCellReuseIdentifier: FNNextGameCell.cellId)
-        tableView.backgroundColor = UIColor(named: "FNSectionColor")
+        tableView.backgroundColor = FNColors.sectionColor
         tableView.showsVerticalScrollIndicator = false
+        tableView.isUserInteractionEnabled = false
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,8 +66,4 @@ extension NextGamesListVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
 }

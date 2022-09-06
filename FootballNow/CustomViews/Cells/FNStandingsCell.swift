@@ -73,7 +73,7 @@ class FNStandingsCell: UITableViewCell {
     
     
     func configure() {
-        backgroundColor = UIColor(named: "FNSectionColor")
+        backgroundColor = FNColors.sectionColor
         positionLabel.textColor = .secondaryLabel
         gamesPlayedLabel.textColor = .secondaryLabel
         gamesWonLabel.textColor = .secondaryLabel

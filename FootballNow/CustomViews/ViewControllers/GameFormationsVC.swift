@@ -10,6 +10,7 @@ import UIKit
 class GameFormationsVC: UIViewController {
     
     let tableView = UITableView()
+    let noFormationsView = FNNoResultsView(text: "Brak informacji o składach dla tego meczu", image: UIImage(named: "FNTeam")!)
     
     var squad: [Lineups] = []
     
@@ -30,15 +31,12 @@ class GameFormationsVC: UIViewController {
         super.viewDidLoad()
         configureViewController()
         configureTableView()
+        configureNoFormationsView()
     }
     
     
-    override func viewDidAppear(_ animated: Bool) {
-        tableView.reloadData()
-        tableView.layoutIfNeeded()
-        
-        var tableViewHeight = tableView.contentSize + tableView.contentInset.bottom + tableView.contentInset.top + tableView.numberOfSections * tableView.sectionHeaderHeight
-        preferredContentSize = CGSize(width: view.frame.width, height: tableViewHeight)
+    override func viewDidLayoutSubviews() {
+        preferredContentSize = tableView.contentSize
     }
     
 
@@ -52,6 +50,9 @@ class GameFormationsVC: UIViewController {
         tableView.dataSource = self
         tableView.register(FNFormationCell.self, forCellReuseIdentifier: FNFormationCell.cellId)
         tableView.isScrollEnabled = false
+        tableView.sectionHeaderTopPadding = 0
+        tableView.prepareForDynamicHeight()
+        tableView.isUserInteractionEnabled = false
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,13 +64,32 @@ class GameFormationsVC: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    
+    func configureNoFormationsView() {
+        noFormationsView.isHidden = true
+        
+        view.addSubview(noFormationsView)
+        NSLayoutConstraint.activate([
+            noFormationsView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 100),
+            noFormationsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            noFormationsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            noFormationsView.heightAnchor.constraint(equalToConstant: 250)
+        ])
+    }
 }
 
 
 extension GameFormationsVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        guard !squad.isEmpty else {
+            noFormationsView.isHidden = false
+            preferredContentSize = CGSize(width: 0.01, height: 0)
+            return 0
+        }
+        noFormationsView.isHidden = true
+        return 4
     }
     
     
@@ -77,21 +97,21 @@ extension GameFormationsVC: UITableViewDelegate, UITableViewDataSource {
         var header = UIView()
         switch section {
             case 0:
-                header = FNFormationsHeaderView(title: "Formacja")
+                header = FNFormationsHeaderView(title: "Formacja", allingment: .center)
             case 1:
-                header = FNFormationsHeaderView(title: "Trener")
+                header = FNFormationsHeaderView(title: "Trener", allingment: .center)
             case 2:
-                header = FNFormationsHeaderView(title: "Wyjściowa jedenastka")
+                header = FNFormationsHeaderView(title: "Wyjściowa jedenastka", allingment: .center)
             case 3:
-                header = FNFormationsHeaderView(title: "Rezerwowi")
+                header = FNFormationsHeaderView(title: "Rezerwowi", allingment: .center)
             default:
-                header = FNFormationsHeaderView(title: "")
+                header = FNFormationsHeaderView(title: "", allingment: .center)
         }
         return header
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 41
+        return section == 0 ? 41 : 56
     }
     
     
@@ -124,6 +144,7 @@ extension GameFormationsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNFormationCell.cellId, for: indexPath) as! FNFormationCell
         cell.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
+        guard !squad.isEmpty else { return cell }
         
         switch indexPath.section {
             case 0:
@@ -133,7 +154,24 @@ extension GameFormationsVC: UITableViewDelegate, UITableViewDataSource {
             case 2:
                 cell.setStartingXI(homeSquad: squad[0].startXI?[indexPath.row], awaySquad: squad[1].startXI?[indexPath.row])
             case 3:
-                cell.setSubstitutes(homeSquad: squad[0].substitutes?[indexPath.row], awaySquad: squad[1].substitutes?[indexPath.row])
+                let homeSubstitutes: Substitutes?
+                let awaySubstitutes: Substitutes?
+                let homeSubstitutesCount = squad[0].substitutes?.count ?? 0
+                let awaySubstitutesCount = squad[1].substitutes?.count ?? 0
+                
+                if homeSubstitutesCount > indexPath.row {
+                    homeSubstitutes = squad[0].substitutes?[indexPath.row]
+                } else {
+                    homeSubstitutes = nil
+                }
+                
+                if awaySubstitutesCount > indexPath.row {
+                    awaySubstitutes = squad[1].substitutes?[indexPath.row]
+                } else {
+                    awaySubstitutes = nil
+                }
+                
+                cell.setSubstitutes(homeSquad: homeSubstitutes, awaySquad: awaySubstitutes)
             default:
                 print("error")
         }

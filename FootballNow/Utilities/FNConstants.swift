@@ -25,4 +25,12 @@ struct UIElementsSizes {
 
 struct NotificationKeys {
     static let selectedTeam = "com.adamp.selectedteam"
+    static let myLeaguesChanged = "com.adamp.myleagueschanged"
+}
+
+
+struct FNColors {
+    static let backgroundColor = UIColor(named: "FNBackgroundColor")
+    static let separatorColor = UIColor(named: "FNSeparatorColor")
+    static let sectionColor = UIColor(named: "FNSectionColor")
 }

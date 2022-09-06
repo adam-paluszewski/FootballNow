@@ -31,7 +31,7 @@ class LastGamesListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FNLastGameCell.self, forCellReuseIdentifier: FNLastGameCell.cellId)
-        tableView.backgroundColor = UIColor(named: "FNSectionColor")
+        tableView.backgroundColor = FNColors.sectionColor
         tableView.showsVerticalScrollIndicator = false
         
         view.addSubview(tableView)
