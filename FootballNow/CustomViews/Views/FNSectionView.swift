@@ -29,18 +29,7 @@ class FNSectionView: UIView {
     }
     
     
-    init(title: String) {
-        super.init(frame: .zero)
-        sectionTitleLabel.text = title
-        
-        translatesAutoresizingMaskIntoConstraints = false
-        configure()
-        addSubviews()
-        addConstraints()
-    }
-    
-    
-    init(title: String, buttonText: String) {
+    init(title: String, buttonText: String = "") {
         super.init(frame: .zero)
         sectionTitleLabel.text = title
         button.setTitle(buttonText, for: .normal)
@@ -53,16 +42,15 @@ class FNSectionView: UIView {
     
     
     func configure() {
-        
         headerView.backgroundColor = FNColors.sectionColor
         separatorView.backgroundColor = FNColors.separatorColor
         bodyView.backgroundColor = FNColors.sectionColor
         
-        sectionTitleLabel.font = .systemFont(ofSize: 14, weight: .regular)
+        sectionTitleLabel.font = .systemFont(ofSize: 14, weight: .bold)
         sectionTitleLabel.textColor = .label
         
+        button.setTitleColor(UIColor(named: "FNNavigationTint"), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
-        button.setTitleColor(.systemBlue, for: .normal)
         button.contentHorizontalAlignment = .trailing
     }
     

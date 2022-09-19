@@ -42,7 +42,7 @@
 		E96CE49628BCC8F100B7D08F /* SquadListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE49528BCC8F100B7D08F /* SquadListVC.swift */; };
 		E96CE49928BCE18F00B7D08F /* FNLastGameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE49828BCE18F00B7D08F /* FNLastGameCell.swift */; };
 		E96CE49B28BCEC7200B7D08F /* SelectTeamVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96CE49A28BCEC7200B7D08F /* SelectTeamVC.swift */; };
-		E984AD9128C4CF6B0006B320 /* TableViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AD9028C4CF6B0006B320 /* TableViewExt.swift */; };
+		E984AD9128C4CF6B0006B320 /* UITableViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AD9028C4CF6B0006B320 /* UITableViewExt.swift */; };
 		E984AD9328C616220006B320 /* PlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AD9228C616220006B320 /* PlayerVC.swift */; };
 		E984AD9528C62E040006B320 /* FNPlayerStatisticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AD9428C62E040006B320 /* FNPlayerStatisticCell.swift */; };
 		E984AD9B28C73F600006B320 /* FNPlayerStatisticsSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AD9A28C73F600006B320 /* FNPlayerStatisticsSupport.swift */; };
@@ -70,10 +70,14 @@
 		E990E8ED28C21EA600880FDE /* FNNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8EC28C21EA600880FDE /* FNNoResultsView.swift */; };
 		E990E8EF28C2679100880FDE /* FNFormationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8EE28C2679100880FDE /* FNFormationCell.swift */; };
 		E990E8F128C2706B00880FDE /* FNFormationsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990E8F028C2706B00880FDE /* FNFormationsHeaderView.swift */; };
+		E9A058DB28D86E6A003600BA /* UIViewControllerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A058DA28D86E6A003600BA /* UIViewControllerExt.swift */; };
+		E9A058DD28D89DC0003600BA /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A058DC28D89DC0003600BA /* PersistenceManager.swift */; };
 		E9A9710C28B7749700C3C4CA /* LastGameSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710B28B7749700C3C4CA /* LastGameSectionVC.swift */; };
 		E9A9710E28B77B9100C3C4CA /* NextGamesSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710D28B77B9100C3C4CA /* NextGamesSectionVC.swift */; };
 		E9A9711028B77C3A00C3C4CA /* StandingsSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9710F28B77C3A00C3C4CA /* StandingsSectionVC.swift */; };
 		E9A9711228B77C5200C3C4CA /* SquadSectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9711128B77C5100C3C4CA /* SquadSectionVC.swift */; };
+		E9ABA3BD28D71BA800D23C75 /* FNTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9ABA3BC28D71BA800D23C75 /* FNTabBarController.swift */; };
+		E9ABA3C728D75BD600D23C75 /* FNNavigationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9ABA3C628D75BD600D23C75 /* FNNavigationItemView.swift */; };
 		E9AC0BA428C758FA007E50E9 /* FNLeagueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AC0BA328C758FA007E50E9 /* FNLeagueCell.swift */; };
 		E9AC0BA628C76441007E50E9 /* ManageLeaguesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AC0BA528C76440007E50E9 /* ManageLeaguesVC.swift */; };
 		E9AC0BA828C76724007E50E9 /* SelectLeagueVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AC0BA728C76724007E50E9 /* SelectLeagueVC.swift */; };
@@ -120,7 +124,7 @@
 		E96CE49728BCDC4900B7D08F /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		E96CE49828BCE18F00B7D08F /* FNLastGameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNLastGameCell.swift; sourceTree = "<group>"; };
 		E96CE49A28BCEC7200B7D08F /* SelectTeamVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTeamVC.swift; sourceTree = "<group>"; };
-		E984AD9028C4CF6B0006B320 /* TableViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewExt.swift; sourceTree = "<group>"; };
+		E984AD9028C4CF6B0006B320 /* UITableViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExt.swift; sourceTree = "<group>"; };
 		E984AD9228C616220006B320 /* PlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerVC.swift; sourceTree = "<group>"; };
 		E984AD9428C62E040006B320 /* FNPlayerStatisticCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNPlayerStatisticCell.swift; sourceTree = "<group>"; };
 		E984AD9A28C73F600006B320 /* FNPlayerStatisticsSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNPlayerStatisticsSupport.swift; sourceTree = "<group>"; };
@@ -148,10 +152,14 @@
 		E990E8EC28C21EA600880FDE /* FNNoResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNNoResultsView.swift; sourceTree = "<group>"; };
 		E990E8EE28C2679100880FDE /* FNFormationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNFormationCell.swift; sourceTree = "<group>"; };
 		E990E8F028C2706B00880FDE /* FNFormationsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNFormationsHeaderView.swift; sourceTree = "<group>"; };
+		E9A058DA28D86E6A003600BA /* UIViewControllerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExt.swift; sourceTree = "<group>"; };
+		E9A058DC28D89DC0003600BA /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		E9A9710B28B7749700C3C4CA /* LastGameSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastGameSectionVC.swift; sourceTree = "<group>"; };
 		E9A9710D28B77B9100C3C4CA /* NextGamesSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextGamesSectionVC.swift; sourceTree = "<group>"; };
 		E9A9710F28B77C3A00C3C4CA /* StandingsSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsSectionVC.swift; sourceTree = "<group>"; };
 		E9A9711128B77C5100C3C4CA /* SquadSectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquadSectionVC.swift; sourceTree = "<group>"; };
+		E9ABA3BC28D71BA800D23C75 /* FNTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNTabBarController.swift; sourceTree = "<group>"; };
+		E9ABA3C628D75BD600D23C75 /* FNNavigationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNNavigationItemView.swift; sourceTree = "<group>"; };
 		E9AC0BA328C758FA007E50E9 /* FNLeagueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNLeagueCell.swift; sourceTree = "<group>"; };
 		E9AC0BA528C76440007E50E9 /* ManageLeaguesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageLeaguesVC.swift; sourceTree = "<group>"; };
 		E9AC0BA728C76724007E50E9 /* SelectLeagueVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLeagueVC.swift; sourceTree = "<group>"; };
@@ -204,6 +212,7 @@
 		E96CE44C28B7B88A00B7D08F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				E9ABA3BB28D71B8600D23C75 /* TabBarControllers */,
 				E96CE44F28B7C19C00B7D08F /* ViewControllers */,
 				E96CE44E28B7C19400B7D08F /* Views */,
 				E96CE45028B7C21200B7D08F /* Labels */,
@@ -246,6 +255,7 @@
 				E990E8DC28C0E2CA00880FDE /* FNGameScoreTitleView.swift */,
 				E990E8EC28C21EA600880FDE /* FNNoResultsView.swift */,
 				E990E8F028C2706B00880FDE /* FNFormationsHeaderView.swift */,
+				E9ABA3C628D75BD600D23C75 /* FNNavigationItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -280,6 +290,7 @@
 			isa = PBXGroup;
 			children = (
 				E96CE45428B7C54400B7D08F /* NetworkManager.swift */,
+				E9A058DC28D89DC0003600BA /* PersistenceManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -287,13 +298,13 @@
 		E96CE45628B7C56400B7D08F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E96CE47F28BA45FC00B7D08F /* FNConstants.swift */,
 				E96CE46628B8B7AD00B7D08F /* FNFixtureMethods.swift */,
 				E990E8C428BE2B1300880FDE /* FNAgeSuffix.swift */,
 				E96CE45728B7C56F00B7D08F /* FNError.swift */,
 				E96CE46028B8B74600B7D08F /* FNDateFormatting.swift */,
 				E96CE46228B8B74B00B7D08F /* FNGreetings.swift */,
 				E96CE46428B8B74F00B7D08F /* FNAttributedStrings.swift */,
-				E96CE47F28BA45FC00B7D08F /* FNConstants.swift */,
 				E990E8C828BE2C8300880FDE /* FNTranslateToPolish.swift */,
 				E984AD9A28C73F600006B320 /* FNPlayerStatisticsSupport.swift */,
 			);
@@ -337,7 +348,8 @@
 		E984AD8F28C4CF500006B320 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E984AD9028C4CF6B0006B320 /* TableViewExt.swift */,
+				E984AD9028C4CF6B0006B320 /* UITableViewExt.swift */,
+				E9A058DA28D86E6A003600BA /* UIViewControllerExt.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -356,7 +368,6 @@
 		E990E8B928BE08B400880FDE /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				E96CE49A28BCEC7200B7D08F /* SelectTeamVC.swift */,
 				E96CE49528BCC8F100B7D08F /* SquadListVC.swift */,
 				E96CE49328BCC8DF00B7D08F /* NextGamesListVC.swift */,
 				E96CE49128BCC8C600B7D08F /* StandingsVC.swift */,
@@ -365,9 +376,18 @@
 				E990E8D428C0B17C00880FDE /* GameDetailsVC.swift */,
 				E984AD9228C616220006B320 /* PlayerVC.swift */,
 				E9AC0BA528C76440007E50E9 /* ManageLeaguesVC.swift */,
+				E96CE49A28BCEC7200B7D08F /* SelectTeamVC.swift */,
 				E9AC0BA728C76724007E50E9 /* SelectLeagueVC.swift */,
 			);
 			path = Others;
+			sourceTree = "<group>";
+		};
+		E9ABA3BB28D71B8600D23C75 /* TabBarControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E9ABA3BC28D71BA800D23C75 /* FNTabBarController.swift */,
+			);
+			path = TabBarControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -452,6 +472,7 @@
 				E96CE45228B7C24400B7D08F /* FNBodyLabel.swift in Sources */,
 				E96CE49028BCC8AD00B7D08F /* LastGamesListVC.swift in Sources */,
 				E96CE46728B8B7AD00B7D08F /* FNFixtureMethods.swift in Sources */,
+				E9ABA3C728D75BD600D23C75 /* FNNavigationItemView.swift in Sources */,
 				E990E8C528BE2B1300880FDE /* FNAgeSuffix.swift in Sources */,
 				E990E8DD28C0E2CA00880FDE /* FNGameScoreTitleView.swift in Sources */,
 				E96CE48E28BBADBC00B7D08F /* FNSettingsCell.swift in Sources */,
@@ -479,11 +500,13 @@
 				E9AC0BA628C76441007E50E9 /* ManageLeaguesVC.swift in Sources */,
 				E96CE47228B8D6D700B7D08F /* FNTinyLabel.swift in Sources */,
 				E990E8D928C0B53A00880FDE /* GameStatisticsVC.swift in Sources */,
+				E9A058DB28D86E6A003600BA /* UIViewControllerExt.swift in Sources */,
 				E990E8BF28BE21FC00880FDE /* FNTablePlayerCell.swift in Sources */,
 				E990E8CD28BE6C1C00880FDE /* Leagues.swift in Sources */,
 				E9071C4528B3F7990082F483 /* AppDelegate.swift in Sources */,
 				E990E8D128BEB34B00880FDE /* Favorites.swift in Sources */,
 				E990E8ED28C21EA600880FDE /* FNNoResultsView.swift in Sources */,
+				E9A058DD28D89DC0003600BA /* PersistenceManager.swift in Sources */,
 				E96CE45F28B8B4EB00B7D08F /* FNGameOverviewView.swift in Sources */,
 				E9AC0BA828C76724007E50E9 /* SelectLeagueVC.swift in Sources */,
 				E96CE48C28BB96E700B7D08F /* FavoritesVC.swift in Sources */,
@@ -502,11 +525,12 @@
 				E9A9711028B77C3A00C3C4CA /* StandingsSectionVC.swift in Sources */,
 				E9AC0BAC28C7802C007E50E9 /* FNManageLeaguesCell.swift in Sources */,
 				E96CE49228BCC8C600B7D08F /* StandingsVC.swift in Sources */,
+				E9ABA3BD28D71BA800D23C75 /* FNTabBarController.swift in Sources */,
 				E984AD9328C616220006B320 /* PlayerVC.swift in Sources */,
 				E990E8E928C12BC300880FDE /* FNDefaultLabel.swift in Sources */,
 				E96CE46128B8B74600B7D08F /* FNDateFormatting.swift in Sources */,
 				E9A9711228B77C5200C3C4CA /* SquadSectionVC.swift in Sources */,
-				E984AD9128C4CF6B0006B320 /* TableViewExt.swift in Sources */,
+				E984AD9128C4CF6B0006B320 /* UITableViewExt.swift in Sources */,
 				E990E8C128BE231D00880FDE /* Players.swift in Sources */,
 				E990E8F128C2706B00880FDE /* FNFormationsHeaderView.swift in Sources */,
 				E96CE49628BCC8F100B7D08F /* SquadListVC.swift in Sources */,

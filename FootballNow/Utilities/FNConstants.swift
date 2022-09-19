@@ -34,3 +34,7 @@ struct FNColors {
     static let separatorColor = UIColor(named: "FNSeparatorColor")
     static let sectionColor = UIColor(named: "FNSectionColor")
 }
+
+struct SFSymbols {
+    static let settings = UIImage(systemName: "gear")
+}

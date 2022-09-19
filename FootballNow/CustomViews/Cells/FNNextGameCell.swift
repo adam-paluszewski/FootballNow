@@ -90,14 +90,14 @@ class FNNextGameCell: UITableViewCell {
     
     
     func addSubviews() {
-        addSubview(homeTeamNameLabel)
-        addSubview(homeTeamLogoImageView)
-        addSubview(awayTeamNameLabel)
-        addSubview(awayTeamLogoImageView)
-        addSubview(vLineView)
-        addSubview(leagueBackgroundView)
-        addSubview(leagueLogoImageView)
-        addSubview(stackView)
+        contentView.addSubview(homeTeamNameLabel)
+        contentView.addSubview(homeTeamLogoImageView)
+        contentView.addSubview(awayTeamNameLabel)
+        contentView.addSubview(awayTeamLogoImageView)
+        contentView.addSubview(vLineView)
+        contentView.addSubview(leagueBackgroundView)
+        contentView.addSubview(leagueLogoImageView)
+        contentView.addSubview(stackView)
         stackView.addArrangedSubview(gameDateLabel)
         stackView.addArrangedSubview(gameTimeLabel)
     }

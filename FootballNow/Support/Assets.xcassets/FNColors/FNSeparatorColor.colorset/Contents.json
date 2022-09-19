@@ -36,8 +36,11 @@
         }
       ],
       "color" : {
-        "platform" : "tvos",
-        "reference" : "separatorColor"
+        "color-space" : "gray-gamma-22",
+        "components" : {
+          "alpha" : "0.600",
+          "white" : "0.330"
+        }
       },
       "idiom" : "universal"
     }

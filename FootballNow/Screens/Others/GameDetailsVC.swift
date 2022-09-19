@@ -64,22 +64,6 @@ class GameDetailsVC: UIViewController {
     }
     
     
-    func add(childVC: UIViewController, to containerView: UIView) {
-        addChild(childVC)
-        containerView.addSubview(childVC.view)
-        childVC.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            childVC.view.topAnchor.constraint(equalTo: containerView.topAnchor),
-            childVC.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            childVC.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            childVC.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-        ])
-
-        childVC.didMove(toParent: self)
-    }
-    
-    
     func fetchDataForGame() {
         NetworkManager.shared.getFixtures(parameters: "id=\(self.gameId!)") { [weak self] result in
             guard let self = self else { return }

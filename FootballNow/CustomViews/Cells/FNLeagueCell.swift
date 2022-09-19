@@ -7,17 +7,21 @@
 
 import UIKit
 
-class FNLeagueCell: UICollectionViewCell {
+class FNLeagueCell: UITableViewCell {
     
     static let cellId = "LeaguesCell"
     
     let view = FNSectionView(title: "")
     let tableView = UITableView()
     
-    var games: [FixturesData] = []
+    var games: [FixturesData] = [] {
+        didSet {
+            games.sort {$0.fixture.timestamp < $1.fixture.timestamp}
+        }
+    }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
         addConstraints()
@@ -29,16 +33,17 @@ class FNLeagueCell: UICollectionViewCell {
     
     
     func configure() {
-        backgroundColor = FNColors.sectionColor
+        backgroundColor = FNColors.backgroundColor
         tableView.register(FNNextGameCell.self, forCellReuseIdentifier: FNNextGameCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = false
+        tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
     }
     
     
     func addSubviews() {
-        addSubview(view)
+        contentView.addSubview(view)
         view.bodyView.addSubview(tableView)
     }
     
@@ -50,7 +55,7 @@ class FNLeagueCell: UICollectionViewCell {
             view.topAnchor.constraint(equalTo: self.topAnchor),
             view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            view.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
             
             tableView.topAnchor.constraint(equalTo: view.bodyView.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.bodyView.leadingAnchor),

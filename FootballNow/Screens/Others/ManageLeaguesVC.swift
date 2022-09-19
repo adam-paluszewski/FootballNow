@@ -67,6 +67,7 @@ class ManageLeaguesVC: UIViewController {
         tableView.dataSource = self
         tableView.register(FNManageLeaguesCell.self, forCellReuseIdentifier: FNManageLeaguesCell.cellId)
         tableView.backgroundColor = FNColors.backgroundColor
+        tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -100,5 +101,9 @@ extension ManageLeaguesVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
 }

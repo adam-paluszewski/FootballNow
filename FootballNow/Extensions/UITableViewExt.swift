@@ -1,11 +1,10 @@
 //
-//  TableViewExt.swift
+//  UITableViewExt.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 04/09/2022.
 //
 
-import Foundation
 import UIKit
 
 

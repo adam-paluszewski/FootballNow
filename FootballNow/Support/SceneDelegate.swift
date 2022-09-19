@@ -17,73 +17,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowsScene = (scene as? UIWindowScene) else { return }
-        
+        configureNavigationBar()
+
         window = UIWindow(frame: windowsScene.coordinateSpace.bounds)
         window?.windowScene = windowsScene
-        window?.rootViewController = createTabbar()
+        window?.rootViewController = FNTabBarController()
         window?.makeKeyAndVisible()
-        
-        configureNavigationBar()
         configureUserIntefaceStyle()
-    }
-    
-    
-    func createTabbar() -> UITabBarController {
-        let tabBar = UITabBarController()
-        tabBar.viewControllers = [createTeamDashboardNC(), createGamesNC(), createFavoritesNC(), createSearchNC()]
-        
-        let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.configureWithOpaqueBackground()
-        tabBarAppearance.backgroundColor = UIColor(named: "FNNavBarColor")
-        tabBar.tabBar.standardAppearance = tabBarAppearance
-        tabBar.tabBar.scrollEdgeAppearance = tabBarAppearance
-        
-        return tabBar
-    }
-    
-    
-    func createTeamDashboardNC() -> UINavigationController {
-        var team: TeamsData?
-        
-        if let data = UserDefaults.standard.value(forKey: "myTeam") as? Data {
-            let decoder = JSONDecoder()
-            if let myTeam = try? decoder.decode(TeamsData.self, from: data) {
-                team = myTeam
-            }
-        }
-        
-        let teamDashboardVC = TeamDashboardVC(isMyTeamShowing: true, team: team)
-        teamDashboardVC.tabBarItem = UITabBarItem(title: "Moja drużyna", image: UIImage(systemName: "person.2"),selectedImage: UIImage(systemName: "person.2.fill"))
-        teamDashboardVC.tabBarItem.tag = 0
-        
-        return UINavigationController(rootViewController: teamDashboardVC)
-    }
-    
-    
-    func createGamesNC() -> UINavigationController {
-        let gamesVC = GamesVC()
-        gamesVC.tabBarItem = UITabBarItem(title: "Rozgrywki", image: UIImage(systemName: "sportscourt"),selectedImage: UIImage(systemName: "sportscourt.fill"))
-        gamesVC.tabBarItem.tag = 1
-        
-        return UINavigationController(rootViewController: gamesVC)
-    }
-    
-    
-    func createFavoritesNC() -> UINavigationController {
-        let favoritesVC = FavoritesVC()
-        favoritesVC.tabBarItem = UITabBarItem(title: "Ulubione", image: UIImage(systemName: "heart"),selectedImage: UIImage(systemName: "heart.fill"))
-        favoritesVC.tabBarItem.tag = 2
-        
-        return UINavigationController(rootViewController: favoritesVC)
-    }
-    
-    
-    func createSearchNC() -> UINavigationController {
-        let searchVC = SearchVC()
-        searchVC.tabBarItem = UITabBarItem(title: "Odkrywaj", image: UIImage(systemName: "magnifyingglass"),selectedImage: UIImage(systemName: "magnifyingglass"))
-        searchVC.tabBarItem.tag = 3
-        
-        return UINavigationController(rootViewController: searchVC)
     }
     
     
@@ -96,7 +36,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     func configureNavigationBar() {
-        UINavigationBar.appearance().tintColor = .systemBlue
+        UINavigationBar.appearance().tintColor = UIColor(named: "FNNavigationTint")
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(named: "FNNavBarColor")
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
     
     

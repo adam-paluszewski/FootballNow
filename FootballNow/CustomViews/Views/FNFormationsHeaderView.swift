@@ -42,7 +42,6 @@ class FNFormationsHeaderView: UIView {
         backgroundColor = FNColors.backgroundColor
         titleView.backgroundColor = FNColors.sectionColor
         separatorView.backgroundColor = FNColors.separatorColor
-        
         sectionTitleLabel.font = .systemFont(ofSize: 14, weight: .bold)
         sectionTitleLabel.textColor = .label
     }

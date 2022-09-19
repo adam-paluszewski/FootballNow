@@ -11,8 +11,6 @@ class FNCollectionPlayerCell: UICollectionViewCell {
     
     static let cellId = "CollectionPlayerCell"
     
-    let cache = NetworkManager.shared.cache
-    
     let tshirtImageView = UIImageView()
     let photoImageView = UIImageView()
     let nameLabel = FNBodyLabel(allingment: .center)

@@ -9,15 +9,15 @@ import UIKit
 
 class SquadSectionVC: UIViewController {
 
-    let sectionView = FNSectionView(title: "Skład drużyny", buttonText: "Więcej")
-    var collectionView: UICollectionView!
+    let sectionView = FNSectionView(title: "Zawodnicy", buttonText: "Więcej")
+    var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     var squad: [SquadsData] = []
+    var teamId: Int!
     
-    
-    init(squad: [SquadsData]) {
+    init(teamId: Int?) {
         super.init(nibName: nil, bundle: nil)
-        self.squad = squad
+        self.teamId = teamId
     }
     
     
@@ -28,8 +28,24 @@ class SquadSectionVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        createObservers()
         configureViewController()
         configureCollectionView()
+        fetchDataforSquadSection()
+    }
+    
+    
+    func createObservers() {
+        let team = Notification.Name(NotificationKeys.selectedTeam)
+        NotificationCenter.default.addObserver(self, selector: #selector(fireObserver), name: team, object: nil)
+    }
+    
+    
+    func configureViewController() {
+        showLoadingView(in: sectionView.bodyView)
+        sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        
+        layoutUI()
     }
 
     
@@ -61,35 +77,55 @@ class SquadSectionVC: UIViewController {
         
         return flowLayout
     }
+
+    
+    func fetchDataforSquadSection() {
+        guard let teamId = teamId else { return }
+        NetworkManager.shared.getSquads(parameters: "team=\(teamId)") { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                case .success(let squad):
+                    DispatchQueue.main.async {
+                        self.squad = squad.response
+                        self.collectionView.reloadData()
+                        self.dismissLoadingView(in: self.sectionView.bodyView)
+                    }
+                case .failure(let error):
+                    self.preferredContentSizeOnMainThread(size: CGSize(width: 0.01, height: 0))
+                    print(error)
+            }
+        }
+    }
     
     
-    func configureViewController() {
-        sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        
+    func configureCollectionView() {
+        collectionView.collectionViewLayout = createFlowLayout(view: view)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.backgroundColor = .clear
+        collectionView.register(FNCollectionPlayerCell.self, forCellWithReuseIdentifier: FNCollectionPlayerCell.cellId)
+    }
+    
+    
+    @objc func fireObserver(notification: NSNotification) {
+        let team = notification.object as? TeamsData
+        teamId = team?.team.id
+        fetchDataforSquadSection()
+    }
+    
+    
+    func layoutUI() {
         view.addSubview(sectionView)
+        
+        sectionView.bodyView.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             sectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             sectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             sectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             sectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-        ])
-
-    }
-    
-    
-    func configureCollectionView() {
-        collectionView = UICollectionView(frame: sectionView.bounds, collectionViewLayout: createFlowLayout(view: view))
-        
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.backgroundColor = .clear
-        collectionView.register(FNCollectionPlayerCell.self, forCellWithReuseIdentifier: FNCollectionPlayerCell.cellId)
-        
-        sectionView.bodyView.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
+            
             collectionView.topAnchor.constraint(equalTo: sectionView.bodyView.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: sectionView.bodyView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: sectionView.bodyView.trailingAnchor),
@@ -98,13 +134,11 @@ class SquadSectionVC: UIViewController {
     }
 }
 
+
 extension SquadSectionVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard !squad.isEmpty else {
-            preferredContentSize = CGSize(width: 0.01, height: 0)
-            return 0
-        }
+        guard !squad.isEmpty else { return 0 }
         return squad[0].players.count
     }
     

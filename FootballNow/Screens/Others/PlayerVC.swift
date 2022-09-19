@@ -43,6 +43,7 @@ class PlayerVC: UIViewController {
     
     
     override func viewDidAppear(_ animated: Bool) {
+        print(tableView.contentSize.height + statisticsContainerView.headerView.bounds.height)
         statisticsContainerView.heightAnchor.constraint(equalToConstant: tableView.contentSize.height + statisticsContainerView.headerView.bounds.height).isActive = true
     }
     

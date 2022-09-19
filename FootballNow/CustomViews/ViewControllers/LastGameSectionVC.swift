@@ -14,14 +14,14 @@ class LastGameSectionVC: UIViewController {
     let gameDetailsButton = UIButton()
     
     var lastGames: [FixturesData] = []
+    var teamId: Int!
     
-    
-    init(lastGame: [FixturesData]) {
+    init(teamId: Int?) {
         super.init(nibName: nil, bundle: nil)
-        self.lastGames = lastGame
+        self.teamId = teamId
     }
-    
-    
+
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -29,7 +29,45 @@ class LastGameSectionVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        createObservers()
         configureViewController()
+        fetchDataForLastGameSection()
+    }
+    
+    
+    func createObservers() {
+        let team = Notification.Name(NotificationKeys.selectedTeam)
+        NotificationCenter.default.addObserver(self, selector: #selector(fireObserver), name: team, object: nil)
+    }
+    
+    
+    func configureViewController() {
+        showLoadingView(in: sectionView.bodyView)
+        sectionView.button.addTarget(self, action: #selector(showAllButtonPressed), for: .touchUpInside)
+        gameDetailsButton.addTarget(self, action: #selector(gameDetailsButtonPressed), for: .touchUpInside)
+        
+        layoutUI()
+    }
+    
+    
+    func fetchDataForLastGameSection() {
+        guard let teamId = teamId else { return }
+        NetworkManager.shared.getFixtures(parameters: "team=\(teamId)&season=2022&last=10&timezone=Europe/Warsaw") { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                case .success(let fixtures):
+                    DispatchQueue.main.async {
+                        self.dismissLoadingView(in: self.sectionView.bodyView)
+                        self.lastGames = fixtures.response
+                        DispatchQueue.main.async {
+                            self.gameOverviewView.set(game: fixtures.response[0])
+                        }
+                    }
+                case .failure(let error):
+                    self.preferredContentSizeOnMainThread(size: CGSize(width: 0.01, height: 0))
+                    print(error)
+            }
+        }
     }
     
     
@@ -51,15 +89,14 @@ class LastGameSectionVC: UIViewController {
     }
     
     
-    func configureViewController() {
-        sectionView.button.addTarget(self, action: #selector(showAllButtonPressed), for: .touchUpInside)
-        gameDetailsButton.addTarget(self, action: #selector(gameDetailsButtonPressed), for: .touchUpInside)
-        
-        if !lastGames.isEmpty {
-            gameOverviewView.set(game: lastGames[0])
-        }
+    @objc func fireObserver(notification: NSNotification) {
+        let team = notification.object as? TeamsData
+        teamId = team?.team.id
+        fetchDataForLastGameSection()
+    }
 
-        
+    
+    func layoutUI() {
         view.addSubview(sectionView)
         sectionView.bodyView.addSubview(gameOverviewView)
         sectionView.bodyView.addSubview(gameDetailsButton)

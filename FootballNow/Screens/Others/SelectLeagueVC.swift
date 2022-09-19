@@ -37,11 +37,13 @@ class SelectLeagueVC: UIViewController {
         
 
         dismiss(animated: true)
+        dismiss(animated: true)
     }
   
     
     func configureViewController() {
-        navigationItem.backBarButtonItem = UIBarButtonItem()
+        navigationItem.title = "Wybierz ligę"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Anuluj", style: .plain, target: self, action: #selector(dismissVC))
         view.backgroundColor = FNColors.backgroundColor
         navigationItem.title = "Wybierz ligę"
         navigationController?.navigationBar.backgroundColor = UIColor(named: "FNNavBarColor")
@@ -72,6 +74,7 @@ class SelectLeagueVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor(named: "FNSectionBackground")
+        tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -130,5 +133,9 @@ extension SelectLeagueVC: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searched = searchBar.text else { return }
         fetchDataForTeams(parameters: "search=\(searched)")
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        fetchDataForTeams(parameters: "season=2022")
     }
 }

@@ -55,5 +55,25 @@ struct FNDateFormatting {
     
     
     
+    enum DatePossibilities {
+        case current, oneWeekAhead
+    }
+    
+    static func getDateYYYYMMDD(for date: DatePossibilities) -> String {
+        let currentDate = Date()
+        let oneWeekAheadDate = Date(timeIntervalSinceNow: 518400)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd"
+        
+        switch date {
+            case .current:
+                return dateFormatter.string(from: currentDate)
+            case .oneWeekAhead:
+                return dateFormatter.string(from: oneWeekAheadDate)
+        }
+        
+        
+    }
+    
     
 }

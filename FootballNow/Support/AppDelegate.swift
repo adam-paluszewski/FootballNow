@@ -14,16 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = UIColor(named: "FNNavBarColor")
-
-        let appearance = UINavigationBar.appearance()
-        appearance.scrollEdgeAppearance = navBarAppearance
-        appearance.compactAppearance = navBarAppearance
-        appearance.standardAppearance = navBarAppearance
-        appearance.compactScrollEdgeAppearance = navBarAppearance
 
         //getting favorites from singleton
         Favorites.shared.getFavoritesTeams("favoritesTeams")

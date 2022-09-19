@@ -171,8 +171,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             let selectTeamVC = SelectTeamVC()
             selectTeamVC.isCancelable = true
-            let navController = UINavigationController(rootViewController: selectTeamVC)
-            navigationController?.present(navController, animated: true)
+            navigationController?.pushViewController(selectTeamVC, animated: true)
         }
     }
 }

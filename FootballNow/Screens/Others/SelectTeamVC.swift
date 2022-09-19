@@ -13,6 +13,8 @@ class SelectTeamVC: UIViewController {
     var teams: [TeamsData] = []
     var isCancelable = false
     
+    var parentVC: UIViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
@@ -25,12 +27,9 @@ class SelectTeamVC: UIViewController {
         let team = Notification.Name(NotificationKeys.selectedTeam)
         NotificationCenter.default.post(name: team, object: teamData)
         
-        let encoder = JSONEncoder()
-        if let data = try? encoder.encode(teamData) {
-            UserDefaults.standard.set(data, forKey: "myTeam")
-        }
+        PersistenceManager.shared.save(team: teamData)
         
-        dismiss(animated: true)
+        view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
   
     
@@ -41,7 +40,7 @@ class SelectTeamVC: UIViewController {
         navigationController?.navigationBar.backgroundColor = UIColor(named: "FNNavBarColor")
         
         if isCancelable {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Anuluj", style: .plain, target: self, action: #selector(dismissVC))
+//            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Anuluj", style: .plain, target: self, action: #selector(dismissVC))
         }
     }
     
@@ -61,10 +60,10 @@ class SelectTeamVC: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     

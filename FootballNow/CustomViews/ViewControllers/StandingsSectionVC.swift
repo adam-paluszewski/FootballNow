@@ -11,12 +11,13 @@ class StandingsSectionVC: UIViewController {
 
     let sectionView = FNSectionView(title: "Tabela ligowa", buttonText: "Więcej")
     let standingsView = FNMyTeamStandingsView()
-    var yourTeamStandings: [StandingsData] = []
     var countryLeagueId: Int?
     
-    init(yourTeamStandings: [StandingsData]) {
+    var teamId: Int!
+    
+    init(teamId: Int?) {
         super.init(nibName: nil, bundle: nil)
-        self.yourTeamStandings = yourTeamStandings
+        self.teamId = teamId
     }
     
     
@@ -27,8 +28,41 @@ class StandingsSectionVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        createObservers()
         configureViewController()
-        fetchDataForLeagues()
+        fetchDataForStandingsSection()
+    }
+    
+    
+    func createObservers() {
+        let team = Notification.Name(NotificationKeys.selectedTeam)
+        NotificationCenter.default.addObserver(self, selector: #selector(fireObserver), name: team, object: nil)
+    }
+    
+    
+    func configureViewController() {
+        showLoadingView(in: sectionView.bodyView)
+        sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        
+        layoutUI()
+    }
+    
+    
+    func fetchDataForStandingsSection() {
+        guard let teamId = teamId else { return }
+        NetworkManager.shared.getStandings(parameters: "season=2022&team=\(teamId)") { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                case .success(let standings):
+                    DispatchQueue.main.async {
+                        self.dismissLoadingView(in: self.sectionView.bodyView)
+                        self.fetchDataForLeagues(yourTeamStandings: standings.response)
+                    }
+                case .failure(let error):
+                    self.preferredContentSizeOnMainThread(size: CGSize(width: 0.01, height: 0))
+                    print(error)
+            }
+        }
     }
     
     
@@ -44,24 +78,23 @@ class StandingsSectionVC: UIViewController {
     }
     
     
-    func fetchDataForLeagues() {
-        guard !yourTeamStandings.isEmpty else {
-            preferredContentSize = CGSize(width: 0.01, height: 0)
-            return
-        }
-        let myTeamId = String(yourTeamStandings[0].league.standings[0][0].team.id ?? 0)
-        NetworkManager.shared.getLeagues(parameters: "season=2022&team=\(myTeamId)") { [weak self] result in
+    func fetchDataForLeagues(yourTeamStandings: [StandingsData]) {
+        NetworkManager.shared.getLeagues(parameters: "season=2022&team=\(teamId!)") { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let leagues):
-                    
                     //Standings api returns [] of leagues w/o id
                     //We need id to fetch data for League Standings(next screen) and to know which league to show (this screen)
                     //Extra endpoint is needed, then we check which league is Country League and we show data from only this one
                     let leagues = leagues.response
                     let countryLeague = leagues.filter{$0.league.type == "League"}
+                    
+                    guard !countryLeague.isEmpty else {
+                        self.preferredContentSizeOnMainThread(size: CGSize(width: 0.01, height: 0))
+                        return
+                    }
                     self.countryLeagueId = countryLeague[0].league.id
-                    let countryLeagueStanding = self.yourTeamStandings.filter{$0.league.id == self.countryLeagueId}
+                    let countryLeagueStanding = yourTeamStandings.filter{$0.league.id == self.countryLeagueId}
 
                     
                     DispatchQueue.main.async {
@@ -74,10 +107,14 @@ class StandingsSectionVC: UIViewController {
     }
     
     
-    func configureViewController() {
-        
-        sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        
+    @objc func fireObserver(notification: NSNotification) {
+        let team = notification.object as? TeamsData
+        teamId = team?.team.id
+        fetchDataForStandingsSection()
+    }
+    
+    
+    func layoutUI() {
         view.addSubview(sectionView)
         sectionView.bodyView.addSubview(standingsView)
         
