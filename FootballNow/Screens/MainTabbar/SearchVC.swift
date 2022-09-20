@@ -12,8 +12,8 @@ class SearchVC: UIViewController {
     let searchController = UISearchController()
     let tableView = UITableView()
     
-    var searchedTeams: [TeamsData] = []
-    var lastSearched: [TeamsData] = []
+    var searchedTeams: [TeamsResponse] = []
+    var lastSearched: [TeamsResponse] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,22 +23,38 @@ class SearchVC: UIViewController {
         checkForLastSearched()
     }
     
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
+    
     @objc func addToFavoritesPressed(sender: UIButton) {
         let teamIndex = sender.tag
-                    
-        if let index = Favorites.shared.favoritesTeams.firstIndex(where: {$0.team.name == lastSearched[teamIndex].team.name}) {
-            Favorites.shared.favoritesTeams.remove(at: index)
-            Favorites.shared.setFavoritesTeams("favoritesTeams", object: Favorites.shared.favoritesTeams)
-        } else {
-            Favorites.shared.favoritesTeams.append(lastSearched[teamIndex])
-            Favorites.shared.setFavoritesTeams("favoritesTeams", object: Favorites.shared.favoritesTeams)
+        let activeArray = searchedTeams.isEmpty ? lastSearched : searchedTeams
+        
+        PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: activeArray[teamIndex].team.id) { isInFavorites in
+            switch isInFavorites {
+                case true:
+                    PersistenceManager.shared.updateWith(favorite: activeArray[teamIndex], actionType: .remove) { error in
+                        
+                    }
+                    sender.setImage(UIImage(systemName: "heart"), for: .normal)
+                case false:
+                    sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                    PersistenceManager.shared.updateWith(favorite: activeArray[teamIndex], actionType: .add) { error in
+                        
+                    }
+            }
         }
+
 
         tableView.reloadData()
     }
@@ -83,7 +99,7 @@ class SearchVC: UIViewController {
     func checkForLastSearched() {
         if let data = UserDefaults.standard.value(forKey: "LastSearched") as? Data {
             let decoder = JSONDecoder()
-            if let lastSearched = try? decoder.decode([TeamsData].self, from: data) {
+            if let lastSearched = try? decoder.decode([TeamsResponse].self, from: data) {
                 self.lastSearched = lastSearched
                 tableView.reloadData()
             }
@@ -107,7 +123,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNSearchResultCell.cellId, for: indexPath) as! FNSearchResultCell
         cell.addToFavoritesButton.tag = indexPath.row
-        searchedTeams.isEmpty ? cell.set(teams: lastSearched[indexPath.row]) : cell.set(teams: searchedTeams[indexPath.row])
+        searchedTeams.isEmpty ? cell.set(team: lastSearched[indexPath.row]) : cell.set(team: searchedTeams[indexPath.row])
         cell.addToFavoritesButton.addTarget(self, action: #selector(addToFavoritesPressed), for: .touchUpInside)
         return cell
     }

@@ -11,10 +11,10 @@ class GameProgressVC: UIViewController {
     
     let tableView = UITableView()
     
-    var game: FixturesData!
+    var game: FixturesResponse!
     
     
-    init(game: FixturesData) {
+    init(game: FixturesResponse) {
         super.init(nibName: nil, bundle: nil)
         self.game = game
     }

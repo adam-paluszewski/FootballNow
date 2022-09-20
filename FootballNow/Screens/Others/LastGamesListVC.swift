@@ -9,7 +9,7 @@ import UIKit
 
 class LastGamesListVC: UIViewController {
 
-    var lastGames: [FixturesData] = []
+    var lastGames: [FixturesResponse] = []
     
     let tableView = UITableView()
 

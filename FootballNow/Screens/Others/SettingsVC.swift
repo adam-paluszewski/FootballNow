@@ -132,7 +132,7 @@ class SettingsVC: UIViewController {
     func configureVersionLabel() {
         versionLabel.numberOfLines = 2
         versionLabel.text = """
-                                v.1.0.0
+                                v.1.0
                                 © Adam Paluszewski
                             """
     }

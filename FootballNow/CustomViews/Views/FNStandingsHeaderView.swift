@@ -64,15 +64,15 @@ class FNStandingsHeaderView: UIView {
             
             gamesLostLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             gamesLostLabel.trailingAnchor.constraint(equalTo: pointsLabel.leadingAnchor, constant: -15),
-            gamesLostLabel.widthAnchor.constraint(equalToConstant: 15),
+            gamesLostLabel.widthAnchor.constraint(equalToConstant: 17),
             
             gamesDrawLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             gamesDrawLabel.trailingAnchor.constraint(equalTo: gamesLostLabel.leadingAnchor, constant: -15),
-            gamesDrawLabel.widthAnchor.constraint(equalToConstant: 15),
+            gamesDrawLabel.widthAnchor.constraint(equalToConstant: 17),
             
             gamesWonLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             gamesWonLabel.trailingAnchor.constraint(equalTo: gamesDrawLabel.leadingAnchor, constant: -15),
-            gamesWonLabel.widthAnchor.constraint(equalToConstant: 15),
+            gamesWonLabel.widthAnchor.constraint(equalToConstant: 17),
             
             gamesPlayedLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             gamesPlayedLabel.trailingAnchor.constraint(equalTo: gamesWonLabel.leadingAnchor, constant: -15),

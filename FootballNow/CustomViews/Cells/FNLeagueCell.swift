@@ -14,7 +14,7 @@ class FNLeagueCell: UITableViewCell {
     let view = FNSectionView(title: "")
     let tableView = UITableView()
     
-    var games: [FixturesData] = [] {
+    var games: [FixturesResponse] = [] {
         didSet {
             games.sort {$0.fixture.timestamp < $1.fixture.timestamp}
         }

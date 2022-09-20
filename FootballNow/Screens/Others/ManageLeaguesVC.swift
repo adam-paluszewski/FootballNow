@@ -10,7 +10,7 @@ import UIKit
 class ManageLeaguesVC: UIViewController {
     
     let tableView = UITableView()
-    var observedLeagues: [LeaguesData] = []
+    var observedLeagues: [LeaguesResponse] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +28,7 @@ class ManageLeaguesVC: UIViewController {
     
     
     @objc func fireObserver(notification: NSNotification) {
-        observedLeagues = notification.object as! [LeaguesData]
+        observedLeagues = notification.object as! [LeaguesResponse]
         tableView.reloadData()
     }
     

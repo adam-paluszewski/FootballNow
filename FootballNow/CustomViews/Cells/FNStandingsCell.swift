@@ -11,7 +11,7 @@ class FNStandingsCell: UITableViewCell {
     
     static let cellId = "StandingsCell"
 
-    let positionLabel = FNBodyLabel(allingment: .center)
+    let positionLabel = FNBodyLabel(allingment: .right)
     let teamLogoImageView = UIImageView()
     let teamNameLabel = FNBodyLabel(allingment: .left)
     let gamesPlayedLabel = FNBodyLabel(allingment: .center)
@@ -101,8 +101,8 @@ class FNStandingsCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             positionLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            positionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-            positionLabel.widthAnchor.constraint(equalToConstant: 20),
+            positionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            positionLabel.widthAnchor.constraint(equalToConstant: 16),
             
             positionChangeImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             positionChangeImageView.leadingAnchor.constraint(equalTo: positionLabel.trailingAnchor, constant: 3),
@@ -113,9 +113,6 @@ class FNStandingsCell: UITableViewCell {
             teamLogoImageView.leadingAnchor.constraint(equalTo: positionChangeImageView.trailingAnchor, constant: 10),
             teamLogoImageView.widthAnchor.constraint(equalToConstant: 25),
             teamLogoImageView.heightAnchor.constraint(equalToConstant: 25),
-            
-            teamNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            teamNameLabel.leadingAnchor.constraint(equalTo: teamLogoImageView.trailingAnchor, constant: 5),
 
             pointsLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             pointsLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
@@ -123,19 +120,23 @@ class FNStandingsCell: UITableViewCell {
             
             gamesLostLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             gamesLostLabel.trailingAnchor.constraint(equalTo: pointsLabel.leadingAnchor, constant: -20),
-            gamesLostLabel.widthAnchor.constraint(equalToConstant: 15),
+            gamesLostLabel.widthAnchor.constraint(equalToConstant: 17),
             
             gamesDrawLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             gamesDrawLabel.trailingAnchor.constraint(equalTo: gamesLostLabel.leadingAnchor, constant: -15),
-            gamesDrawLabel.widthAnchor.constraint(equalToConstant: 15),
+            gamesDrawLabel.widthAnchor.constraint(equalToConstant: 17),
             
             gamesWonLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             gamesWonLabel.trailingAnchor.constraint(equalTo: gamesDrawLabel.leadingAnchor, constant: -15),
-            gamesWonLabel.widthAnchor.constraint(equalToConstant: 15),
+            gamesWonLabel.widthAnchor.constraint(equalToConstant: 17),
             
             gamesPlayedLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             gamesPlayedLabel.trailingAnchor.constraint(equalTo: gamesWonLabel.leadingAnchor, constant: -15),
-            gamesPlayedLabel.widthAnchor.constraint(equalToConstant: 15),
+            gamesPlayedLabel.widthAnchor.constraint(equalToConstant: 17),
+            
+            teamNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            teamNameLabel.leadingAnchor.constraint(equalTo: teamLogoImageView.trailingAnchor, constant: 5),
+            teamNameLabel.trailingAnchor.constraint(equalTo: gamesPlayedLabel.leadingAnchor, constant: -5),
         ])
     }
 }

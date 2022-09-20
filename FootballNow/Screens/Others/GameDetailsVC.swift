@@ -17,10 +17,8 @@ class GameDetailsVC: UIViewController {
     let statisticsView = UIView()
     let formationsView = UIView()
     
-    let activityIndicatorView = UIActivityIndicatorView(style: .large)
-    
     var gameId: Int!
-    var game: [FixturesData] = []
+    var game: [FixturesResponse] = []
     
     init(gameId: Int) {
         super.init(nibName: nil, bundle: nil)
@@ -35,9 +33,63 @@ class GameDetailsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
-        configureNavigationItem()
         configureSegmentedControl()
         fetchDataForGame()
+    }
+    
+    
+    func configureViewController() {
+        showLoadingView(in: self.view)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem()
+        view.backgroundColor = FNColors.backgroundColor
+        
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        
+        scrollView.delegate = self
+        scrollView.refreshControl = UIRefreshControl()
+        scrollView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        
+        headerView.homeTeamButton.addTarget(self, action: #selector(homeButtonPressed), for: .touchUpInside)
+        headerView.awayTeamButton.addTarget(self, action: #selector(awayButtonPressed), for: .touchUpInside)
+
+        layoutUI()
+    }
+    
+    
+    func configureSegmentedControl() {
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
+        segmentedControlValueChanged()
+    }
+    
+    
+    func fetchDataForGame() {
+        NetworkManager.shared.getFixtures(parameters: "id=\(self.gameId!)") { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                case .success(let fixture):
+                    DispatchQueue.main.async {
+                        self.game = fixture
+                        self.headerView.set(game: fixture[0])
+                        self.add(childVC: GameProgressVC(game: fixture[0]), to: self.progressView)
+                        self.add(childVC: GameStatisticsVC(statistics: fixture[0].statistics), to: self.statisticsView)
+                        self.add(childVC: GameFormationsVC(squad: fixture[0].lineups), to: self.formationsView)
+                    }
+                case .failure(let error):
+                    self.presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
+            }
+            DispatchQueue.main.async { self.dismissLoadingView(in: self.view) }
+        }
+    }
+    
+    
+    @objc func handleRefreshControl() {
+        remove(childrenVC: children)
+        showLoadingView(in: view)
+        fetchDataForGame()
+        scrollView.refreshControl?.endRefreshing()
     }
     
     
@@ -63,36 +115,7 @@ class GameDetailsVC: UIViewController {
 
     }
     
-    
-    func fetchDataForGame() {
-        NetworkManager.shared.getFixtures(parameters: "id=\(self.gameId!)") { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-                case .success(let fixture):
-                    DispatchQueue.main.async {
-                        self.game = fixture.response
-                        self.headerView.set(game: fixture.response[0])
-                        self.activityIndicatorView.stopAnimating()
-                        self.add(childVC: GameProgressVC(game: fixture.response[0]), to: self.progressView)
 
-                        
-                        self.add(childVC: GameStatisticsVC(statistics: fixture.response[0].statistics), to: self.statisticsView)
-                        
-                        self.add(childVC: GameFormationsVC(squad: fixture.response[0].lineups), to: self.formationsView)
-                    }
-                    
-                case .failure(let error):
-                    print(error)
-            }
-        }
-    }
-    
-    
-    func configureNavigationItem() {
-        
-    }
-    
-    
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         super.preferredContentSizeDidChange(forChildContentContainer: container)
         if container as? GameProgressVC != nil {
@@ -107,34 +130,21 @@ class GameDetailsVC: UIViewController {
     
     @objc func homeButtonPressed() {
         let teamDetails = TeamDetails(id: game[0].teams.home.id, name: game[0].teams.home.name, logo: game[0].teams.home.logo)
-        let team = TeamsData(team: teamDetails)
+        let team = TeamsResponse(team: teamDetails)
         navigationController?.pushViewController(TeamDashboardVC(isMyTeamShowing: false, team: team), animated: true)
     }
     
+    
     @objc func awayButtonPressed() {
         let teamDetails = TeamDetails(id: game[0].teams.away.id, name: game[0].teams.away.name, logo: game[0].teams.away.logo)
-        let team = TeamsData(team: teamDetails)
+        let team = TeamsResponse(team: teamDetails)
         navigationController?.pushViewController(TeamDashboardVC(isMyTeamShowing: false, team: team), animated: true)
     }
  
     
-    func configureViewController() {
-        navigationItem.backBarButtonItem = UIBarButtonItem()
-        view.backgroundColor = FNColors.backgroundColor
-        scrollView.delegate = self
-        stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
-        
-        activityIndicatorView.backgroundColor = .systemBackground
-        activityIndicatorView.alpha = 0.6
-        activityIndicatorView.startAnimating()
-        
-        headerView.homeTeamButton.addTarget(self, action: #selector(homeButtonPressed), for: .touchUpInside)
-        headerView.awayTeamButton.addTarget(self, action: #selector(awayButtonPressed), for: .touchUpInside)
-        
+    func layoutUI() {
         view.addSubview(scrollView)
         scrollView.addSubview(headerView)
-        scrollView.addSubview(activityIndicatorView)
         scrollView.addSubview(segmentedControl)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(progressView)
@@ -144,13 +154,12 @@ class GameDetailsVC: UIViewController {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             headerView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
             headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -167,20 +176,7 @@ class GameDetailsVC: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            
-            activityIndicatorView.topAnchor.constraint(equalTo: headerView.topAnchor),
-            activityIndicatorView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            activityIndicatorView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            activityIndicatorView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
         ])
-            
-    }
-    
-    
-    func configureSegmentedControl() {
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
-        segmentedControlValueChanged()
     }
 }
 
@@ -188,12 +184,11 @@ class GameDetailsVC: UIViewController {
 extension GameDetailsVC: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let screenHeight = view.bounds.size.height
-//        let contentHeight = scrollView.contentSize.height
         let offsetY = scrollView.contentOffset.y
 
-        if offsetY > 68 {
+        if offsetY > -88 + 68 {
             navigationItem.titleView = FNGameScoreTitleView(fixtureData: game[0])
+            navigationItem.title = nil
         } else {
             navigationItem.titleView = nil
             navigationItem.title = "Podsumowanie meczu"

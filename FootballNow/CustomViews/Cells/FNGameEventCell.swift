@@ -102,7 +102,7 @@ class FNGameEventCell: UITableViewCell {
     }
     
     
-    func set(game: FixturesData, indexPath: Int) {
+    func set(game: FixturesResponse, indexPath: Int) {
         let events = game.events
         let eventsReversed = Array(events!.reversed())
         
@@ -133,7 +133,7 @@ class FNGameEventCell: UITableViewCell {
                 } else if event.type == "Goal" {
                     homeEventPlayerLabel.text = event.player.name
                     homeExtraInfoLabel.text = "asysta \(event.assist.name ?? "")"
-                }
+                } 
             } else {
                 homeExtraInfoLabel.isHidden = true
             }
@@ -153,8 +153,10 @@ class FNGameEventCell: UITableViewCell {
                     } else {
                         homeEventImageView.image = UIImage(named: "FNRedCard")
                     }
+                case "Var": //event.details: "Red card cancelled", "Goal confirmed", "Goal cancelled", "Penalty confirmed"
+                    homeEventImageView.image = UIImage(named: "FNVar")
                 default:
-                    print("Incorrect api answer")
+                    print("Missing image for some home event")
             }
             
         } else if event.team.id == awayTeam {
@@ -205,8 +207,10 @@ class FNGameEventCell: UITableViewCell {
                     } else {
                         awayEventImageView.image = UIImage(named: "FNRedCard")
                     }
+                case "Var": //event.details: "Red card cancelled", "Goal confirmed", "Goal cancelled", "Penalty confirmed"
+                    awayEventImageView.image = UIImage(named: "FNVar")
                 default:
-                    print("Incorrect api answer")
+                    print("Missing image for some away event")
             }
             
         }

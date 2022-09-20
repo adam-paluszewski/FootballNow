@@ -16,36 +16,19 @@ class TeamDashboardVC: UIViewController {
     let nextGamesSectionView = FNSectionView(title: "Kolejne mecze")
     let squadSectionView = FNSectionView(title: "Zawodnicy")
     
-    var team: TeamsData?
+    var addToFavoritesButton = UIBarButtonItem()
+    
+    var isMyTeamShowing: Bool!
+    var team: TeamsResponse?
     var isTeamInFavorites = false
     
     
-    init(isMyTeamShowing: Bool = false, team: TeamsData?) {
+    init(isMyTeamShowing: Bool = false, team: TeamsResponse?) {
         super.init(nibName: nil, bundle: nil)
         self.team = team
-        guard let myTeam = team else { return }
-        
-        if isMyTeamShowing {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationItemView())
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: SFSymbols.settings, style: .plain, target: self, action: #selector(openSettings))
-        } else {
-            navigationItem.titleView = FNTeamTitleView(image: myTeam.team.logo, title: myTeam.team.name)
-            navigationItem.leftBarButtonItem = nil
-            
-            isTeamInFavorites = Favorites.shared.isTeamInFavorites(id: team!.team.id)
-            var image = UIImage()
-            
-            if isTeamInFavorites {
-                image = UIImage(systemName: "heart.fill")!
-            } else {
-                image = UIImage(systemName: "heart")!
-            }
-            
-            let addToFavoritesButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addToFavorites))
-            addToFavoritesButton.tintColor = .red
-            navigationItem.rightBarButtonItem = addToFavoritesButton
-        }
+        self.isMyTeamShowing = isMyTeamShowing
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -60,8 +43,43 @@ class TeamDashboardVC: UIViewController {
     }
     
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !isMyTeamShowing {
+            PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: team?.team.id) { isInFavorites in
+                switch isInFavorites {
+                    case true:
+                        addToFavoritesButton.image = UIImage(systemName: "heart.fill")!
+                        isTeamInFavorites = true
+                    case false:
+                        addToFavoritesButton.image = UIImage(systemName: "heart")!
+                        isTeamInFavorites = false
+                }
+            }
+        }
+    }
+    
+    
     func configureViewController() {
+        navigationItem.backBarButtonItem = UIBarButtonItem()
+        navigationItem.largeTitleDisplayMode = .never
         view.backgroundColor = FNColors.backgroundColor
+        
+        scrollView.refreshControl = UIRefreshControl()
+        scrollView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        
+        addToFavoritesButton = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(addToFavorites))
+        addToFavoritesButton.tintColor = .red
+        navigationItem.rightBarButtonItem = addToFavoritesButton
+        
+        if isMyTeamShowing {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationItemView())
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: SFSymbols.settings, style: .plain, target: self, action: #selector(openSettings))
+        } else {
+            navigationItem.titleView = FNTeamTitleView(image: team!.team.logo, title: team!.team.name)
+            navigationItem.leftBarButtonItem = nil
+        }
+        
         layoutUI()
     }
     
@@ -78,10 +96,17 @@ class TeamDashboardVC: UIViewController {
     
     
     func addChildrenViewControllers() {
-        add(childVC: LastGameSectionVC(teamId: team?.team.id), to: lastGameSectionView)
-        add(childVC: StandingsSectionVC(teamId: team?.team.id), to: standingsSectionView)
-        add(childVC: NextGamesSectionVC(teamId: team?.team.id), to: nextGamesSectionView)
-        add(childVC: SquadSectionVC(teamId: team?.team.id), to: squadSectionView)
+        add(childVC: FNLastGameVC(teamId: team?.team.id), to: lastGameSectionView)
+        add(childVC: FNStandingsVC(teamId: team?.team.id), to: standingsSectionView)
+        add(childVC: FNNextGamesVC(teamId: team?.team.id), to: nextGamesSectionView)
+        add(childVC: FNSquadVC(teamId: team?.team.id), to: squadSectionView)
+    }
+    
+    
+    @objc func handleRefreshControl() {
+        remove(childrenVC: children)
+        addChildrenViewControllers()
+        scrollView.refreshControl?.endRefreshing()
     }
 
     
@@ -90,20 +115,22 @@ class TeamDashboardVC: UIViewController {
         let navController = UINavigationController(rootViewController: settingsVC)
         navController.isModalInPresentation = true
         present(navController, animated: true)
- 
     }
     
     
     @objc func addToFavorites() {
         if isTeamInFavorites {
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
-            let index = Favorites.shared.favoritesTeams.firstIndex(where: {$0.team.name == team?.team.name})!
-            Favorites.shared.favoritesTeams.remove(at: index)
-            Favorites.shared.setFavoritesTeams("favoritesTeams", object: Favorites.shared.favoritesTeams)
+            PersistenceManager.shared.updateWith(favorite: self.team!, actionType: .remove) { error in
+                guard error != nil else { return }
+                presentAlertOnMainThread(title: "Błąd", message: FNError.unableRemoveFromFavorites.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
+            }
         } else {
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
-            Favorites.shared.favoritesTeams.append(team!)
-            Favorites.shared.setFavoritesTeams("favoritesTeams", object: Favorites.shared.favoritesTeams)
+            PersistenceManager.shared.updateWith(favorite: self.team!, actionType: .add) { error in
+                guard error != nil else { return }
+                presentAlertOnMainThread(title: "Błąd", message: FNError.unableAddToFavorites.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
+            }
         }
         isTeamInFavorites.toggle()
     }
@@ -112,13 +139,13 @@ class TeamDashboardVC: UIViewController {
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         super.preferredContentSizeDidChange(forChildContentContainer: container)
         
-        if container as? NextGamesSectionVC != nil {
+        if container as? FNNextGamesVC != nil {
             nextGamesSectionView.isHidden = true
-        } else if container as? LastGameSectionVC != nil {
+        } else if container as? FNLastGameVC != nil {
             lastGameSectionView.isHidden = true
-        } else if container as? StandingsSectionVC != nil {
+        } else if container as? FNStandingsVC != nil {
             standingsSectionView.isHidden = true
-        } else if container as? SquadSectionVC != nil {
+        } else if container as? FNSquadVC != nil {
             squadSectionView.isHidden = true
         }
     }

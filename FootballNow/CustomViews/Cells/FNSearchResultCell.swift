@@ -64,22 +64,23 @@ class FNSearchResultCell: UITableViewCell {
     }
     
     
-    func set(teams: TeamsData) {
-        teamNameLabel.text = teams.team.name
+    func set(team: TeamsResponse) {
+        teamNameLabel.text = team.team.name
         
-        NetworkManager.shared.downloadImage(from: teams.team.logo) { [weak self] image in
+        PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: team.team.id) { isInFavorites in
+            switch isInFavorites {
+                case true:
+                    addToFavoritesButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                case false:
+                    addToFavoritesButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            }
+        }
+
+        NetworkManager.shared.downloadImage(from: team.team.logo) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.teamLogoImageView.image = image
             }
         }
-        
-        if Favorites.shared.favoritesTeams.contains(where: {$0.team.name == teams.team.name}) {
-            addToFavoritesButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        } else {
-            addToFavoritesButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        }
-            
-            
     }
 }

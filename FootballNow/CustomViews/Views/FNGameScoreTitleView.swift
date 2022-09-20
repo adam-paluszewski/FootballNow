@@ -18,7 +18,7 @@ class FNGameScoreTitleView: UIView {
     }
     
     
-    init(fixtureData: FixturesData) {
+    init(fixtureData: FixturesResponse) {
         super.init(frame: .zero)
         
         NetworkManager.shared.downloadImage(from: fixtureData.teams.home.logo, completionHandler: { image in
@@ -32,10 +32,10 @@ class FNGameScoreTitleView: UIView {
                 self.awayTeamImageView.image = image
             }
         })
-        
-        let homeTeamGoals = String(fixtureData.goals.home ?? 999)
-        let awayTeamGoals = String(fixtureData.goals.away ?? 999)
-        scoreLabel.text = homeTeamGoals + " - " + awayTeamGoals
+
+        let homeTeamGoals = fixtureData.goals?.home == nil ? "b/d" : String((fixtureData.goals?.home)!)
+        let awayTeamGoals = fixtureData.goals?.away == nil ? "b/d" : String((fixtureData.goals?.away)!)
+        scoreLabel.text = "\(homeTeamGoals) - \(awayTeamGoals)"
         
         configure()
         addSubviews()

@@ -1,5 +1,5 @@
 //
-//  NextGamesSectionVC.swift
+//  FNNextGames.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 25/08/2022.
@@ -7,10 +7,10 @@
 
 import UIKit
 
-class NextGamesSectionVC: UIViewController {
+class FNNextGamesVC: UIViewController {
 
-    let sectionView = FNSectionView(title: "Kolejne mecze", buttonText: "Więcej")
-    var nextGames: [FixturesData] = []
+    let sectionView = FNSectionView(title: "Kolejne mecze")
+    var nextGames: [FixturesResponse] = []
     let tableView = UITableView()
     var teamId: Int!
     
@@ -62,8 +62,8 @@ class NextGamesSectionVC: UIViewController {
     
     func configureTableView() {
         tableView.register(FNNextGameCell.self, forCellReuseIdentifier: FNNextGameCell.cellId)
-        tableView.dataSource = self
         tableView.delegate = self
+        self.tableView.dataSource = self
         tableView.backgroundColor = .clear
         tableView.isScrollEnabled = false
     }
@@ -76,20 +76,26 @@ class NextGamesSectionVC: UIViewController {
             switch result {
                 case .success(let fixtures):
                     DispatchQueue.main.async {
-                        self.dismissLoadingView(in: self.sectionView.bodyView)
-                        self.nextGames = fixtures.response
+                        guard !fixtures.isEmpty else {
+                            self.showEmptyState(in: self.sectionView.bodyView)
+                            return
+                        }
+                        self.nextGames = fixtures
+                        self.sectionView.button.setTitle("Zobacz więcej", for: .normal)
                         self.tableView.reloadData()
+                        
+                        
                     }
                 case .failure(let error):
-                    self.preferredContentSizeOnMainThread(size: CGSize(width: 0.01, height: 0))
-                    print(error)
+                    self.presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
             }
+            self.dismissLoadingView(in: self.sectionView.bodyView)
         }
     }
     
     
     @objc func fireObserver(notification: NSNotification) {
-        let team = notification.object as? TeamsData
+        let team = notification.object as? TeamsResponse
         teamId = team?.team.id
         fetchDataForNextGamesSection()
     }
@@ -116,7 +122,7 @@ class NextGamesSectionVC: UIViewController {
 }
 
 
-extension NextGamesSectionVC: UITableViewDataSource, UITableViewDelegate {
+extension FNNextGamesVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UIElementsSizes.nextGameCellHeight

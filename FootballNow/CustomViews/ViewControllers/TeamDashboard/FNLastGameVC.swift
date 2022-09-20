@@ -1,5 +1,5 @@
 //
-//  LastGameSectionVC.swift
+//  FNLastGameVC.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 25/08/2022.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class LastGameSectionVC: UIViewController {
+class FNLastGameVC: UIViewController {
     
-    let sectionView = FNSectionView(title: "Ostatni mecz", buttonText: "Więcej")
+    let sectionView = FNSectionView(title: "Ostatni mecz")
     let gameOverviewView = FNGameOverviewView()
     let gameDetailsButton = UIButton()
     
-    var lastGames: [FixturesData] = []
+    var lastGames: [FixturesResponse] = []
     var teamId: Int!
     
     init(teamId: Int?) {
@@ -57,16 +57,21 @@ class LastGameSectionVC: UIViewController {
             switch result {
                 case .success(let fixtures):
                     DispatchQueue.main.async {
-                        self.dismissLoadingView(in: self.sectionView.bodyView)
-                        self.lastGames = fixtures.response
+                        self.lastGames = fixtures
                         DispatchQueue.main.async {
-                            self.gameOverviewView.set(game: fixtures.response[0])
+                            guard !self.lastGames.isEmpty else {
+                                self.showEmptyState(in: self.sectionView.bodyView)
+                                return
+                            }
+                            self.gameOverviewView.set(game: fixtures[0])
+                            self.sectionView.button.setTitle("Zobacz więcej", for: .normal)
                         }
                     }
                 case .failure(let error):
                     self.preferredContentSizeOnMainThread(size: CGSize(width: 0.01, height: 0))
-                    print(error)
+                    self.presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
             }
+            self.dismissLoadingView(in: self.sectionView.bodyView)
         }
     }
     
@@ -90,7 +95,7 @@ class LastGameSectionVC: UIViewController {
     
     
     @objc func fireObserver(notification: NSNotification) {
-        let team = notification.object as? TeamsData
+        let team = notification.object as? TeamsResponse
         teamId = team?.team.id
         fetchDataForLastGameSection()
     }

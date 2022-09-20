@@ -11,8 +11,8 @@ class GamesVC: UIViewController {
     
     var tableView = UITableView()
     
-    var observedLeagues: [LeaguesData] = []
-    var gamesPerLeague: [[FixturesData]] = []
+    var observedLeagues: [LeaguesResponse] = []
+    var gamesPerLeague: [[FixturesResponse]] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,7 @@ class GamesVC: UIViewController {
     
     
     @objc func fireObserver(notification: NSNotification) {
-        observedLeagues = notification.object as! [LeaguesData]
+        observedLeagues = notification.object as! [LeaguesResponse]
         fetchDataForGames()
     }
     
@@ -72,7 +72,7 @@ class GamesVC: UIViewController {
         if let data = UserDefaults.standard.data(forKey: "myLeagues") {
             let decoder = JSONDecoder()
             
-            if let observedLeagues = try? decoder.decode([LeaguesData].self, from: data) {
+            if let observedLeagues = try? decoder.decode([LeaguesResponse].self, from: data) {
                 self.observedLeagues = observedLeagues
             }
         }
@@ -86,28 +86,28 @@ class GamesVC: UIViewController {
     
     
     func fetchDataForGames() {
-        gamesPerLeague.removeAll()
-        let semaphore = DispatchSemaphore(value: 1)
-        for i in observedLeagues {
-            
-            let leagueId = i.league.id
-            
-            guard let leagueId = leagueId else { return }
-            NetworkManager.shared.getFixtures(parameters: "league=\(leagueId)&from=\(FNDateFormatting.getDateYYYYMMDD(for: .current))&to=\(FNDateFormatting.getDateYYYYMMDD(for: .oneWeekAhead))&season=2022&timezone=Europe/Warsaw") { [weak self] result in
-                semaphore.wait()
-                guard let self = self else { return }
-                switch result {
-                    case .success(let fixtures):
-                        self.gamesPerLeague.append(fixtures.response)
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
-                        semaphore.signal()
-                    case .failure(let error):
-                        print(error)
-                }
-            }
-        }
+//        gamesPerLeague.removeAll()
+//        let semaphore = DispatchSemaphore(value: 1)
+//        for i in observedLeagues {
+//
+//            let leagueId = i.league.id
+//
+//            guard let leagueId = leagueId else { return }
+//            NetworkManager.shared.getFixtures(parameters: "league=\(leagueId)&from=\(FNDateFormatting.getDateYYYYMMDD(for: .current))&to=\(FNDateFormatting.getDateYYYYMMDD(for: .oneWeekAhead))&season=2022&timezone=Europe/Warsaw") { [weak self] result in
+//                semaphore.wait()
+//                guard let self = self else { return }
+//                switch result {
+//                    case .success(let fixtures):
+//                        self.gamesPerLeague.append(fixtures)
+//                        DispatchQueue.main.async {
+//                            self.tableView.reloadData()
+//                        }
+//                        semaphore.signal()
+//                    case .failure(let error):
+//                        print(error)
+//                }
+//            }
+//        }
     }
 
 }

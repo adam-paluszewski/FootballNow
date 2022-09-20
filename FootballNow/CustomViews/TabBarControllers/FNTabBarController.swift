@@ -12,7 +12,7 @@ class FNTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.tintColor = UIColor(named: "FNNavigationTint")
-        viewControllers = [createTeamDashboardNC(), createGamesNC(), createFavoritesNC(), createSearchNC()]
+        viewControllers = [createTeamDashboardNC(), createFavoritesNC(), createSearchNC()] //createGamesNC(),
             
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.backgroundColor = UIColor(named: "FNNavBarColor")
@@ -23,14 +23,14 @@ class FNTabBarController: UITabBarController {
     
     
     func createTeamDashboardNC() -> UINavigationController {
-        var team: TeamsData?
+        var team: TeamsResponse?
         
         PersistenceManager.shared.retrieveMyTeam { result in
             switch result {
                 case .success(let myTeam):
                     team = myTeam
-                case .failure(let error):
-                    print("eror")
+                case .failure(_):
+                    print("myTeam not found")
             }
         }
         

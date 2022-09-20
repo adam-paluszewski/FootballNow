@@ -12,5 +12,11 @@ enum FNError: String, Error {
     case unableToComplete = "Unable to complete your request. Please check your internet connection."
     case invalidResponse = "Invalid response from server. Please try again"
     case invalidData = "Data received from server was invalid. Please try again."
-    case cantGetMyTeam = ""
+    case cantGetMyTeam = "d"
+    case unableToFavorites = "sdsd"
+    case unableToMyTeam = "vv"
+    case alreadyInFavorites = " ffdfd"
+    
+    case unableAddToFavorites = "Nie udało się dodać drużyny do ulubionych. Spróbuj ponownie"
+    case unableRemoveFromFavorites = "Nie udało się usunąć drużyny z ulubionych. Spróbuj ponownie"
 }

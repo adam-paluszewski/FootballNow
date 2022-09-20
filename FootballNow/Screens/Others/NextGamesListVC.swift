@@ -9,7 +9,7 @@ import UIKit
 
 class NextGamesListVC: UIViewController {
     
-    var nextGames: [FixturesData] = []
+    var nextGames: [FixturesResponse] = []
     
     let tableView = UITableView()
 
@@ -33,16 +33,17 @@ class NextGamesListVC: UIViewController {
         tableView.register(FNNextGameCell.self, forCellReuseIdentifier: FNNextGameCell.cellId)
         tableView.backgroundColor = FNColors.sectionColor
         tableView.showsVerticalScrollIndicator = false
-        tableView.isUserInteractionEnabled = false
+        tableView.isUserInteractionEnabled = true
+        tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }
@@ -62,7 +63,6 @@ extension NextGamesListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNNextGameCell.cellId, for: indexPath) as! FNNextGameCell
         cell.set(nextGame: nextGames[indexPath.row])
-        cell.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         return cell
     }
     

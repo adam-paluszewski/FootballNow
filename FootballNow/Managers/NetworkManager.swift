@@ -12,7 +12,7 @@ class NetworkManager {
     private let baseURL = "https://v3.football.api-sports.io/"
     let cache = NSCache<NSString, UIImage>()
     
-    func getFixtures(parameters: String, completionHandler: @escaping (Result<Fixtures, FNError>) -> Void) {
+    func getFixtures(parameters: String, completionHandler: @escaping (Result<[FixturesResponse], FNError>) -> Void) {
         let endpoint = baseURL + "fixtures/?\(parameters)"
         
         guard let url = URL(string: endpoint) else {
@@ -41,7 +41,7 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 let fixtures = try decoder.decode(Fixtures.self, from: data)
-                completionHandler(.success(fixtures))
+                completionHandler(.success(fixtures.response))
             } catch {
                 completionHandler(.failure(.invalidData))
             }
@@ -50,7 +50,7 @@ class NetworkManager {
     }
     
     
-    func getStandings(parameters: String, completionHandler: @escaping (Result<Standings, FNError>) -> Void) {
+    func getStandings(parameters: String, completionHandler: @escaping (Result<[StandingsResponse], FNError>) -> Void) {
         let endpoint = baseURL + "standings/?\(parameters)"
         
         guard let url = URL(string: endpoint) else {
@@ -79,7 +79,7 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 let standings = try decoder.decode(Standings.self, from: data)
-                completionHandler(.success(standings))
+                completionHandler(.success(standings.response))
             } catch {
                 completionHandler(.failure(.invalidData))
             }
@@ -88,9 +88,8 @@ class NetworkManager {
     }
     
     
-    func getSquads(parameters: String, completionHandler: @escaping (Result<Squads, FNError>) -> Void) {
+    func getSquads(parameters: String, completionHandler: @escaping (Result<[SquadsResponse], FNError>) -> Void) {
         let endpoint = baseURL + "players/squads/?\(parameters)"
-        
         guard let url = URL(string: endpoint) else {
             completionHandler(.failure(.invalidUsername))
             return
@@ -117,7 +116,7 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 let squads = try decoder.decode(Squads.self, from: data)
-                completionHandler(.success(squads))
+                completionHandler(.success(squads.response))
             } catch {
                 completionHandler(.failure(.invalidData))
             }
@@ -164,7 +163,7 @@ class NetworkManager {
     }
     
     
-    func getLeagues(parameters: String, completionHandler: @escaping (Result<Leagues, FNError>) -> Void) {
+    func getLeagues(parameters: String, completionHandler: @escaping (Result<[LeaguesResponse], FNError>) -> Void) {
         let endpoint = baseURL + "leagues/?\(parameters)"
         
         guard let url = URL(string: endpoint) else {
@@ -193,7 +192,12 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 let leagues = try decoder.decode(Leagues.self, from: data)
-                completionHandler(.success(leagues))
+                
+                guard !leagues.response.isEmpty else {
+                    completionHandler(.failure(.invalidResponse))
+                    return
+                }
+                completionHandler(.success(leagues.response))
             } catch {
                 completionHandler(.failure(.invalidData))
             }
@@ -202,7 +206,7 @@ class NetworkManager {
     }
     
     
-    func getPlayer(parameters: String, completionHandler: @escaping (Result<Players, FNError>) -> Void) {
+    func getPlayer(parameters: String, completionHandler: @escaping (Result<[PlayersResponse], FNError>) -> Void) {
         let endpoint = baseURL + "players/?\(parameters)"
         
         guard let url = URL(string: endpoint) else {
@@ -231,7 +235,7 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 let player = try decoder.decode(Players.self, from: data)
-                completionHandler(.success(player))
+                completionHandler(.success(player.response))
             } catch {
                 completionHandler(.failure(.invalidData))
             }

@@ -11,7 +11,7 @@ class StandingsVC: UIViewController {
 
     let tableView = UITableView()
     let tableViewHeaderView = FNStandingsHeaderView()
-    var standings: [StandingsData] = []
+    var standings: [StandingsResponse] = []
     var leagueId: Int?
     
     override func viewDidLoad() {
@@ -33,29 +33,34 @@ class StandingsVC: UIViewController {
         tableView.dataSource = self
         tableView.register(FNStandingsCell.self, forCellReuseIdentifier: FNStandingsCell.cellId)
         tableView.backgroundColor = FNColors.sectionColor
+        tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
+        tableView.sectionHeaderTopPadding = 0
+        tableView.showsVerticalScrollIndicator = false
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 
     
     func fetchDataForStandings() {
+        showLoadingView(in: view)
         guard leagueId != nil else { return }
         NetworkManager.shared.getStandings(parameters: "league=\(leagueId!)&season=2022") { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let standings):
-                    self.standings = standings.response
+                    self.standings = standings
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
-                        self.setNavigationItemTitle(from: standings.response)
+                        self.setNavigationItemTitle(from: standings)
+                        self.dismissLoadingView(in: self.view)
                     }
                 case .failure(let error):
                     print(error)
@@ -64,7 +69,7 @@ class StandingsVC: UIViewController {
     }
     
     
-    func setNavigationItemTitle(from standings: [StandingsData]) {
+    func setNavigationItemTitle(from standings: [StandingsResponse]) {
         let leagueName = standings[0].league.name ?? ""
         let leagueLogo = standings[0].league.logo ?? ""
         navigationItem.titleView = FNTeamTitleView(image: leagueLogo, title: leagueName)
@@ -76,7 +81,7 @@ class StandingsVC: UIViewController {
 extension StandingsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return 45
     }
     
     
@@ -95,7 +100,7 @@ extension StandingsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let team = standings[0].league.standings[0][indexPath.row].team
         let teamDetails = TeamDetails(id: team.id!, name: team.name!, logo: team.logo!)
-        let teamsData = TeamsData(team: teamDetails)
+        let teamsData = TeamsResponse(team: teamDetails)
         navigationController?.pushViewController(TeamDashboardVC(isMyTeamShowing: false, team: teamsData), animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }

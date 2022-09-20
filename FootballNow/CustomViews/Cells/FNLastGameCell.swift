@@ -36,15 +36,15 @@ class FNLastGameCell: UITableViewCell {
     }
     
     
-    func set(lastGame: FixturesData) {
+    func set(lastGame: FixturesResponse) {
         homeTeamNameLabel.text = lastGame.teams.home.name
         awayTeamNameLabel.text = lastGame.teams.away.name
         
-        if let homeTeamGoals = lastGame.goals.home {
+        if let homeTeamGoals = lastGame.goals?.home {
             homeTeamScoreLabel.text = String(homeTeamGoals)
         }
         
-        if let awayTeamGoals = lastGame.goals.away {
+        if let awayTeamGoals = lastGame.goals?.away {
             awayTeamScoreLabel.text = String(awayTeamGoals)
         }
         

@@ -35,6 +35,20 @@ struct FNColors {
     static let sectionColor = UIColor(named: "FNSectionColor")
 }
 
+
 struct SFSymbols {
-    static let settings = UIImage(systemName: "gear")
+    static let settings = UIImage(systemName: "gearshape")
+    static let followers = UIImage(systemName: "person.2")!
+    static let following = UIImage(systemName: "heart")!
+    static let error = UIImage(systemName: "x.circle")!
+    static let success = UIImage(systemName: "checkmark.circle")!
+    static let search = UIImage(systemName: "magnifyingglass.circle.fill")!
+    static let person = UIImage(systemName: "person")!
+    static let person2 = UIImage(systemName: "person.2")!
+}
+
+
+struct Fonts {
+    static let body = UIFont.systemFont(ofSize: 14, weight: .regular)
+    
 }

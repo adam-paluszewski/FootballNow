@@ -38,13 +38,15 @@ class FNGameOverviewView: UIView {
     }
     
     
-    func set(game: FixturesData) {
+    func set(game: FixturesResponse) {
         let status = game.fixture.status.short
         let time = game.fixture.status.elapsed
 
         timeElapsedLabel.text = FNFixtureMethods.getElapsedTime(elapsed: time, gameStatus: status)
 
-        gameScoreLabel.text = "\(String(game.goals.home!)) - \(String(game.goals.away!))"
+        let homeGoals = game.goals?.home == nil ? "b/d" : String((game.goals?.home)!)
+        let awayGoals = game.goals?.away == nil ? "b/d" : String((game.goals?.away)!)
+        gameScoreLabel.text = "\(homeGoals) - \(awayGoals)"
         
         homeTeamNameLabel.text = game.teams.home.name
         awayTeamNameLabel.text = game.teams.away.name

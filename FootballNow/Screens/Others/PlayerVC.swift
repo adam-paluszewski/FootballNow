@@ -19,7 +19,7 @@ class PlayerVC: UIViewController {
     var playerNumber: Int?
     var playerPosition: String?
     
-    var player: [PlayersData] = []
+    var player: [PlayersResponse] = []
     var leagueToShow = 0
     
     init(id: Int, number: Int?, position: String?) {
@@ -55,9 +55,9 @@ class PlayerVC: UIViewController {
             switch result {
                 case .success(let player):
                     DispatchQueue.main.async {
-                        self.statisticsContainerView.button.setTitle(player.response[0].statistics[0].league.name, for: .normal)
-                        self.infoContainerView.set(player: player.response[0].player, number: self.playerNumber, position: self.playerPosition)
-                        self.player = player.response
+                        self.statisticsContainerView.button.setTitle(player[0].statistics[0].league.name, for: .normal)
+                        self.infoContainerView.set(player: player[0].player, number: self.playerNumber, position: self.playerPosition)
+                        self.player = player
                         self.tableView.reloadData()
                     }
                     

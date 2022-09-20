@@ -53,7 +53,7 @@ class FNSelectTeamCell: UITableViewCell {
     }
     
     
-    func set(teams: TeamsData) {
+    func set(teams: TeamsResponse) {
         teamNameLabel.text = teams.team.name
         
         NetworkManager.shared.downloadImage(from: teams.team.logo) { [weak self] image in

@@ -10,12 +10,12 @@ import Foundation
 
 
 struct Standings: Codable {
-    var response: [StandingsData]
+    var response: [StandingsResponse]
     var results: Int
 }
 
 
-struct StandingsData: Codable {
+struct StandingsResponse: Codable {
     var league: League
 }
 

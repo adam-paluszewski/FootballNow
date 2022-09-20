@@ -1,5 +1,5 @@
 //
-//  SquadSectionVC.swift
+//  FNSquadVC.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 25/08/2022.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-class SquadSectionVC: UIViewController {
+class FNSquadVC: UIViewController {
 
-    let sectionView = FNSectionView(title: "Zawodnicy", buttonText: "Więcej")
+    let sectionView = FNSectionView(title: "Zawodnicy")
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
-    var squad: [SquadsData] = []
+    var players: [SquadsPlayer] = []
     var teamId: Int!
     
     init(teamId: Int?) {
@@ -55,7 +55,7 @@ class SquadSectionVC: UIViewController {
         } completion: { finished in
             sender.transform = .identity
             let squadListVC = SquadListVC()
-            squadListVC.squad = self.squad
+            squadListVC.players = self.players
             self.navigationController?.pushViewController(squadListVC, animated: true)
         }
     }
@@ -67,7 +67,7 @@ class SquadSectionVC: UIViewController {
         let padding: CGFloat = 15
         let minimumItemSpacing: CGFloat = 10
         let availableWIdth = width - (padding * 2) - (minimumItemSpacing * 2)
-        let itemWidth = availableWIdth / 3
+        let itemWidth = min(availableWIdth / 3, 150)
         
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: itemWidth, height: UIElementsSizes.teamDashboardPlayerCellHeight)
@@ -81,34 +81,39 @@ class SquadSectionVC: UIViewController {
     
     func fetchDataforSquadSection() {
         guard let teamId = teamId else { return }
+        print(teamId)
         NetworkManager.shared.getSquads(parameters: "team=\(teamId)") { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let squad):
                     DispatchQueue.main.async {
-                        self.squad = squad.response
+                        guard !squad.isEmpty else {
+                            self.showEmptyState(in: self.sectionView.bodyView)
+                            return
+                        }
+                        self.players = squad[0].players
+                        self.sectionView.button.setTitle("Zobacz listę", for: .normal)
                         self.collectionView.reloadData()
-                        self.dismissLoadingView(in: self.sectionView.bodyView)
                     }
                 case .failure(let error):
-                    self.preferredContentSizeOnMainThread(size: CGSize(width: 0.01, height: 0))
-                    print(error)
+                    self.presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
             }
+            self.dismissLoadingView(in: self.sectionView.bodyView)
         }
     }
     
     
     func configureCollectionView() {
         collectionView.collectionViewLayout = createFlowLayout(view: view)
-        collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.dataSource = self
         collectionView.backgroundColor = .clear
         collectionView.register(FNCollectionPlayerCell.self, forCellWithReuseIdentifier: FNCollectionPlayerCell.cellId)
     }
     
     
     @objc func fireObserver(notification: NSNotification) {
-        let team = notification.object as? TeamsData
+        let team = notification.object as? TeamsResponse
         teamId = team?.team.id
         fetchDataforSquadSection()
     }
@@ -135,27 +140,24 @@ class SquadSectionVC: UIViewController {
 }
 
 
-extension SquadSectionVC: UICollectionViewDataSource, UICollectionViewDelegate {
+extension FNSquadVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard !squad.isEmpty else { return 0 }
-        return squad[0].players.count
+        return players.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FNCollectionPlayerCell.cellId, for: indexPath) as! FNCollectionPlayerCell
-        if !squad.isEmpty {
-            cell.set(player: squad[0].players[indexPath.item])
-        }
+        cell.set(player: players[indexPath.item])
         return cell
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let playerId = squad[0].players[indexPath.item].id
-        let playerNumber = squad[0].players[indexPath.item].number
-        let playerPosition = squad[0].players[indexPath.item].position
+        let playerId = players[indexPath.item].id
+        let playerNumber = players[indexPath.item].number
+        let playerPosition = players[indexPath.item].position
         
         let playerVC = PlayerVC(id: playerId, number: playerNumber, position: playerPosition)
         navigationController?.pushViewController(playerVC, animated: true)

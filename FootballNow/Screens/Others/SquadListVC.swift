@@ -11,7 +11,7 @@ class SquadListVC: UIViewController {
     
     let tableView = UITableView()
     
-    var squad: [SquadsData] = []
+    var players: [SquadsPlayer] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,21 +54,21 @@ extension SquadListVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return squad[0].players.count
+        return players.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNTablePlayerCell.cellId, for: indexPath) as! FNTablePlayerCell
-        cell.set(player: squad[0].players[indexPath.row])
+        cell.set(player: players[indexPath.row])
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let playerId = squad[0].players[indexPath.row].id
-        let playerNumber = squad[0].players[indexPath.row].number
-        let playerPosition = squad[0].players[indexPath.row].position
+        let playerId = players[indexPath.row].id
+        let playerNumber = players[indexPath.row].number
+        let playerPosition = players[indexPath.row].position
         
         let playerVC = PlayerVC(id: playerId, number: playerNumber, position: playerPosition)
         navigationController?.pushViewController(playerVC, animated: true)

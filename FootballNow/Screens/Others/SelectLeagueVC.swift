@@ -10,8 +10,8 @@ import UIKit
 class SelectLeagueVC: UIViewController {
 
     let tableView = UITableView()
-    var leagues: [LeaguesData] = []
-    var observedLeagues: [LeaguesData] = []
+    var leagues: [LeaguesResponse] = []
+    var observedLeagues: [LeaguesResponse] = []
     var isCancelable = false
     
     override func viewDidLoad() {
@@ -23,7 +23,7 @@ class SelectLeagueVC: UIViewController {
     }
     
 
-    func passSelectedLeague(leagueData: LeaguesData) {
+    func passSelectedLeague(leagueData: LeaguesResponse) {
         observedLeagues.append(leagueData)
         
         let leagues = Notification.Name(NotificationKeys.myLeaguesChanged)
@@ -92,7 +92,7 @@ class SelectLeagueVC: UIViewController {
                 guard let self = self else { return }
                 switch result {
                     case .success(let leagues):
-                        self.leagues = leagues.response
+                        self.leagues = leagues
                         DispatchQueue.main.async { self.tableView.reloadData() }
                     case .failure(let error):
                         print(error)

@@ -10,7 +10,7 @@ import UIKit
 class SelectTeamVC: UIViewController {
 
     let tableView = UITableView()
-    var teams: [TeamsData] = []
+    var teams: [TeamsResponse] = []
     var isCancelable = false
     
     var parentVC: UIViewController?
@@ -23,7 +23,7 @@ class SelectTeamVC: UIViewController {
     }
     
 
-    func passSelectedTeam(teamData: TeamsData) {
+    func passSelectedTeam(teamData: TeamsResponse) {
         let team = Notification.Name(NotificationKeys.selectedTeam)
         NotificationCenter.default.post(name: team, object: teamData)
         

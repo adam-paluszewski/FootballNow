@@ -64,7 +64,7 @@ class FNManageLeaguesCell: UITableViewCell {
     }
     
     
-    func set(league: LeaguesData) {
+    func set(league: LeaguesResponse) {
         leagueNameLabel.text = league.league.name
         
         NetworkManager.shared.downloadImage(from: league.league.logo ?? "") { [weak self] image in

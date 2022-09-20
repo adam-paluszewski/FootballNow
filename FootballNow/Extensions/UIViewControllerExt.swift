@@ -10,6 +10,16 @@ import UIKit
 fileprivate var loadingViews: [UIView : UIView] = [:]
 
 extension UIViewController {
+    
+    func presentAlertOnMainThread(title: String, message: String, buttonTitle: String, buttonColor: UIColor, buttonSystemImage: UIImage) {
+        DispatchQueue.main.async {
+            let alertVC = FNAlertVC(title: title, message: message, buttonTitle: buttonTitle, buttonColor: buttonColor, buttonSystemImage: buttonSystemImage)
+            alertVC.modalPresentationStyle = .overFullScreen
+            alertVC.modalTransitionStyle = .crossDissolve
+            self.present(alertVC, animated: true)
+        }
+    }
+    
 
     func showLoadingView(in view: UIView) {
         let containerView = UIView()
@@ -71,9 +81,23 @@ extension UIViewController {
     }
     
     
+    func remove(childrenVC: [UIViewController]) {
+        for vc in childrenVC {
+            vc.willMove(toParent: nil)
+            vc.view.removeFromSuperview()
+            vc.removeFromParent()
+        }
+    }
+    
+    
     func preferredContentSizeOnMainThread(size: CGSize) {
         DispatchQueue.main.async {
             self.preferredContentSize = size
         }
+    }
+    
+    
+    func showEmptyState(in view: UIView) {
+        view.backgroundColor = .yellow
     }
 }

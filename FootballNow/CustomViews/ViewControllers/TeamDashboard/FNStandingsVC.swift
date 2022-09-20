@@ -1,5 +1,5 @@
 //
-//  StandingsSectionVC.swift
+//  FNStandingsVC.swift
 //  FootballNow
 //
 //  Created by Adam Paluszewski on 25/08/2022.
@@ -7,11 +7,12 @@
 
 import UIKit
 
-class StandingsSectionVC: UIViewController {
+class FNStandingsVC: UIViewController {
 
-    let sectionView = FNSectionView(title: "Tabela ligowa", buttonText: "Więcej")
+    let sectionView = FNSectionView(title: "Tabela ligowa", buttonText: "")
     let standingsView = FNMyTeamStandingsView()
     var countryLeagueId: Int?
+    let showStandingsButton = UIButton()
     
     var teamId: Int!
     
@@ -43,6 +44,7 @@ class StandingsSectionVC: UIViewController {
     func configureViewController() {
         showLoadingView(in: sectionView.bodyView)
         sectionView.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        showStandingsButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
         layoutUI()
     }
@@ -55,12 +57,11 @@ class StandingsSectionVC: UIViewController {
             switch result {
                 case .success(let standings):
                     DispatchQueue.main.async {
-                        self.dismissLoadingView(in: self.sectionView.bodyView)
-                        self.fetchDataForLeagues(yourTeamStandings: standings.response)
+                        self.fetchDataForLeagues(yourTeamStandings: standings)
                     }
                 case .failure(let error):
-                    self.preferredContentSizeOnMainThread(size: CGSize(width: 0.01, height: 0))
-                    print(error)
+                    self.presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
+                    self.dismissLoadingView(in: self.sectionView.bodyView)
             }
         }
     }
@@ -78,7 +79,7 @@ class StandingsSectionVC: UIViewController {
     }
     
     
-    func fetchDataForLeagues(yourTeamStandings: [StandingsData]) {
+    func fetchDataForLeagues(yourTeamStandings: [StandingsResponse]) {
         NetworkManager.shared.getLeagues(parameters: "season=2022&team=\(teamId!)") { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -86,11 +87,11 @@ class StandingsSectionVC: UIViewController {
                     //Standings api returns [] of leagues w/o id
                     //We need id to fetch data for League Standings(next screen) and to know which league to show (this screen)
                     //Extra endpoint is needed, then we check which league is Country League and we show data from only this one
-                    let leagues = leagues.response
+                    let leagues = leagues
                     let countryLeague = leagues.filter{$0.league.type == "League"}
                     
                     guard !countryLeague.isEmpty else {
-                        self.preferredContentSizeOnMainThread(size: CGSize(width: 0.01, height: 0))
+                        self.showEmptyState(in: self.sectionView.bodyView)
                         return
                     }
                     self.countryLeagueId = countryLeague[0].league.id
@@ -101,14 +102,15 @@ class StandingsSectionVC: UIViewController {
                         self.standingsView.set(standing: countryLeagueStanding[0].league.standings[0][0])
                     }
                 case .failure(let error):
-                    print(error)
+                    self.presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
             }
+            self.dismissLoadingView(in: self.sectionView.bodyView)
         }
     }
     
     
     @objc func fireObserver(notification: NSNotification) {
-        let team = notification.object as? TeamsData
+        let team = notification.object as? TeamsResponse
         teamId = team?.team.id
         fetchDataForStandingsSection()
     }
@@ -117,6 +119,8 @@ class StandingsSectionVC: UIViewController {
     func layoutUI() {
         view.addSubview(sectionView)
         sectionView.bodyView.addSubview(standingsView)
+        sectionView.bodyView.addSubview(showStandingsButton)
+        showStandingsButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             sectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
@@ -127,7 +131,12 @@ class StandingsSectionVC: UIViewController {
             standingsView.topAnchor.constraint(equalTo: sectionView.bodyView.topAnchor),
             standingsView.leadingAnchor.constraint(equalTo: sectionView.bodyView.leadingAnchor),
             standingsView.trailingAnchor.constraint(equalTo: sectionView.bodyView.trailingAnchor),
-            standingsView.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor)
+            standingsView.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor),
+            
+            showStandingsButton.topAnchor.constraint(equalTo: sectionView.bodyView.topAnchor),
+            showStandingsButton.leadingAnchor.constraint(equalTo: sectionView.bodyView.leadingAnchor),
+            showStandingsButton.trailingAnchor.constraint(equalTo: sectionView.bodyView.trailingAnchor),
+            showStandingsButton.bottomAnchor.constraint(equalTo: sectionView.bodyView.bottomAnchor)
         ])
     }
 }

@@ -8,20 +8,16 @@
 import Foundation
 
 struct Fixtures: Codable {
-    var response: [FixturesData]
+    var response: [FixturesResponse]
     var results: Int
 }
 
-
-
-
-
-struct FixturesData: Codable {
+struct FixturesResponse: Codable {
     var fixture: Fixture
-    var teams: GameTeams
-    var goals: Goals
+    var teams: FTeams
+    var goals: Goals?
     var events: [Events]?
-    var league: FixturesLeague
+    var league: FLeague
     var statistics: [Statistics]?
     var lineups: [Lineups]?
 }
@@ -74,12 +70,12 @@ struct FixtureStatistics: Codable {
     var value: MetadataType?
 }
 
-struct FixturesLeague: Codable {
+struct FLeague: Codable {
     var name: String
     var logo: String
 }
 
-struct GameTeams: Codable {
+struct FTeams: Codable {
     var home: Home
     var away: Away
 }

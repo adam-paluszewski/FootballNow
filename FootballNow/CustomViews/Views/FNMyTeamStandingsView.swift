@@ -45,6 +45,12 @@ class FNMyTeamStandingsView: UIView {
     
     
     func set(standing: Standing) {
+        positionDescLabel.text = "Pozycja"
+        winDescLabel.text = "Z"
+        drawDescLabel.text = "R"
+        lostDescLabel.text = "P"
+        pointsDescLabel.text = "Punkty"
+        
         positionLabel.text = "\(standing.rank ?? 0)"
         teamNameLabel.text = standing.team.name
         winLabel.text = "\(standing.all.win ?? 0)"
@@ -81,11 +87,7 @@ class FNMyTeamStandingsView: UIView {
     
     
     func configure() {
-        positionDescLabel.text = "Pozycja"
-        winDescLabel.text = "Z"
-        drawDescLabel.text = "R"
-        lostDescLabel.text = "P"
-        pointsDescLabel.text = "Punkty"
+        
     }
     
     

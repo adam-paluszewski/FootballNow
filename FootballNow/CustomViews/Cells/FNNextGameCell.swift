@@ -36,7 +36,7 @@ class FNNextGameCell: UITableViewCell {
     }
     
     
-    func set(nextGame: FixturesData) {
+    func set(nextGame: FixturesResponse) {
         homeTeamNameLabel.text = nextGame.teams.home.name
         awayTeamNameLabel.text = nextGame.teams.away.name
         

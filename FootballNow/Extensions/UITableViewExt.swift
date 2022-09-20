@@ -16,4 +16,10 @@ extension UITableView {
         estimatedSectionFooterHeight = 0
     }
    
+    
+    func reloadDataOnMainThread() {
+        DispatchQueue.main.async {
+            self.reloadData()
+        }
+    }
 }

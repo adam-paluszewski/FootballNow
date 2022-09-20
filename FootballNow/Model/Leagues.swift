@@ -9,10 +9,10 @@ import Foundation
 
 struct Leagues: Codable {
     var results: Int
-    var response: [LeaguesData]
+    var response: [LeaguesResponse]
 }
 
-struct LeaguesData: Codable {
+struct LeaguesResponse: Codable {
     var league: LeaguesLeague
     var country: LeaguesCountry
 }
