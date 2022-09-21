@@ -28,7 +28,7 @@ struct PlayersPlayer: Codable {
     var weight: String?
     var injured: Bool?
     var photo: String?
-    var birth: PlayersBirth
+    var birth: PlayersBirth?
 }
 
 struct PlayersBirth: Codable {
@@ -39,7 +39,7 @@ struct PlayersBirth: Codable {
 
 struct PlayerStatistics: Codable {
     var team: TeamDetails
-    var league: LeaguesLeague
+    var league: League
     var games: PlayerGames
     var substitutes: PlayerSubstitutes
     var shots: PlayerShots

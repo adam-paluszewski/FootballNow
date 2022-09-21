@@ -37,8 +37,8 @@ class FNLastGameCell: UITableViewCell {
     
     
     func set(lastGame: FixturesResponse) {
-        homeTeamNameLabel.text = lastGame.teams.home.name
-        awayTeamNameLabel.text = lastGame.teams.away.name
+        homeTeamNameLabel.text = lastGame.teams?.home?.name
+        awayTeamNameLabel.text = lastGame.teams?.away?.name
         
         if let homeTeamGoals = lastGame.goals?.home {
             homeTeamScoreLabel.text = String(homeTeamGoals)
@@ -48,17 +48,17 @@ class FNLastGameCell: UITableViewCell {
             awayTeamScoreLabel.text = String(awayTeamGoals)
         }
         
-        let dateString = FNDateFormatting.getDMMM(timestamp: lastGame.fixture.timestamp)
+        let dateString = FNDateFormatting.getDMMM(timestamp: lastGame.fixture?.timestamp)
         gameDateLabel.text = "Zakończony" + dateString
         
-        NetworkManager.shared.downloadImage(from: lastGame.teams.home.logo) { [weak self] image in
+        NetworkManager.shared.downloadImage(from: lastGame.teams?.home?.logo) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.homeTeamLogoImageView.image = image
             }
         }
         
-        NetworkManager.shared.downloadImage(from: lastGame.teams.away.logo) { [weak self] image in
+        NetworkManager.shared.downloadImage(from: lastGame.teams?.away?.logo) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.awayTeamLogoImageView.image = image
@@ -119,16 +119,16 @@ class FNLastGameCell: UITableViewCell {
             
             homeTeamLogoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -15),
             homeTeamLogoImageView.leadingAnchor.constraint(equalTo: leagueLogoImageView.trailingAnchor, constant: 20),
-            homeTeamLogoImageView.widthAnchor.constraint(equalToConstant: 25),
-            homeTeamLogoImageView.heightAnchor.constraint(equalToConstant: 25),
+            homeTeamLogoImageView.widthAnchor.constraint(equalToConstant: 27),
+            homeTeamLogoImageView.heightAnchor.constraint(equalToConstant: 27),
             
             homeTeamNameLabel.centerYAnchor.constraint(equalTo: homeTeamLogoImageView.centerYAnchor),
             homeTeamNameLabel.leadingAnchor.constraint(equalTo: homeTeamLogoImageView.trailingAnchor, constant: 5),
             
             awayTeamLogoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 15),
             awayTeamLogoImageView.leadingAnchor.constraint(equalTo: leagueLogoImageView.trailingAnchor, constant: 20),
-            awayTeamLogoImageView.widthAnchor.constraint(equalToConstant: 25),
-            awayTeamLogoImageView.heightAnchor.constraint(equalToConstant: 25),
+            awayTeamLogoImageView.widthAnchor.constraint(equalToConstant: 27),
+            awayTeamLogoImageView.heightAnchor.constraint(equalToConstant: 27),
             
             awayTeamNameLabel.centerYAnchor.constraint(equalTo: awayTeamLogoImageView.centerYAnchor),
             awayTeamNameLabel.leadingAnchor.constraint(equalTo: awayTeamLogoImageView.trailingAnchor, constant: 5),

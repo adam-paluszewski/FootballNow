@@ -125,7 +125,7 @@ class NetworkManager {
     }
     
     
-    func getTeams(parameters: String, completionHandler: @escaping (Result<Teams, FNError>) -> Void) {
+    func getTeams(parameters: String, completionHandler: @escaping (Result<[TeamsResponse], FNError>) -> Void) {
         let endpoint = baseURL + "teams/?\(parameters)"
         
         guard let url = URL(string: endpoint) else {
@@ -154,7 +154,7 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 let teams = try decoder.decode(Teams.self, from: data)
-                completionHandler(.success(teams))
+                completionHandler(.success(teams.response))
             } catch {
                 completionHandler(.failure(.invalidData))
             }
@@ -192,11 +192,6 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 let leagues = try decoder.decode(Leagues.self, from: data)
-                
-                guard !leagues.response.isEmpty else {
-                    completionHandler(.failure(.invalidResponse))
-                    return
-                }
                 completionHandler(.success(leagues.response))
             } catch {
                 completionHandler(.failure(.invalidData))
@@ -244,7 +239,8 @@ class NetworkManager {
     }
     
     
-    func downloadImage(from urlString: String, completionHandler: @escaping (UIImage) -> Void) {
+    func downloadImage(from urlString: String?, completionHandler: @escaping (UIImage) -> Void) {
+        let urlString = urlString ?? ""
         let cacheKey = NSString(string: urlString)
         
         if let image = cache.object(forKey: cacheKey) {

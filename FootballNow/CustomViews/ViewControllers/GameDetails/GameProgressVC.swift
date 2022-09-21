@@ -32,7 +32,8 @@ class GameProgressVC: UIViewController {
     
     
     override func viewDidLayoutSubviews() {
-        preferredContentSize = tableView.contentSize
+        let size = max(tableView.contentSize.height, 500)
+        preferredContentSize.height = size
     }
     
 
@@ -54,7 +55,6 @@ class GameProgressVC: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.isScrollEnabled = false
-        tableView.backgroundColor = FNColors.sectionColor
         tableView.prepareForDynamicHeight()
         tableView.isUserInteractionEnabled = false
     }
@@ -69,8 +69,8 @@ extension GameProgressVC: UITableViewDataSource, UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let events = game.events else {
-            preferredContentSize = CGSize(width: 0.01, height: 0)
+        guard let events = game.events, !events.isEmpty else {
+            showEmptyState(in: view, text: "Brak informacji o przebiegu meczu", image: .progress, axis: .vertical)
             return 0
         }
         return events.count

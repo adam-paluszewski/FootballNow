@@ -12,7 +12,7 @@ class FNSquadVC: UIViewController {
     let sectionView = FNSectionView(title: "Zawodnicy")
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
-    var players: [SquadsPlayer] = []
+    var players: [PlayerSq] = []
     var teamId: Int!
     
     init(teamId: Int?) {
@@ -47,6 +47,39 @@ class FNSquadVC: UIViewController {
         
         layoutUI()
     }
+    
+    
+    func configureCollectionView() {
+        collectionView.collectionViewLayout = createFlowLayout(view: view)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = .clear
+        collectionView.register(FNCollectionPlayerCell.self, forCellWithReuseIdentifier: FNCollectionPlayerCell.cellId)
+    }
+    
+    
+    func fetchDataforSquadSection() {
+        guard let teamId = teamId else { return }
+        print(teamId)
+        NetworkManager.shared.getSquads(parameters: "team=\(teamId)") { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                case .success(let squad):
+                    DispatchQueue.main.async {
+                        guard !squad.isEmpty else {
+                            self.showEmptyState(in: self.sectionView.bodyView, text: "Brak danych dla tej drużyny", image: .defaultImage, axis: .horizontal)
+                            return
+                        }
+                        self.players = squad[0].players ?? []
+                        self.sectionView.button.setTitle("Zobacz listę", for: .normal)
+                        self.collectionView.reloadData()
+                    }
+                case .failure(let error):
+                    self.presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
+            }
+            self.dismissLoadingView(in: self.sectionView.bodyView)
+        }
+    }
 
     
     @objc func buttonPressed(_ sender: UIButton) {
@@ -77,44 +110,11 @@ class FNSquadVC: UIViewController {
         
         return flowLayout
     }
-
-    
-    func fetchDataforSquadSection() {
-        guard let teamId = teamId else { return }
-        print(teamId)
-        NetworkManager.shared.getSquads(parameters: "team=\(teamId)") { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-                case .success(let squad):
-                    DispatchQueue.main.async {
-                        guard !squad.isEmpty else {
-                            self.showEmptyState(in: self.sectionView.bodyView)
-                            return
-                        }
-                        self.players = squad[0].players
-                        self.sectionView.button.setTitle("Zobacz listę", for: .normal)
-                        self.collectionView.reloadData()
-                    }
-                case .failure(let error):
-                    self.presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
-            }
-            self.dismissLoadingView(in: self.sectionView.bodyView)
-        }
-    }
-    
-    
-    func configureCollectionView() {
-        collectionView.collectionViewLayout = createFlowLayout(view: view)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.backgroundColor = .clear
-        collectionView.register(FNCollectionPlayerCell.self, forCellWithReuseIdentifier: FNCollectionPlayerCell.cellId)
-    }
     
     
     @objc func fireObserver(notification: NSNotification) {
-        let team = notification.object as? TeamsResponse
-        teamId = team?.team.id
+        let team = notification.object as? TeamDetails
+        teamId = team?.id
         fetchDataforSquadSection()
     }
     

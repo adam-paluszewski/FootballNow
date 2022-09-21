@@ -52,3 +52,17 @@ struct Fonts {
     static let body = UIFont.systemFont(ofSize: 14, weight: .regular)
     
 }
+
+
+enum EmptyStateImages: String {
+    case defaultImage = "FNDefault"
+    case statistics = "FNStatistics"
+    case formations = "FNTeam"
+    case progress = "FNProgress"
+    case favorite = "FNFavorite"
+}
+
+
+enum EmptyStateSizes {
+    case big, medium, small
+}

@@ -19,11 +19,11 @@ class TeamDashboardVC: UIViewController {
     var addToFavoritesButton = UIBarButtonItem()
     
     var isMyTeamShowing: Bool!
-    var team: TeamsResponse?
+    var team: TeamDetails?
     var isTeamInFavorites = false
     
     
-    init(isMyTeamShowing: Bool = false, team: TeamsResponse?) {
+    init(isMyTeamShowing: Bool = false, team: TeamDetails?) {
         super.init(nibName: nil, bundle: nil)
         self.team = team
         self.isMyTeamShowing = isMyTeamShowing
@@ -46,7 +46,7 @@ class TeamDashboardVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !isMyTeamShowing {
-            PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: team?.team.id) { isInFavorites in
+            PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: team?.id) { isInFavorites in
                 switch isInFavorites {
                     case true:
                         addToFavoritesButton.image = UIImage(systemName: "heart.fill")!
@@ -76,7 +76,7 @@ class TeamDashboardVC: UIViewController {
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: FNNavigationItemView())
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: SFSymbols.settings, style: .plain, target: self, action: #selector(openSettings))
         } else {
-            navigationItem.titleView = FNTeamTitleView(image: team!.team.logo, title: team!.team.name)
+            navigationItem.titleView = FNTeamTitleView(image: team?.logo, title: team?.name)
             navigationItem.leftBarButtonItem = nil
         }
         
@@ -96,10 +96,10 @@ class TeamDashboardVC: UIViewController {
     
     
     func addChildrenViewControllers() {
-        add(childVC: FNLastGameVC(teamId: team?.team.id), to: lastGameSectionView)
-        add(childVC: FNStandingsVC(teamId: team?.team.id), to: standingsSectionView)
-        add(childVC: FNNextGamesVC(teamId: team?.team.id), to: nextGamesSectionView)
-        add(childVC: FNSquadVC(teamId: team?.team.id), to: squadSectionView)
+        add(childVC: FNLastGameVC(teamId: team?.id), to: lastGameSectionView)
+        add(childVC: FNStandingsVC(teamId: team?.id), to: standingsSectionView)
+        add(childVC: FNNextGamesVC(teamId: team?.id), to: nextGamesSectionView)
+        add(childVC: FNSquadVC(teamId: team?.id), to: squadSectionView)
     }
     
     
@@ -133,21 +133,6 @@ class TeamDashboardVC: UIViewController {
             }
         }
         isTeamInFavorites.toggle()
-    }
-    
-    
-    override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
-        super.preferredContentSizeDidChange(forChildContentContainer: container)
-        
-        if container as? FNNextGamesVC != nil {
-            nextGamesSectionView.isHidden = true
-        } else if container as? FNLastGameVC != nil {
-            lastGameSectionView.isHidden = true
-        } else if container as? FNStandingsVC != nil {
-            standingsSectionView.isHidden = true
-        } else if container as? FNSquadVC != nil {
-            squadSectionView.isHidden = true
-        }
     }
     
     

@@ -60,7 +60,7 @@ class FNLastGameVC: UIViewController {
                         self.lastGames = fixtures
                         DispatchQueue.main.async {
                             guard !self.lastGames.isEmpty else {
-                                self.showEmptyState(in: self.sectionView.bodyView)
+                            self.showEmptyState(in: self.sectionView.bodyView, text: "Brak danych dla tej drużyny", image: .defaultImage, axis: .horizontal)
                                 return
                             }
                             self.gameOverviewView.set(game: fixtures[0])
@@ -77,7 +77,7 @@ class FNLastGameVC: UIViewController {
     
     
     @objc func gameDetailsButtonPressed() {
-        let gameDetailsVC = GameDetailsVC(gameId: lastGames[0].fixture.id)
+        let gameDetailsVC = GameDetailsVC(gameId: lastGames[0].fixture?.id)
         navigationController?.pushViewController(gameDetailsVC, animated: true)
     }
     
@@ -95,8 +95,8 @@ class FNLastGameVC: UIViewController {
     
     
     @objc func fireObserver(notification: NSNotification) {
-        let team = notification.object as? TeamsResponse
-        teamId = team?.team.id
+        let team = notification.object as? TeamDetails
+        teamId = team?.id
         fetchDataForLastGameSection()
     }
 

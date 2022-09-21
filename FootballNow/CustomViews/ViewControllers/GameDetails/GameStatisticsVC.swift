@@ -12,7 +12,6 @@ class GameStatisticsVC: UIViewController {
     var statistics: [Statistics] = []
     
     let tableView = UITableView()
-    let noStatisticsView = FNNoResultsView(text: "Brak statystyk dla tego meczu", image: UIImage(named: "FNStatistics")!)
     
     init(statistics: [Statistics]?) {
         super.init(nibName: nil, bundle: nil)
@@ -29,18 +28,18 @@ class GameStatisticsVC: UIViewController {
         super.viewDidLoad()
         configureViewController()
         configureTableView()
-        configureNoStatisticsView()
     }
     
     
     override func viewDidLayoutSubviews() {
-        preferredContentSize = tableView.contentSize
+        let size = max(tableView.contentSize.height, 500)
+        preferredContentSize.height = size
     }
     
 
     func configureViewController() {
         view.backgroundColor = FNColors.sectionColor
-        
+        layoutUI()
     }
 
     
@@ -50,7 +49,10 @@ class GameStatisticsVC: UIViewController {
         tableView.dataSource = self
         tableView.prepareForDynamicHeight()
         tableView.isUserInteractionEnabled = false
-        
+    }
+    
+    
+    func layoutUI() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -59,19 +61,6 @@ class GameStatisticsVC: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
-    }
-    
-    
-    func configureNoStatisticsView() {
-        noStatisticsView.isHidden = true
-        
-        view.addSubview(noStatisticsView)
-        NSLayoutConstraint.activate([
-            noStatisticsView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 100),
-            noStatisticsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            noStatisticsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            noStatisticsView.heightAnchor.constraint(equalToConstant: 250)
         ])
     }
 }
@@ -86,11 +75,9 @@ extension GameStatisticsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard !statistics.isEmpty else {
-            noStatisticsView.isHidden = false
-            preferredContentSize = CGSize(width: 0.01, height: 0)
+            showEmptyState(in: view, text: "Brak statystyk dla tego meczu", image: .statistics, axis: .vertical)
             return 0
         }
-        noStatisticsView.isHidden = true
         return statistics[0].ckey?.count ?? 0
     }
     

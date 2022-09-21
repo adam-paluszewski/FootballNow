@@ -36,14 +36,14 @@ class FNStandingsCell: UITableViewCell {
     
     func set(standing: Standing) {
         positionLabel.text = "\(standing.rank ?? 0)"
-        teamNameLabel.text = standing.team.name
-        gamesPlayedLabel.text = "\(standing.all.played ?? 0)"
-        gamesWonLabel.text = "\(standing.all.win ?? 0)"
-        gamesDrawLabel.text = "\(standing.all.draw ?? 0)"
-        gamesLostLabel.text = "\(standing.all.lose ?? 0)"
+        teamNameLabel.text = standing.team?.name
+        gamesPlayedLabel.text = "\(standing.all?.played ?? 0)"
+        gamesWonLabel.text = "\(standing.all?.win ?? 0)"
+        gamesDrawLabel.text = "\(standing.all?.draw ?? 0)"
+        gamesLostLabel.text = "\(standing.all?.lose ?? 0)"
         pointsLabel.text = "\(standing.points ?? 0)"
         
-        NetworkManager.shared.downloadImage(from: standing.team.logo ?? "") { [weak self] image in
+        NetworkManager.shared.downloadImage(from: standing.team?.logo ?? "") { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.teamLogoImageView.image = image

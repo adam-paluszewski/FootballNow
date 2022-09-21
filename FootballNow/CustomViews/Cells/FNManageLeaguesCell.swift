@@ -65,9 +65,9 @@ class FNManageLeaguesCell: UITableViewCell {
     
     
     func set(league: LeaguesResponse) {
-        leagueNameLabel.text = league.league.name
+        leagueNameLabel.text = league.league?.name
         
-        NetworkManager.shared.downloadImage(from: league.league.logo ?? "") { [weak self] image in
+        NetworkManager.shared.downloadImage(from: league.league?.logo ?? "") { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.leagueImageView.image = image

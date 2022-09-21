@@ -21,7 +21,7 @@ class FNTeamTitleView: UIView {
     }
     
     
-    init(image: String, title: String) {
+    init(image: String?, title: String?) {
         super.init(frame: .zero)
         
         titleLabel.text = title

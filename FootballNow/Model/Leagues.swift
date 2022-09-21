@@ -13,18 +13,18 @@ struct Leagues: Codable {
 }
 
 struct LeaguesResponse: Codable {
-    var league: LeaguesLeague
-    var country: LeaguesCountry
+    var league: League?
+    var country: CountryL?
 }
 
-struct LeaguesLeague: Codable {
+struct League: Codable {
     var id: Int?
     var name: String?
     var type: String?
     var logo: String?
 }
 
-struct LeaguesCountry: Codable {
+struct CountryL: Codable {
     var name: String?
     var code: String?
     var flag: String?

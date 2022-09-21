@@ -33,9 +33,6 @@ class SelectLeagueVC: UIViewController {
         if let data = try? encoder.encode(observedLeagues) {
             UserDefaults.standard.set(data, forKey: "myLeagues")
         }
-        
-        
-
         dismiss(animated: true)
         dismiss(animated: true)
     }
@@ -52,7 +49,7 @@ class SelectLeagueVC: UIViewController {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Anuluj", style: .plain, target: self, action: #selector(dismissVC))
         }
         
-        
+        layoutUI()
     }
     
     
@@ -75,7 +72,24 @@ class SelectLeagueVC: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = UIColor(named: "FNSectionBackground")
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
-        
+    }
+    
+    
+    func fetchDataForTeams(parameters: String) {
+        NetworkManager.shared.getLeagues(parameters: parameters) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                case .success(let leagues):
+                    self.leagues = leagues
+                    DispatchQueue.main.async { self.tableView.reloadData() }
+                case .failure(let error):
+                    print(error)
+            }
+        }
+    }
+    
+    
+    func layoutUI() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -85,19 +99,6 @@ class SelectLeagueVC: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-    }
-    
-    func fetchDataForTeams(parameters: String) {
-            NetworkManager.shared.getLeagues(parameters: parameters) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                    case .success(let leagues):
-                        self.leagues = leagues
-                        DispatchQueue.main.async { self.tableView.reloadData() }
-                    case .failure(let error):
-                        print(error)
-                }
-            }
     }
 }
 
@@ -116,7 +117,7 @@ extension SelectLeagueVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNSelectLeagueCell.cellId, for: indexPath) as! FNSelectLeagueCell
-        cell.set(league: leagues[indexPath.row])
+        cell.set(league: leagues[indexPath.row].league!)
         return cell
     }
     

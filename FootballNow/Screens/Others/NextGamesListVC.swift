@@ -24,6 +24,8 @@ class NextGamesListVC: UIViewController {
     func configureViewController() {
         navigationItem.backBarButtonItem = UIBarButtonItem()
         navigationItem.title = "Kolejne mecze"
+        
+        layoutUI()
     }
     
     
@@ -35,7 +37,10 @@ class NextGamesListVC: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.isUserInteractionEnabled = true
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
-        
+    }
+    
+    
+    func layoutUI() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         

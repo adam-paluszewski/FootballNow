@@ -22,7 +22,7 @@ class PlayerVC: UIViewController {
     var player: [PlayersResponse] = []
     var leagueToShow = 0
     
-    init(id: Int, number: Int?, position: String?) {
+    init(id: Int?, number: Int?, position: String?) {
         super.init(nibName: nil, bundle: nil)
         self.playerId = id
         self.playerNumber = number
@@ -48,6 +48,28 @@ class PlayerVC: UIViewController {
     }
     
     
+    func configureViewController() {
+        navigationItem.title = "Informacje o zawodniku"
+        scrollView.delegate = self
+        view.backgroundColor = FNColors.backgroundColor
+        statisticsContainerView.separatorView.backgroundColor = .clear
+        statisticsContainerView.button.addTarget(self, action: #selector(changeLeagueButtonPressed), for: .touchUpInside)
+        
+        layoutUI()
+    }
+    
+    
+    func configureTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(FNPlayerStatisticCell.self, forCellReuseIdentifier: FNPlayerStatisticCell.cellId)
+        tableView.isScrollEnabled = false
+        tableView.sectionHeaderTopPadding = 0
+        tableView.isUserInteractionEnabled = false
+        tableView.prepareForDynamicHeight()
+    }
+    
+    
     func fetchDataforPlayerDetails() {
         guard let playerId = playerId else { return }
         NetworkManager.shared.getPlayer(parameters: "id=\(playerId)&season=2022") { [weak self] result in
@@ -70,26 +92,10 @@ class PlayerVC: UIViewController {
     
     @objc func changeLeagueButtonPressed() {
         let ac = UIAlertController(title: "Wybierz ligę", message: nil, preferredStyle: .actionSheet)
-        
-        for i in player[0].statistics {
-            ac.addAction(UIAlertAction(title: i.league.name, style: .default, handler: { action in
-                self.statisticsContainerView.button.setTitle(i.league.name, for: .normal)
-                
-                if action == ac.actions[0] {
-                    self.leagueToShow = 0
-                } else if action == ac.actions[1] {
-                    self.leagueToShow = 1
-                } else if action == ac.actions[2] {
-                    self.leagueToShow = 2
-                } else if action == ac.actions[3] {
-                    self.leagueToShow = 3
-                } else if action == ac.actions[4] {
-                    self.leagueToShow = 4
-                } else if action == ac.actions[5] {
-                    self.leagueToShow = 5
-                } else if action == ac.actions[6] {
-                    self.leagueToShow = 6
-                }
+        for (index, league) in player[0].statistics.enumerated() {
+            ac.addAction(UIAlertAction(title: league.league.name, style: .default, handler: { action in
+                self.statisticsContainerView.button.setTitle(league.league.name, for: .normal)
+                self.leagueToShow = index
                 self.tableView.reloadData()
             }))
         }
@@ -97,19 +103,15 @@ class PlayerVC: UIViewController {
         ac.addAction(UIAlertAction(title: "Anuluj", style: .cancel))
         present(ac, animated: true)
     }
-
-  
-    func configureViewController() {
-        navigationItem.title = "Informacje o zawodniku"
-        scrollView.delegate = self
-        view.backgroundColor = FNColors.backgroundColor
-        statisticsContainerView.separatorView.backgroundColor = .clear
-        statisticsContainerView.button.addTarget(self, action: #selector(changeLeagueButtonPressed), for: .touchUpInside)
-        
+    
+    
+    func layoutUI() {
         view.addSubview(scrollView)
         scrollView.addSubview(infoContainerView)
         scrollView.addSubview(statisticsContainerView)
+        statisticsContainerView.bodyView.addSubview(tableView)
         
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         infoContainerView.translatesAutoresizingMaskIntoConstraints = false
         statisticsContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -130,30 +132,12 @@ class PlayerVC: UIViewController {
             statisticsContainerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             statisticsContainerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             statisticsContainerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-//            statisticsContainerView.heightAnchor.constraint(equalToConstant: 1300)
-        ])
-    }
-    
-    
-    func configureTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(FNPlayerStatisticCell.self, forCellReuseIdentifier: FNPlayerStatisticCell.cellId)
-        tableView.isScrollEnabled = false
-        tableView.sectionHeaderTopPadding = 0
-        tableView.isUserInteractionEnabled = false
-        tableView.prepareForDynamicHeight()
-        
-        statisticsContainerView.bodyView.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
+
             tableView.topAnchor.constraint(equalTo: statisticsContainerView.bodyView.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: statisticsContainerView.bodyView.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: statisticsContainerView.bodyView.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: statisticsContainerView.bodyView.bottomAnchor)
         ])
-        
     }
 
 }

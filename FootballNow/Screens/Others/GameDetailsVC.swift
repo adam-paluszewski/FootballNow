@@ -20,8 +20,12 @@ class GameDetailsVC: UIViewController {
     var gameId: Int!
     var game: [FixturesResponse] = []
     
-    init(gameId: Int) {
+    init(gameId: Int?) {
         super.init(nibName: nil, bundle: nil)
+        guard let gameId = gameId else {
+            presentAlertOnMainThread(title: "Błąd", message: "Brak inforamcji dotyczących tego meczu", buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
+            return
+        }
         self.gameId = gameId
     }
     
@@ -129,15 +133,13 @@ class GameDetailsVC: UIViewController {
     
     
     @objc func homeButtonPressed() {
-        let teamDetails = TeamDetails(id: game[0].teams.home.id, name: game[0].teams.home.name, logo: game[0].teams.home.logo)
-        let team = TeamsResponse(team: teamDetails)
+        let team = TeamDetails(id: game[0].teams?.home?.id, name: game[0].teams?.home?.name, logo: game[0].teams?.home?.logo)
         navigationController?.pushViewController(TeamDashboardVC(isMyTeamShowing: false, team: team), animated: true)
     }
     
     
     @objc func awayButtonPressed() {
-        let teamDetails = TeamDetails(id: game[0].teams.away.id, name: game[0].teams.away.name, logo: game[0].teams.away.logo)
-        let team = TeamsResponse(team: teamDetails)
+        let team = TeamDetails(id: game[0].teams?.away?.id, name: game[0].teams?.away?.name, logo: game[0].teams?.away?.logo)
         navigationController?.pushViewController(TeamDashboardVC(isMyTeamShowing: false, team: team), animated: true)
     }
  

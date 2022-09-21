@@ -52,14 +52,14 @@ class FNMyTeamStandingsView: UIView {
         pointsDescLabel.text = "Punkty"
         
         positionLabel.text = "\(standing.rank ?? 0)"
-        teamNameLabel.text = standing.team.name
-        winLabel.text = "\(standing.all.win ?? 0)"
-        drawLabel.text = "\(standing.all.draw ?? 0)"
-        lostLabel.text = "\(standing.all.lose ?? 0)"
+        teamNameLabel.text = standing.team?.name ?? "b/d"
+        winLabel.text = "\(standing.all?.win ?? 0)"
+        drawLabel.text = "\(standing.all?.draw ?? 0)"
+        lostLabel.text = "\(standing.all?.lose ?? 0)"
         pointsLabel.text = "\(standing.points ?? 0)"
         positionChangeImageView.image = getPositionChangeImage(change: standing.status ?? "")
         
-        NetworkManager.shared.downloadImage(from: standing.team.logo ?? "") { [weak self] image in
+        NetworkManager.shared.downloadImage(from: standing.team?.logo ?? "") { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.teamLogoImageView.image = image

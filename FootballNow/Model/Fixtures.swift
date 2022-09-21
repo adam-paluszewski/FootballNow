@@ -13,11 +13,11 @@ struct Fixtures: Codable {
 }
 
 struct FixturesResponse: Codable {
-    var fixture: Fixture
-    var teams: FTeams
+    var fixture: Fixture?
+    var teams: TeamsF?
     var goals: Goals?
     var events: [Events]?
-    var league: FLeague
+    var league: LeagueF
     var statistics: [Statistics]?
     var lineups: [Lineups]?
 }
@@ -52,9 +52,9 @@ struct Coach: Codable {
 }
 
 struct Fixture: Codable {
-    var timestamp: Double
-    var status: Status
-    var id: Int
+    var timestamp: Double?
+    var status: Status?
+    var id: Int?
 }
 
 struct Statistics: Codable {
@@ -70,26 +70,26 @@ struct FixtureStatistics: Codable {
     var value: MetadataType?
 }
 
-struct FLeague: Codable {
-    var name: String
-    var logo: String
+struct LeagueF: Codable {
+    var name: String?
+    var logo: String?
 }
 
-struct FTeams: Codable {
-    var home: Home
-    var away: Away
+struct TeamsF: Codable {
+    var home: Home?
+    var away: Away?
 }
 
 struct Home: Codable {
-    var name: String
-    var logo: String
-    var id: Int
+    var name: String?
+    var logo: String?
+    var id: Int?
 }
 
 struct Away: Codable {
-    var name: String
-    var logo: String
-    var id: Int
+    var name: String?
+    var logo: String?
+    var id: Int?
 }
 
 struct Goals: Codable {
@@ -98,18 +98,18 @@ struct Goals: Codable {
 }
 
 struct Status: Codable {
-    var long: String
-    var short: String
+    var long: String?
+    var short: String?
     var elapsed: Int?
 }
 
 struct Events: Codable {
-    var time: Time
-    var player: Player
-    var assist: Assist
+    var time: Time?
+    var player: EventPlayer?
+    var assist: Assist?
     var type: String?
     var detail: String?
-    var team: Team
+    var team: Team?
 }
 
 struct Time: Codable {
@@ -117,7 +117,7 @@ struct Time: Codable {
     var extra: Int?
 }
 
-struct Player: Codable {
+struct EventPlayer: Codable {
     var id: Int?
     var name: String?
 }

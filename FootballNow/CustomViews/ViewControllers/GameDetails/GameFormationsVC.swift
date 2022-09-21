@@ -10,7 +10,6 @@ import UIKit
 class GameFormationsVC: UIViewController {
     
     let tableView = UITableView()
-    let noFormationsView = FNNoResultsView(text: "Brak informacji o składach dla tego meczu", image: UIImage(named: "FNTeam")!)
     
     var squad: [Lineups] = []
     
@@ -31,17 +30,17 @@ class GameFormationsVC: UIViewController {
         super.viewDidLoad()
         configureViewController()
         configureTableView()
-        configureNoFormationsView()
     }
     
     
     override func viewDidLayoutSubviews() {
-        preferredContentSize = tableView.contentSize
+        let size = max(tableView.contentSize.height, 500)
+        preferredContentSize.height = size
     }
     
 
     func configureViewController() {
-        
+        layoutUI()
     }
     
     
@@ -53,7 +52,10 @@ class GameFormationsVC: UIViewController {
         tableView.sectionHeaderTopPadding = 0
         tableView.prepareForDynamicHeight()
         tableView.isUserInteractionEnabled = false
-        
+    }
+
+    
+    func layoutUI() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -61,20 +63,7 @@ class GameFormationsVC: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-    
-    
-    func configureNoFormationsView() {
-        noFormationsView.isHidden = true
-        
-        view.addSubview(noFormationsView)
-        NSLayoutConstraint.activate([
-            noFormationsView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 100),
-            noFormationsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            noFormationsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            noFormationsView.heightAnchor.constraint(equalToConstant: 250)
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 }
@@ -84,11 +73,9 @@ extension GameFormationsVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         guard !squad.isEmpty else {
-            noFormationsView.isHidden = false
-            preferredContentSize = CGSize(width: 0.01, height: 0)
+            showEmptyState(in: view, text: "Brak informacji o składach dla tego meczu", image: .formations, axis: .vertical)
             return 0
         }
-        noFormationsView.isHidden = true
         return 4
     }
     

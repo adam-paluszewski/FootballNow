@@ -32,7 +32,7 @@ class FNTablePlayerCell: UITableViewCell {
     }
     
     
-    func set(player: SquadsPlayer) {
+    func set(player: PlayerSq) {
         nameLabel.text = player.name
         ageLabel.text = FNAgeSuffix.shared.ageSuffix(age: player.age)
         positionLabel.text = FNTranslateToPolish.shared.translatePlayerPosition(from: player.position)

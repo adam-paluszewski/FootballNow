@@ -88,18 +88,18 @@ class FNStandingsVC: UIViewController {
                     //We need id to fetch data for League Standings(next screen) and to know which league to show (this screen)
                     //Extra endpoint is needed, then we check which league is Country League and we show data from only this one
                     let leagues = leagues
-                    let countryLeague = leagues.filter{$0.league.type == "League"}
+                    let countryLeague = leagues.filter{$0.league?.type == "League"}
                     
                     guard !countryLeague.isEmpty else {
-                        self.showEmptyState(in: self.sectionView.bodyView)
+                        self.dismissLoadingView(in: self.sectionView.bodyView)
+                        self.showEmptyState(in: self.sectionView.bodyView, text: "Brak danych dla tej drużyny", image: .defaultImage, axis: .horizontal)
                         return
                     }
-                    self.countryLeagueId = countryLeague[0].league.id
-                    let countryLeagueStanding = yourTeamStandings.filter{$0.league.id == self.countryLeagueId}
-
+                    self.countryLeagueId = countryLeague[0].league?.id
+                    let countryLeagueStanding = yourTeamStandings.filter{$0.league?.id == self.countryLeagueId}
                     
                     DispatchQueue.main.async {
-                        self.standingsView.set(standing: countryLeagueStanding[0].league.standings[0][0])
+                        self.standingsView.set(standing: (countryLeagueStanding[0].league?.standings[0][0])!)
                     }
                 case .failure(let error):
                     self.presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
@@ -110,8 +110,8 @@ class FNStandingsVC: UIViewController {
     
     
     @objc func fireObserver(notification: NSNotification) {
-        let team = notification.object as? TeamsResponse
-        teamId = team?.team.id
+        let team = notification.object as? TeamDetails
+        teamId = team?.id
         fetchDataForStandingsSection()
     }
     

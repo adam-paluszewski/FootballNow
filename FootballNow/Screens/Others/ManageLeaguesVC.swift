@@ -17,7 +17,6 @@ class ManageLeaguesVC: UIViewController {
         createObservers()
         configureViewController()
         configureTableView()
-        print("Observed leagues: \(observedLeagues.count)")
     }
     
     
@@ -59,6 +58,7 @@ class ManageLeaguesVC: UIViewController {
         navigationItem.title = "Zarządzaj ligami"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addLeaguePressed))
         
+        layoutUI()
     }
     
     
@@ -68,7 +68,10 @@ class ManageLeaguesVC: UIViewController {
         tableView.register(FNManageLeaguesCell.self, forCellReuseIdentifier: FNManageLeaguesCell.cellId)
         tableView.backgroundColor = FNColors.backgroundColor
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
-        
+    }
+    
+    
+    func layoutUI() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         

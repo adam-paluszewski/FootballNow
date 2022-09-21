@@ -11,7 +11,7 @@ class SquadListVC: UIViewController {
     
     let tableView = UITableView()
     
-    var players: [SquadsPlayer] = []
+    var players: [PlayerSq] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +23,8 @@ class SquadListVC: UIViewController {
     func configureViewController() {
         navigationItem.backBarButtonItem = UIBarButtonItem()
         navigationItem.title = "Skład drużyny"
+        
+        layoutUI()
     }
     
     
@@ -31,7 +33,10 @@ class SquadListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = FNColors.sectionColor
-        
+    }
+    
+    
+    func layoutUI() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         

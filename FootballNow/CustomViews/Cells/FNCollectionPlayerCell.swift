@@ -29,7 +29,7 @@ class FNCollectionPlayerCell: UICollectionViewCell {
     }
     
     
-    func set(player: SquadsPlayer) {
+    func set(player: PlayerSq) {
         nameLabel.text = player.name
         positionLabel.text = FNTranslateToPolish.shared.translatePlayerPosition(from: player.position)
         

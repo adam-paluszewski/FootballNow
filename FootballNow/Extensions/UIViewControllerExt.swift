@@ -8,6 +8,7 @@
 import UIKit
 
 fileprivate var loadingViews: [UIView : UIView] = [:]
+fileprivate var emptyStateView: UIView!
 
 extension UIViewController {
     
@@ -97,7 +98,23 @@ extension UIViewController {
     }
     
     
-    func showEmptyState(in view: UIView) {
-        view.backgroundColor = .yellow
+    func showEmptyState(in view: UIView, text: String, image: EmptyStateImages, axis: UIAxis) {
+        DispatchQueue.main.async {
+            emptyStateView = FNEmptyStateView(text: text, image: image, axis: axis)
+            view.addSubview(emptyStateView)
+            
+            NSLayoutConstraint.activate([
+                emptyStateView.topAnchor.constraint(equalTo: view.topAnchor),
+                emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                emptyStateView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+        }
+    }
+    
+    
+    func dismissEmptyState() {
+        guard emptyStateView != nil else { return }
+        emptyStateView.removeFromSuperview()
     }
 }

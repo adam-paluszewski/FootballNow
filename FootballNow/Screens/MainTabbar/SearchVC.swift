@@ -12,8 +12,8 @@ class SearchVC: UIViewController {
     let searchController = UISearchController()
     let tableView = UITableView()
     
-    var searchedTeams: [TeamsResponse] = []
-    var lastSearched: [TeamsResponse] = []
+    var searchedTeams: [TeamDetails] = []
+    var lastSearched: [TeamDetails] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +40,7 @@ class SearchVC: UIViewController {
         let teamIndex = sender.tag
         let activeArray = searchedTeams.isEmpty ? lastSearched : searchedTeams
         
-        PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: activeArray[teamIndex].team.id) { isInFavorites in
+        PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: activeArray[teamIndex].id) { isInFavorites in
             switch isInFavorites {
                 case true:
                     PersistenceManager.shared.updateWith(favorite: activeArray[teamIndex], actionType: .remove) { error in
@@ -54,8 +54,6 @@ class SearchVC: UIViewController {
                     }
             }
         }
-
-
         tableView.reloadData()
     }
 
@@ -64,9 +62,7 @@ class SearchVC: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem()
         view.backgroundColor = FNColors.backgroundColor
         navigationItem.title = "Szukaj klubu"
-        navigationController?.navigationBar.prefersLargeTitles = true
-
-        
+        navigationController?.navigationBar.prefersLargeTitles = true 
     }
     
     
@@ -99,7 +95,7 @@ class SearchVC: UIViewController {
     func checkForLastSearched() {
         if let data = UserDefaults.standard.value(forKey: "LastSearched") as? Data {
             let decoder = JSONDecoder()
-            if let lastSearched = try? decoder.decode([TeamsResponse].self, from: data) {
+            if let lastSearched = try? decoder.decode([TeamDetails].self, from: data) {
                 self.lastSearched = lastSearched
                 tableView.reloadData()
             }
@@ -112,7 +108,7 @@ class SearchVC: UIViewController {
 extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 60
     }
     
     
@@ -152,7 +148,9 @@ extension SearchVC: UISearchBarDelegate, UISearchControllerDelegate {
             guard let self = self else { return }
             switch result {
                 case .success(let teams):
-                    self.searchedTeams = teams.response
+                    for i in teams {
+                        self.searchedTeams.append(i.team)
+                    }
                     self.lastSearched = self.searchedTeams
                     DispatchQueue.main.async {
                         self.tableView.reloadData()

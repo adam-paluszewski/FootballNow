@@ -12,26 +12,19 @@ struct Squads: Codable {
     var results: Int
 }
 
-
-
-
-
-
 struct SquadsResponse: Codable {
-    var team: SquadsTeam
-    var players: [SquadsPlayer]
+    var team: TeamSq?
+    var players: [PlayerSq]?
 }
 
-
-struct SquadsTeam: Codable {
+struct TeamSq: Codable {
     var name: String?
-    var logo: String
+    var logo: String?
 }
 
-
-struct SquadsPlayer: Codable {
-    var id: Int
-    var name: String
+struct PlayerSq: Codable {
+    var id: Int?
+    var name: String?
     var number: Int?
     var age: Int?
     var position: String?

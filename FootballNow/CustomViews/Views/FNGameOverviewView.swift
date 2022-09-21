@@ -39,8 +39,8 @@ class FNGameOverviewView: UIView {
     
     
     func set(game: FixturesResponse) {
-        let status = game.fixture.status.short
-        let time = game.fixture.status.elapsed
+        let status = game.fixture?.status?.short
+        let time = game.fixture?.status?.elapsed
 
         timeElapsedLabel.text = FNFixtureMethods.getElapsedTime(elapsed: time, gameStatus: status)
 
@@ -48,19 +48,19 @@ class FNGameOverviewView: UIView {
         let awayGoals = game.goals?.away == nil ? "b/d" : String((game.goals?.away)!)
         gameScoreLabel.text = "\(homeGoals) - \(awayGoals)"
         
-        homeTeamNameLabel.text = game.teams.home.name
-        awayTeamNameLabel.text = game.teams.away.name
+        homeTeamNameLabel.text = game.teams?.home?.name
+        awayTeamNameLabel.text = game.teams?.away?.name
         
         gameStatusLabel.text = FNFixtureMethods.getGameStatus(for: status)
 
-        NetworkManager.shared.downloadImage(from: game.teams.home.logo) { [weak self] image in
+        NetworkManager.shared.downloadImage(from: game.teams?.home?.logo) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.homeTeamLogoImageView.image = image
             }
         }
         
-        NetworkManager.shared.downloadImage(from: game.teams.away.logo) { [weak self] image in
+        NetworkManager.shared.downloadImage(from: game.teams?.away?.logo) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.awayTeamLogoImageView.image = image
@@ -123,8 +123,8 @@ class FNGameOverviewView: UIView {
             awayTeamView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
             homeTeamLogoImageView.topAnchor.constraint(equalTo: homeTeamView.topAnchor, constant: 15),
-            homeTeamLogoImageView.widthAnchor.constraint(equalToConstant: 40),
-            homeTeamLogoImageView.heightAnchor.constraint(equalToConstant: 40),
+            homeTeamLogoImageView.widthAnchor.constraint(equalToConstant: 50),
+            homeTeamLogoImageView.heightAnchor.constraint(equalToConstant: 50),
             homeTeamLogoImageView.centerXAnchor.constraint(equalTo: homeTeamView.centerXAnchor),
             
             homeTeamButton.widthAnchor.constraint(equalTo: homeTeamView.widthAnchor),
@@ -137,8 +137,8 @@ class FNGameOverviewView: UIView {
             homeTeamNameLabel.bottomAnchor.constraint(equalTo: homeTeamView.bottomAnchor, constant: -15),
             
             awayTeamLogoImageView.topAnchor.constraint(equalTo: homeTeamLogoImageView.topAnchor),
-            awayTeamLogoImageView.widthAnchor.constraint(equalToConstant: 40),
-            awayTeamLogoImageView.heightAnchor.constraint(equalToConstant: 40),
+            awayTeamLogoImageView.widthAnchor.constraint(equalToConstant: 50),
+            awayTeamLogoImageView.heightAnchor.constraint(equalToConstant: 50),
             awayTeamLogoImageView.centerXAnchor.constraint(equalTo: awayTeamView.centerXAnchor),
             
             awayTeamButton.widthAnchor.constraint(equalTo: awayTeamView.widthAnchor),

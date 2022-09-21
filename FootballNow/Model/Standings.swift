@@ -16,10 +16,10 @@ struct Standings: Codable {
 
 
 struct StandingsResponse: Codable {
-    var league: League
+    var league: LeagueS?
 }
 
-struct League: Codable {
+struct LeagueS: Codable {
     var id: Int?
     var name: String?
     var country: String?
@@ -34,12 +34,12 @@ struct Standing: Codable {
     var points: Int?
     var goalsDiff: Int?
     var description: String?
-    var team: StandingTeam
+    var team: TeamSt?
     var status: String?
-    var all: All
+    var all: All?
 }
 
-struct StandingTeam: Codable {
+struct TeamSt: Codable {
     var name: String?
     var logo: String?
     var id: Int?
@@ -50,10 +50,10 @@ struct All: Codable {
     var win: Int?
     var draw: Int?
     var lose: Int?
-    var goals: GoalsStandings
+    var goals: GoalsS?
 }
 
-struct GoalsStandings: Codable {
+struct GoalsS: Codable {
     var ckey: Int?
     var against: Int?
             

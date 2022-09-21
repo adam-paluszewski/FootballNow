@@ -23,7 +23,7 @@ class FNTabBarController: UITabBarController {
     
     
     func createTeamDashboardNC() -> UINavigationController {
-        var team: TeamsResponse?
+        var team: TeamDetails?
         
         PersistenceManager.shared.retrieveMyTeam { result in
             switch result {

@@ -11,9 +11,16 @@ class FavoritesVC: UIViewController {
 
     let tableView = UITableView()
     
-    var favoriteTeams: [TeamsResponse] = []
+    var favoriteTeams: [TeamDetails] = [] {
+        didSet {
+            if favoriteTeams.isEmpty {
+                showEmptyState(in: view, text: "Nie masz ulubionych drużyn", image: .favorite, axis: .vertical)
+            } else {
+                dismissEmptyState()
+            }
+        }
+    }
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
@@ -21,7 +28,8 @@ class FavoritesVC: UIViewController {
     }
     
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         PersistenceManager.shared.retrieveFavorites { result in
             switch result {
                 case .success(let favorites):
@@ -114,13 +122,6 @@ extension FavoritesVC: UITableViewDelegate, UITableViewDataSource {
                 tableView.deleteRows(at: [indexPath], with: .left)
                 return
             }
-            
         }
-        
-        if favoriteTeams.isEmpty {
-            
-        }
-
-        
     }
 }

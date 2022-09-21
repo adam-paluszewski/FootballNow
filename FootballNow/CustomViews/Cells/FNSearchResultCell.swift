@@ -49,25 +49,25 @@ class FNSearchResultCell: UITableViewCell {
         NSLayoutConstraint.activate([
             teamLogoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             teamLogoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            teamLogoImageView.widthAnchor.constraint(equalToConstant: 30),
-            teamLogoImageView.heightAnchor.constraint(equalToConstant: 30),
+            teamLogoImageView.widthAnchor.constraint(equalToConstant: 40),
+            teamLogoImageView.heightAnchor.constraint(equalToConstant: 40),
             
             teamNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            teamNameLabel.leadingAnchor.constraint(equalTo: teamLogoImageView.trailingAnchor, constant: 15),
+            teamNameLabel.leadingAnchor.constraint(equalTo: teamLogoImageView.trailingAnchor, constant: 10),
             teamNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
             
             addToFavoritesButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            addToFavoritesButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
-            addToFavoritesButton.widthAnchor.constraint(equalToConstant: 30),
-            addToFavoritesButton.heightAnchor.constraint(equalToConstant: 30)
+            addToFavoritesButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
+            addToFavoritesButton.widthAnchor.constraint(equalToConstant: 50),
+            addToFavoritesButton.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
     
     
-    func set(team: TeamsResponse) {
-        teamNameLabel.text = team.team.name
+    func set(team: TeamDetails) {
+        teamNameLabel.text = team.name
         
-        PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: team.team.id) { isInFavorites in
+        PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: team.id) { isInFavorites in
             switch isInFavorites {
                 case true:
                     addToFavoritesButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
@@ -76,7 +76,7 @@ class FNSearchResultCell: UITableViewCell {
             }
         }
 
-        NetworkManager.shared.downloadImage(from: team.team.logo) { [weak self] image in
+        NetworkManager.shared.downloadImage(from: team.logo) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.teamLogoImageView.image = image

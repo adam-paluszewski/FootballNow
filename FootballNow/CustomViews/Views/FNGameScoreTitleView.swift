@@ -21,13 +21,13 @@ class FNGameScoreTitleView: UIView {
     init(fixtureData: FixturesResponse) {
         super.init(frame: .zero)
         
-        NetworkManager.shared.downloadImage(from: fixtureData.teams.home.logo, completionHandler: { image in
+        NetworkManager.shared.downloadImage(from: fixtureData.teams?.home?.logo, completionHandler: { image in
             DispatchQueue.main.async {
                 self.homeTeamImageView.image = image
             }
         })
         
-        NetworkManager.shared.downloadImage(from: fixtureData.teams.away.logo, completionHandler: { image in
+        NetworkManager.shared.downloadImage(from: fixtureData.teams?.away?.logo, completionHandler: { image in
             DispatchQueue.main.async {
                 self.awayTeamImageView.image = image
             }

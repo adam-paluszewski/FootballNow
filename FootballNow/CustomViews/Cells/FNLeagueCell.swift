@@ -16,7 +16,7 @@ class FNLeagueCell: UITableViewCell {
     
     var games: [FixturesResponse] = [] {
         didSet {
-            games.sort {$0.fixture.timestamp < $1.fixture.timestamp}
+//            games.sort {$0.fixture.timestamp < $1.fixture.timestamp}
         }
     }
     

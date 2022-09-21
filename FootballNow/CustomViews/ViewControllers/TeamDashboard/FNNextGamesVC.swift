@@ -77,7 +77,7 @@ class FNNextGamesVC: UIViewController {
                 case .success(let fixtures):
                     DispatchQueue.main.async {
                         guard !fixtures.isEmpty else {
-                            self.showEmptyState(in: self.sectionView.bodyView)
+                            self.showEmptyState(in: self.sectionView.bodyView, text: "Brak danych dla tej drużyny", image: .defaultImage, axis: .horizontal)
                             return
                         }
                         self.nextGames = fixtures
@@ -95,8 +95,8 @@ class FNNextGamesVC: UIViewController {
     
     
     @objc func fireObserver(notification: NSNotification) {
-        let team = notification.object as? TeamsResponse
-        teamId = team?.team.id
+        let team = notification.object as? TeamDetails
+        teamId = team?.id
         fetchDataForNextGamesSection()
     }
     

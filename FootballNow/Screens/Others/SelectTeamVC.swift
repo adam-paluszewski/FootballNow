@@ -23,12 +23,11 @@ class SelectTeamVC: UIViewController {
     }
     
 
-    func passSelectedTeam(teamData: TeamsResponse) {
+    func passSelectedTeam(teamData: TeamDetails) {
         let team = Notification.Name(NotificationKeys.selectedTeam)
         NotificationCenter.default.post(name: team, object: teamData)
         
         PersistenceManager.shared.save(team: teamData)
-        
         view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
   
@@ -38,9 +37,29 @@ class SelectTeamVC: UIViewController {
         view.backgroundColor = FNColors.backgroundColor
         navigationItem.title = "Wybierz swoją drużynę"
         navigationController?.navigationBar.backgroundColor = UIColor(named: "FNNavBarColor")
-        
-        if isCancelable {
-//            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Anuluj", style: .plain, target: self, action: #selector(dismissVC))
+
+        layoutUI()
+    }
+    
+    
+    func configureTableView() {
+        tableView.register(FNSelectTeamCell.self, forCellReuseIdentifier: FNSelectTeamCell.cellId)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.backgroundColor = UIColor(named: "FNSectionBackground")
+    }
+    
+    
+    func fetchDataForTeams() {
+        NetworkManager.shared.getTeams(parameters: "league=106&season=2022") { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                case .success(let teams):
+                    self.teams = teams
+                    DispatchQueue.main.async { self.tableView.reloadData() }
+                case .failure(let error):
+                    print(error)
+            }
         }
     }
     
@@ -50,12 +69,7 @@ class SelectTeamVC: UIViewController {
     }
     
     
-    func configureTableView() {
-        tableView.register(FNSelectTeamCell.self, forCellReuseIdentifier: FNSelectTeamCell.cellId)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundColor = UIColor(named: "FNSectionBackground")
-        
+    func layoutUI() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -65,19 +79,6 @@ class SelectTeamVC: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
-    
-    func fetchDataForTeams() {
-            NetworkManager.shared.getTeams(parameters: "league=106&season=2022") { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                    case .success(let teams):
-                        self.teams = teams.response
-                        DispatchQueue.main.async { self.tableView.reloadData() }
-                    case .failure(let error):
-                        print(error)
-                }
-            }
     }
 }
 
@@ -102,7 +103,7 @@ extension SelectTeamVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        passSelectedTeam(teamData: teams[indexPath.row])
+        passSelectedTeam(teamData: teams[indexPath.row].team)
     }
     
 }

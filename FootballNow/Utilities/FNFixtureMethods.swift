@@ -3,7 +3,7 @@ import Foundation
 
 struct FNFixtureMethods {
     
-    static func getGameStartTime(timestamp: Double, gameStatus: String) -> String? {
+    static func getGameStartTime(timestamp: Double?, gameStatus: String?) -> String? {
         
         switch gameStatus {
             case "TBD":
@@ -21,7 +21,7 @@ struct FNFixtureMethods {
     
     
     
-    static func getGameStatus(for status: String) -> String {
+    static func getGameStatus(for status: String?) -> String {
         
         switch status {
             case "TBD": // time to be defined
@@ -70,7 +70,7 @@ struct FNFixtureMethods {
     }
     
     
-    static func getElapsedTime(elapsed: Int?, gameStatus: String) -> String {
+    static func getElapsedTime(elapsed: Int?, gameStatus: String?) -> String {
         guard let elapsed = elapsed else { return ""}
         
         switch elapsed {

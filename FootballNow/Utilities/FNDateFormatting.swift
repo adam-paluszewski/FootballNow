@@ -9,7 +9,10 @@ import Foundation
 
 struct FNDateFormatting {
     
-    static func getYYYYMMDD(timestamp: Double) -> String{
+    static func getYYYYMMDD(timestamp: Double?) -> String{
+        guard let timestamp = timestamp else {
+            return ""
+        }
         let matchDate = Date(timeIntervalSince1970: timestamp)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MM YYYY"
@@ -19,7 +22,10 @@ struct FNDateFormatting {
         return dateString
     }
     
-    static func getDMMM(timestamp: Double) -> String{
+    static func getDMMM(timestamp: Double?) -> String{
+        guard let timestamp = timestamp else {
+            return ""
+        }
         let matchDate = Date(timeIntervalSince1970: timestamp)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "E d MMM"
@@ -31,7 +37,10 @@ struct FNDateFormatting {
     
     
     
-    static func getDDMM(timestamp: Double) -> String{
+    static func getDDMM(timestamp: Double?) -> String{
+        guard let timestamp = timestamp else {
+            return ""
+        }
         let matchDate = Date(timeIntervalSince1970: timestamp)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MM"
@@ -43,7 +52,10 @@ struct FNDateFormatting {
     
     
     
-    static func getHHMM(timestamp: Double) -> String{
+    static func getHHMM(timestamp: Double?) -> String{
+        guard let timestamp = timestamp else {
+            return ""
+        }
         let matchDate = Date(timeIntervalSince1970: timestamp)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"

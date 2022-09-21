@@ -106,33 +106,33 @@ class FNGameEventCell: UITableViewCell {
         let events = game.events
         let eventsReversed = Array(events!.reversed())
         
-        let homeTeam = game.teams.home.id
-        let awayTeam = game.teams.away.id
+        let homeTeam = game.teams?.home?.id
+        let awayTeam = game.teams?.away?.id
         let event = eventsReversed[indexPath]
         
-        if event.team.id == homeTeam {
+        if event.team?.id == homeTeam {
             awayEventTimeLabel.isHidden = true
             awayEventImageView.isHidden = true
             awayEventPlayerLabel.isHidden = true
             awayExtraInfoLabel.isHidden = true
             
-            if let timeElapsed = event.time.elapsed {
+            if let timeElapsed = event.time?.elapsed {
                 homeEventTimeLabel.text = "\(timeElapsed)'"
             }
             
-            homeEventPlayerLabel.text = event.player.name
+            homeEventPlayerLabel.text = event.player?.name
             
-            if event.assist.name != nil {
+            if event.assist?.name != nil {
                 if event.type == "subst" {
-                    homeEventPlayerLabel.text = event.assist.name
+                    homeEventPlayerLabel.text = event.assist?.name
                     
-                    if let eventPlayerName = event.player.name {
+                    if let eventPlayerName = event.player?.name {
                         homeExtraInfoLabel.text = "za \(eventPlayerName)"
                     }
                     
                 } else if event.type == "Goal" {
-                    homeEventPlayerLabel.text = event.player.name
-                    homeExtraInfoLabel.text = "asysta \(event.assist.name ?? "")"
+                    homeEventPlayerLabel.text = event.player?.name
+                    homeExtraInfoLabel.text = "asysta \(event.assist?.name ?? "")"
                 } 
             } else {
                 homeExtraInfoLabel.isHidden = true
@@ -159,33 +159,33 @@ class FNGameEventCell: UITableViewCell {
                     print("Missing image for some home event")
             }
             
-        } else if event.team.id == awayTeam {
+        } else if event.team?.id == awayTeam {
             homeEventTimeLabel.isHidden = true
             homeEventImageView.isHidden = true
             homeEventPlayerLabel.isHidden = true
             homeExtraInfoLabel.isHidden = true
             
             
-            if let timeElapsed = event.time.elapsed {
+            if let timeElapsed = event.time?.elapsed {
                 awayEventTimeLabel.text = "\(timeElapsed)'"
             }
             //            cell.awayEventImage =
-            awayEventPlayerLabel.text = event.player.name
+            awayEventPlayerLabel.text = event.player?.name
             
             
             
             //assist is used for substitute event
-            if event.assist.name != nil {
+            if event.assist?.name != nil {
                 if event.type == "subst" {
-                    awayEventPlayerLabel.text = event.assist.name
+                    awayEventPlayerLabel.text = event.assist?.name
                     
-                    if let eventPlayerName = event.player.name {
+                    if let eventPlayerName = event.player?.name {
                         awayExtraInfoLabel.text = "za \(eventPlayerName)"
                     }
                     
                 } else if event.type == "Goal" {
-                    awayEventPlayerLabel.text = event.player.name
-                    awayExtraInfoLabel.text = "asysta \(event.assist.name ?? "")"
+                    awayEventPlayerLabel.text = event.player?.name
+                    awayExtraInfoLabel.text = "asysta \(event.assist?.name ?? "")"
                 }
                 
             } else {
