@@ -9,7 +9,7 @@ import UIKit
 
 class FNNextGamesVC: UIViewController {
 
-    let sectionView = FNSectionView(title: "Kolejne mecze")
+    let sectionView = FNSectionView(title: "KOLEJNE MECZE")
     var nextGames: [FixturesResponse] = []
     let tableView = UITableView()
     var teamId: Int!
@@ -81,7 +81,7 @@ class FNNextGamesVC: UIViewController {
                             return
                         }
                         self.nextGames = fixtures
-                        self.sectionView.button.setTitle("Zobacz więcej", for: .normal)
+                        self.sectionView.button.setTitle("WIĘCEJ", for: .normal)
                         self.tableView.reloadData()
                         
                         

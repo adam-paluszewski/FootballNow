@@ -46,7 +46,7 @@ class SelectTeamVC: UIViewController {
         tableView.register(FNSelectTeamCell.self, forCellReuseIdentifier: FNSelectTeamCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor(named: "FNSectionBackground")
+        tableView.backgroundColor = FNColors.backgroundColor
     }
     
     

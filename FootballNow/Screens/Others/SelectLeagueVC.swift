@@ -70,7 +70,7 @@ class SelectLeagueVC: UIViewController {
         tableView.register(FNSelectLeagueCell.self, forCellReuseIdentifier: FNSelectLeagueCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor(named: "FNSectionBackground")
+        tableView.backgroundColor = FNColors.backgroundColor
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
     }
     

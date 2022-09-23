@@ -11,8 +11,25 @@ class SquadListVC: UIViewController {
     
     let tableView = UITableView()
     
-    var players: [PlayerSq] = []
-
+    var playersByPosition: [[PlayerSq]] = []
+    let sectionNames = ["BRAMKARZE", "OBROŃCY", "POMOCNICY", "NAPASTNICY"]
+    
+    
+    init(players: [PlayerSq]) {
+        super.init(nibName: nil, bundle: nil)
+        let goalkeepers = players.filter {$0.position == "Goalkeeper"}
+        let defenders = players.filter {$0.position == "Defender"}
+        let midfielders = players.filter {$0.position == "Midfielder"}
+        let attackers = players.filter {$0.position == "Attacker"}
+        self.playersByPosition = [goalkeepers, defenders, midfielders, attackers]
+    }
+    
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
@@ -22,7 +39,7 @@ class SquadListVC: UIViewController {
 
     func configureViewController() {
         navigationItem.backBarButtonItem = UIBarButtonItem()
-        navigationItem.title = "Skład drużyny"
+        navigationItem.title = "Zawodnicy"
         
         layoutUI()
     }
@@ -32,7 +49,8 @@ class SquadListVC: UIViewController {
         tableView.register(FNTablePlayerCell.self, forCellReuseIdentifier: FNTablePlayerCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = FNColors.sectionColor
+        tableView.backgroundColor = FNColors.backgroundColor
+        tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
     }
     
     
@@ -53,42 +71,46 @@ class SquadListVC: UIViewController {
 
 extension SquadListVC: UITableViewDelegate, UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        playersByPosition.count
+    }
+    
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = FNTableViewHeaderView(text: sectionNames[section])
+        return header
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return players.count
+        return playersByPosition[section].count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNTablePlayerCell.cellId, for: indexPath) as! FNTablePlayerCell
-        cell.set(player: players[indexPath.row])
+        cell.set(player: playersByPosition[indexPath.section][indexPath.row])
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let playerId = players[indexPath.row].id
-        let playerNumber = players[indexPath.row].number
-        let playerPosition = players[indexPath.row].position
-        
+        let playerId = playersByPosition[indexPath.section][indexPath.row].id
+        let playerNumber = playersByPosition[indexPath.section][indexPath.row].number
+        let playerPosition = playersByPosition[indexPath.section][indexPath.row].position
+
         let playerVC = PlayerVC(id: playerId, number: playerNumber, position: playerPosition)
         navigationController?.pushViewController(playerVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let contentHeight = scrollView.contentSize.height
-        let offsetY = scrollView.contentOffset.y
-        let screenHeight = scrollView.frame.size.height
-        
-        if offsetY > contentHeight - screenHeight {
-            print("poszlo")
-        }
-    }
-    
 }

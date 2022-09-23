@@ -18,7 +18,6 @@ class FNSelectTeamCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -28,6 +27,7 @@ class FNSelectTeamCell: UITableViewCell {
     
     
     func configure() {
+        backgroundColor = FNColors.sectionColor
         self.accessoryType = .disclosureIndicator
     }
     
@@ -35,10 +35,7 @@ class FNSelectTeamCell: UITableViewCell {
     func addSubviews() {
         addSubview(teamLogoImageView)
         addSubview(teamNameLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         teamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             teamLogoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
@@ -51,7 +48,7 @@ class FNSelectTeamCell: UITableViewCell {
             teamNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
         ])
     }
-    
+
     
     func set(teams: TeamsResponse) {
         teamNameLabel.text = teams.team.name

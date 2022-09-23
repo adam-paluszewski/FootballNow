@@ -27,7 +27,6 @@ class FNNextGameCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -100,10 +99,7 @@ class FNNextGameCell: UITableViewCell {
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(gameDateLabel)
         stackView.addArrangedSubview(gameTimeLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         homeTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         awayTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         vLineView.translatesAutoresizingMaskIntoConstraints = false

@@ -46,6 +46,7 @@ class SettingsVC: UIViewController {
         tableView.register(FNSettingsCell.self, forCellReuseIdentifier: FNSettingsCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = FNColors.backgroundColor
         tableView.contentInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
         tableView.isScrollEnabled = false
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
@@ -126,7 +127,7 @@ class SettingsVC: UIViewController {
             
             versionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             versionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            versionLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            versionLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             
             segmentedControl.topAnchor.constraint(equalTo: segmentedControlSectionView.bodyView.topAnchor, constant: 10),
             segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlSectionView.bodyView.leadingAnchor, constant: 15),
@@ -150,7 +151,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 2
     }
     
     
@@ -160,9 +161,9 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.row {
             case 0:
                 cell.textLabel!.text = "Wybierz ponownie swoją drużynę"
+//            case 1:
+//                cell.textLabel!.text = "Wesprzyj projekt"
             case 1:
-                cell.textLabel!.text = "Wesprzyj projekt"
-            case 2:
                 cell.textLabel!.text = "Licencje"
             default:
                 cell.textLabel!.text = nil
@@ -178,9 +179,9 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             case 0:
                 let selectTeamVC = SelectTeamVC()
                 navigationController?.pushViewController(selectTeamVC, animated: true)
+//            case 1:
+//                print("to do")
             case 1:
-                print("to do")
-            case 2:
                 let licensesVC = LicensesVC()
                 navigationController?.pushViewController(licensesVC, animated: true)
             default:

@@ -46,6 +46,7 @@ class GamesVC: UIViewController {
     func configureTableView() {
         tableView.register(FNLeagueCell.self, forCellReuseIdentifier: FNLeagueCell.cellId)
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
+        tableView.backgroundColor = FNColors.backgroundColor
         tableView.delegate = self
         tableView.dataSource = self
 

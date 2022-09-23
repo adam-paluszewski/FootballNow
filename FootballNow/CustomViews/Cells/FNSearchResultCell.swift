@@ -19,7 +19,6 @@ class FNSearchResultCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -39,10 +38,7 @@ class FNSearchResultCell: UITableViewCell {
         addSubview(teamLogoImageView)
         addSubview(teamNameLabel)
         contentView.addSubview(addToFavoritesButton)
-    }
-    
-    
-    func addConstraints() {
+        
         teamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         addToFavoritesButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -62,7 +58,7 @@ class FNSearchResultCell: UITableViewCell {
             addToFavoritesButton.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
-    
+
     
     func set(team: TeamDetails) {
         teamNameLabel.text = team.name

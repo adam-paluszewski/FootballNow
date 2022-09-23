@@ -9,7 +9,7 @@ import UIKit
 
 class FNLastGameVC: UIViewController {
     
-    let sectionView = FNSectionView(title: "Ostatni mecz")
+    let sectionView = FNSectionView(title: "OSTATNI MECZ")
     let gameOverviewView = FNGameOverviewView()
     let gameDetailsButton = UIButton()
     
@@ -64,7 +64,7 @@ class FNLastGameVC: UIViewController {
                                 return
                             }
                             self.gameOverviewView.set(game: fixtures[0])
-                            self.sectionView.button.setTitle("Zobacz więcej", for: .normal)
+                            self.sectionView.button.setTitle("WIĘCEJ", for: .normal)
                         }
                     }
                 case .failure(let error):

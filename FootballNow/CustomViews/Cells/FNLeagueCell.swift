@@ -24,7 +24,6 @@ class FNLeagueCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -33,7 +32,7 @@ class FNLeagueCell: UITableViewCell {
     
     
     func configure() {
-        backgroundColor = FNColors.backgroundColor
+        backgroundColor = FNColors.sectionColor
         tableView.register(FNNextGameCell.self, forCellReuseIdentifier: FNNextGameCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
@@ -45,10 +44,7 @@ class FNLeagueCell: UITableViewCell {
     func addSubviews() {
         contentView.addSubview(view)
         view.bodyView.addSubview(tableView)
-    }
-    
-    
-    func addConstraints() {
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -62,7 +58,6 @@ class FNLeagueCell: UITableViewCell {
             tableView.trailingAnchor.constraint(equalTo: view.bodyView.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bodyView.bottomAnchor)
         ])
-
     }
 }
 

@@ -11,11 +11,16 @@ class StandingsVC: UIViewController {
 
     let tableView = UITableView()
     let tableViewHeaderView = FNStandingsHeaderView()
-    var standings: [Standing] = []
+    var currentLeagueStandings: [StandingsResponse] = []
+    var allLeaguesStandings: [StandingsResponse] = []
     var leagueId: Int?
+    var teamId: Int!
+    var teamGroup = 0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(allLeaguesStandings)
         configureViewController()
         configureTableView()
         fetchDataForStandings()
@@ -25,6 +30,8 @@ class StandingsVC: UIViewController {
     
     func configureViewController() {
         navigationItem.backBarButtonItem = UIBarButtonItem()
+        let leagueButton = UIBarButtonItem(title: "INNE", style: .plain, target: self, action: #selector(changeLeagueButtonPressed))
+        navigationItem.rightBarButtonItem = leagueButton
         
         layoutUI()
     }
@@ -34,7 +41,7 @@ class StandingsVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FNStandingsCell.self, forCellReuseIdentifier: FNStandingsCell.cellId)
-        tableView.backgroundColor = FNColors.sectionColor
+        tableView.backgroundColor = FNColors.backgroundColor
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         tableView.sectionHeaderTopPadding = 0
         tableView.showsVerticalScrollIndicator = false
@@ -48,7 +55,7 @@ class StandingsVC: UIViewController {
             guard let self = self else { return }
             switch result {
                 case .success(let standings):
-                    self.standings = standings[0].league?.standings[0] ?? []
+                    self.currentLeagueStandings = standings[0].league?.standings[self.teamGroup] ?? []
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                         self.setNavigationItemTitle(from: standings[0].league)
@@ -58,6 +65,34 @@ class StandingsVC: UIViewController {
                     print(error)
             }
         }
+    }
+    
+    
+    func checkInWhichGroupIsTeam() {
+        let groupsCount = allLeaguesStandings[0].league?.standings[0].count ?? 0
+        print(groupsCount)
+        for i in 0...groupsCount-1 {
+            if !(allLeaguesStandings[0].league?.standings[i].filter{ $0.team?.id == teamId}.isEmpty ?? false) {
+                teamGroup = i
+            }
+        }
+        
+        
+    }
+    
+    
+    @objc func changeLeagueButtonPressed() {
+        let ac = UIAlertController(title: "Wybierz ligę", message: nil, preferredStyle: .actionSheet)
+        for (index, league) in allLeaguesStandings.enumerated() {
+            ac.addAction(UIAlertAction(title: allLeaguesStandings[index].league?.name, style: .default, handler: { action in
+                self.leagueId = league.league?.id
+                self.checkInWhichGroupIsTeam()
+                self.fetchDataForStandings()
+            }))
+        }
+
+        ac.addAction(UIAlertAction(title: "Anuluj", style: .cancel))
+        present(ac, animated: true)
     }
     
     
@@ -91,19 +126,19 @@ extension StandingsVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return standings.count
+        return currentLeagueStandings.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNStandingsCell.cellId, for: indexPath) as! FNStandingsCell
-        cell.set(standing: standings[indexPath.row])
+        cell.set(standing: currentLeagueStandings[indexPath.row])
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let team = standings[indexPath.row].team
+        let team = currentLeagueStandings[indexPath.row].team
         let teamData = TeamDetails(id: team?.id, name: team?.name, logo: team?.logo)
         navigationController?.pushViewController(TeamDashboardVC(isMyTeamShowing: false, team: teamData), animated: true)
         tableView.deselectRow(at: indexPath, animated: true)

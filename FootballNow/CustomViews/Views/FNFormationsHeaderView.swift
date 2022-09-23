@@ -18,7 +18,6 @@ class FNFormationsHeaderView: UIView {
         super.init(frame: frame)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -34,7 +33,6 @@ class FNFormationsHeaderView: UIView {
         
         configure()
         addSubviews()
-        addConstraints()
     }
     
 
@@ -51,10 +49,7 @@ class FNFormationsHeaderView: UIView {
         addSubview(separatorView)
         addSubview(titleView)
         addSubview(sectionTitleLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         titleView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -73,11 +68,6 @@ class FNFormationsHeaderView: UIView {
             sectionTitleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
             sectionTitleLabel.topAnchor.constraint(equalTo: titleView.topAnchor),
             sectionTitleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor)
-            
-
-
-
         ])
     }
-
 }

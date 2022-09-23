@@ -10,10 +10,13 @@ import UIKit
 class SearchVC: UIViewController {
     
     let searchController = UISearchController()
-    let tableView = UITableView()
+    let tableView = UITableView(frame: .zero, style: .grouped)
+    let lastSearchedTitleView = FNLastSearchedTitleView()
     
     var searchedTeams: [TeamDetails] = []
     var lastSearched: [TeamDetails] = []
+    
+    var shouldShowLastSearched = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +41,7 @@ class SearchVC: UIViewController {
     
     @objc func addToFavoritesPressed(sender: UIButton) {
         let teamIndex = sender.tag
-        let activeArray = searchedTeams.isEmpty ? lastSearched : searchedTeams
+        let activeArray = shouldShowLastSearched ? lastSearched : searchedTeams
         
         PersistenceManager.shared.checkIfTeamIsInFavorites(teamId: activeArray[teamIndex].id) { isInFavorites in
             switch isInFavorites {
@@ -62,7 +65,10 @@ class SearchVC: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem()
         view.backgroundColor = FNColors.backgroundColor
         navigationItem.title = "Szukaj klubu"
-        navigationController?.navigationBar.prefersLargeTitles = true 
+        navigationController?.navigationBar.prefersLargeTitles = true
+        lastSearchedTitleView.removeAllButton.addTarget(self, action: #selector(removeAllButtontapped), for: .touchUpInside)
+        
+        layoutUI()
     }
     
     
@@ -75,11 +81,41 @@ class SearchVC: UIViewController {
     
     
     func configureTableView() {
+        tableView.backgroundColor = FNColors.backgroundColor
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FNSearchResultCell.self, forCellReuseIdentifier: FNSearchResultCell.cellId)
-        tableView.backgroundColor = FNColors.sectionColor
-        
+        tableView.sectionHeaderTopPadding = 0
+    }
+    
+    
+    func checkForLastSearched() {
+        PersistenceManager.shared.retrieveLastSearched { result in
+            switch result {
+                case .success(let lastSearched):
+                    self.lastSearched = lastSearched
+                    tableView.reloadData()
+                    
+                    if lastSearched.isEmpty {
+                        lastSearchedTitleView.removeAllButton.isHidden = true
+                        showEmptyState(in: view, text: "Brak ostatnio wyszukiwanych drużyn", image: .noSearchResults, axis: .vertical)
+                    }
+                case .failure(let error):
+                    presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
+            }
+        }
+    }
+    
+    
+    @objc func removeAllButtontapped() {
+        lastSearched = []
+        shouldShowLastSearched = false
+        showEmptyState(in: view, text: "Brak ostatnio wyszukiwanych drużyn", image: .noSearchResults, axis: .vertical)
+        tableView.reloadData()
+    }
+    
+    
+    func layoutUI() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -89,17 +125,6 @@ class SearchVC: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-    }
-    
-    
-    func checkForLastSearched() {
-        if let data = UserDefaults.standard.value(forKey: "LastSearched") as? Data {
-            let decoder = JSONDecoder()
-            if let lastSearched = try? decoder.decode([TeamDetails].self, from: data) {
-                self.lastSearched = lastSearched
-                tableView.reloadData()
-            }
-        }
     }
 }
 
@@ -113,28 +138,35 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchedTeams.isEmpty ? lastSearched.count : searchedTeams.count
+        return shouldShowLastSearched ? lastSearched.count : searchedTeams.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNSearchResultCell.cellId, for: indexPath) as! FNSearchResultCell
         cell.addToFavoritesButton.tag = indexPath.row
-        searchedTeams.isEmpty ? cell.set(team: lastSearched[indexPath.row]) : cell.set(team: searchedTeams[indexPath.row])
+        shouldShowLastSearched ? cell.set(team: lastSearched[indexPath.row]) : cell.set(team: searchedTeams[indexPath.row])
         cell.addToFavoritesButton.addTarget(self, action: #selector(addToFavoritesPressed), for: .touchUpInside)
         return cell
     }
 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let arrayToPick = searchedTeams.isEmpty ? lastSearched : searchedTeams
-        let teamDashboardVC = TeamDashboardVC(isMyTeamShowing: false, team: arrayToPick[indexPath.row])
+        let activeArray = shouldShowLastSearched ? lastSearched : searchedTeams
+        let teamDashboardVC = TeamDashboardVC(isMyTeamShowing: false, team: activeArray[indexPath.row])
         navigationController?.pushViewController(teamDashboardVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return searchedTeams.isEmpty && !lastSearched.isEmpty ? "Ostatnio wyszukiwane" : nil
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let height: CGFloat = shouldShowLastSearched ? 40 : 0
+        return height
+    }
+    
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let titleView = shouldShowLastSearched ? lastSearchedTitleView : nil
+        return titleView
     }
 }
 
@@ -143,21 +175,20 @@ extension SearchVC: UISearchBarDelegate, UISearchControllerDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searched = searchBar.text else { return }
-        
+        dismissEmptyState()
+        lastSearchedTitleView.removeAllButton.isHidden = false
         NetworkManager.shared.getTeams(parameters: "search=\(searched)") { [weak self] result in
             guard let self = self else { return }
+            self.shouldShowLastSearched = false
             switch result {
                 case .success(let teams):
+                    self.searchedTeams.removeAll()
                     for i in teams {
                         self.searchedTeams.append(i.team)
                     }
-                    self.lastSearched = self.searchedTeams
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
-                        
-                        let encoder = JSONEncoder()
-                        let data = try? encoder.encode(self.lastSearched)
-                        UserDefaults.standard.set(data, forKey: "LastSearched")
+                        PersistenceManager.shared.save(searched: self.searchedTeams)
                     }
                 case .failure(let error):
                     print(error)
@@ -167,7 +198,9 @@ extension SearchVC: UISearchBarDelegate, UISearchControllerDelegate {
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        lastSearched = searchedTeams
         searchedTeams = []
+        shouldShowLastSearched = true
         tableView.reloadData()
     }
 }

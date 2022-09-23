@@ -167,7 +167,7 @@ class GameDetailsVC: UIViewController {
             headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             headerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 100),
+            headerView.heightAnchor.constraint(equalToConstant: SectionHeight.teamDashboardLastGameHeight-41),
             
             segmentedControl.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10),
             segmentedControl.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 15),

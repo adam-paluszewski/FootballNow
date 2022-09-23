@@ -1,13 +1,13 @@
 //
-//  FNTeamTitleView.swift
+//  FNPlayerTitleView.swift
 //  FootballNow
 //
-//  Created by Adam Paluszewski on 30/08/2022.
+//  Created by Adam Paluszewski on 23/09/2022.
 //
 
 import UIKit
 
-class FNTeamTitleView: UIView {
+class FNPlayerTitleView: UIView {
 
     let imageView = UIImageView()
     let titleLabel = UILabel()
@@ -43,6 +43,8 @@ class FNTeamTitleView: UIView {
     func configure() {
         titleLabel.textColor = .label
         titleLabel.font = .systemFont(ofSize: 18, weight: .medium)
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 12
     }
     
     
@@ -65,4 +67,5 @@ class FNTeamTitleView: UIView {
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
     }
+
 }

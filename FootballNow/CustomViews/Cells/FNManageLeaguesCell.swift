@@ -19,7 +19,6 @@ class FNManageLeaguesCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -39,10 +38,7 @@ class FNManageLeaguesCell: UITableViewCell {
         addSubview(leagueImageView)
         addSubview(leagueNameLabel)
         contentView.addSubview(removeFromLeaguesButton)
-    }
-    
-    
-    func addConstraints() {
+        
         leagueImageView.translatesAutoresizingMaskIntoConstraints = false
         removeFromLeaguesButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -62,7 +58,7 @@ class FNManageLeaguesCell: UITableViewCell {
             removeFromLeaguesButton.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
-    
+
     
     func set(league: LeaguesResponse) {
         leagueNameLabel.text = league.league?.name

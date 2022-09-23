@@ -20,7 +20,6 @@ class FNGameStatisticsCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -66,10 +65,7 @@ class FNGameStatisticsCell: UITableViewCell {
         addSubview(homeStatisticLabel)
         addSubview(awayStatisticLabel)
         addSubview(statisticInfoLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         NSLayoutConstraint.activate([
             homeStatisticLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             homeStatisticLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),

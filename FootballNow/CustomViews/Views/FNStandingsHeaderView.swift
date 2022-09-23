@@ -21,7 +21,6 @@ class FNStandingsHeaderView: UIView {
         super.init(frame: frame)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -49,10 +48,7 @@ class FNStandingsHeaderView: UIView {
         addSubview(gamesDrawLabel)
         addSubview(gamesLostLabel)
         addSubview(pointsLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         NSLayoutConstraint.activate([
             positionLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             positionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),

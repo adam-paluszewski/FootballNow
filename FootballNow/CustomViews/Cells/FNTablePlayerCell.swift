@@ -15,8 +15,7 @@ class FNTablePlayerCell: UITableViewCell {
     
     let photoImageView = UIImageView()
     let nameLabel = FNBodyLabel(allingment: .left)
-    let ageLabel = FNCaptionLabel(allingment: .left)
-    let positionLabel = FNBodyLabel(allingment: .left)
+    let ageLabel = FNBodyLabel(allingment: .left)
     let numberLabel = FNBodyLabel(allingment: .center)
     
     
@@ -24,7 +23,6 @@ class FNTablePlayerCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -35,7 +33,6 @@ class FNTablePlayerCell: UITableViewCell {
     func set(player: PlayerSq) {
         nameLabel.text = player.name
         ageLabel.text = FNAgeSuffix.shared.ageSuffix(age: player.age)
-        positionLabel.text = FNTranslateToPolish.shared.translatePlayerPosition(from: player.position)
         
         if let photo =  player.photo {
             NetworkManager.shared.downloadImage(from: photo) { [weak self] image in
@@ -54,7 +51,6 @@ class FNTablePlayerCell: UITableViewCell {
         photoImageView.clipsToBounds = true
         photoImageView.layer.cornerRadius = 30
         ageLabel.textColor = .secondaryLabel
-        positionLabel.textColor = .secondaryLabel
     }
     
     
@@ -63,11 +59,7 @@ class FNTablePlayerCell: UITableViewCell {
         addSubview(numberLabel)
         addSubview(nameLabel)
         addSubview(ageLabel)
-        addSubview(positionLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -79,12 +71,9 @@ class FNTablePlayerCell: UITableViewCell {
             nameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -10),
             nameLabel.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 10),
 
-            positionLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 10),
-            positionLabel.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 10),
-            positionLabel.widthAnchor.constraint(equalToConstant: 100),
-            
-            ageLabel.firstBaselineAnchor.constraint(equalTo: nameLabel.firstBaselineAnchor),
-            ageLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 5)
+            ageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 10),
+            ageLabel.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 10),
+            ageLabel.widthAnchor.constraint(equalToConstant: 100),
         ])
     }
 }

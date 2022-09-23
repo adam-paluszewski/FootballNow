@@ -9,7 +9,7 @@ import UIKit
 
 struct SectionHeight {
     //40 stands for header height and 1 stands for separator height in section
-    static let teamDashboardLastGameHeight: Double = 40+1+100
+    static let teamDashboardLastGameHeight: Double = 40+1+103
     static let teamDashboardStandingsHeight: Double = 40+1+80
     static let teamDashboardNextGamesHeight: Double = 40+1+(3*UIElementsSizes.nextGameCellHeight)-0.5 //-0.5 to hides last cell separator
     static let teamDashboardSquadHeight: Double = 40+1+210
@@ -60,6 +60,7 @@ enum EmptyStateImages: String {
     case formations = "FNTeam"
     case progress = "FNProgress"
     case favorite = "FNFavorite"
+    case noSearchResults = "FNNoSearchResults"
 }
 
 

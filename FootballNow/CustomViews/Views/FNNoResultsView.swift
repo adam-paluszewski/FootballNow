@@ -29,7 +29,6 @@ class FNNoResultsView: UIView {
         
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -48,10 +47,7 @@ class FNNoResultsView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    
-    func addConstraints() {
+        
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -80),
@@ -64,5 +60,4 @@ class FNNoResultsView: UIView {
             
         ])
     }
-    
 }

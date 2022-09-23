@@ -33,7 +33,7 @@ class NextGamesListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FNNextGameCell.self, forCellReuseIdentifier: FNNextGameCell.cellId)
-        tableView.backgroundColor = FNColors.sectionColor
+        tableView.backgroundColor = FNColors.backgroundColor
         tableView.showsVerticalScrollIndicator = false
         tableView.isUserInteractionEnabled = true
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets

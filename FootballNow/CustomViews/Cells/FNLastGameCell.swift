@@ -27,7 +27,6 @@ class FNLastGameCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -75,7 +74,7 @@ class FNLastGameCell: UITableViewCell {
     
     
     func configure() {
-        backgroundColor = .clear
+        backgroundColor = FNColors.sectionColor
         vLineView.backgroundColor = FNColors.backgroundColor
         gameDateLabel.textColor = .secondaryLabel
         gameDateLabel.numberOfLines = 2
@@ -96,10 +95,7 @@ class FNLastGameCell: UITableViewCell {
         addSubview(awayTeamScoreLabel)
         addSubview(vLineView)
         addSubview(gameDateLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         homeTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         awayTeamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         vLineView.translatesAutoresizingMaskIntoConstraints = false

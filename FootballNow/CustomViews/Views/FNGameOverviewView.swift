@@ -30,7 +30,6 @@ class FNGameOverviewView: UIView {
         super.init(frame: frame)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -38,20 +37,28 @@ class FNGameOverviewView: UIView {
     }
     
     
+    func configure() {
+        gameScoreLabel.font = .systemFont(ofSize: 22, weight: .bold)
+        timeElapsedLabel.textColor = .systemGreen
+    }
+    
+    
     func set(game: FixturesResponse) {
         let status = game.fixture?.status?.short
         let time = game.fixture?.status?.elapsed
-
-        timeElapsedLabel.text = FNFixtureMethods.getElapsedTime(elapsed: time, gameStatus: status)
+        
+        if status == "1H", status == "2H", status == "ET", time != nil {
+            timeElapsedLabel.text = String(time!)
+        }
 
         let homeGoals = game.goals?.home == nil ? "b/d" : String((game.goals?.home)!)
         let awayGoals = game.goals?.away == nil ? "b/d" : String((game.goals?.away)!)
         gameScoreLabel.text = "\(homeGoals) - \(awayGoals)"
         
-        homeTeamNameLabel.text = game.teams?.home?.name
-        awayTeamNameLabel.text = game.teams?.away?.name
+        homeTeamNameLabel.text = game.teams?.home?.name ?? "b/d"
+        awayTeamNameLabel.text = game.teams?.away?.name ?? "b/d"
         
-        gameStatusLabel.text = FNFixtureMethods.getGameStatus(for: status)
+        gameStatusLabel.text = getGameStatus(for: status)
 
         NetworkManager.shared.downloadImage(from: game.teams?.home?.logo) { [weak self] image in
             guard let self = self else { return }
@@ -69,11 +76,50 @@ class FNGameOverviewView: UIView {
     }
     
     
-
-    
-    
-    func configure() {
-        gameScoreLabel.font = .systemFont(ofSize: 22, weight: .bold)
+    private func getGameStatus(for status: String?) -> String {
+        switch status {
+            case "TBD": // time to be defined
+                return "Godzina do ustalenia"
+            case "NS": // not started
+                return "Nie rozpoczął się"
+            case "1H": // first half
+                return "1. połowa"
+            case "HT": // halftime
+                return "Przerwa"
+            case "2H": // second half
+                return "2. połowa"
+            case "ET": // extra time
+                return "Dogrywka"
+            case "P": // penalties
+                return "Rzuty karne"
+            case "FT": // match finished
+                return "Zakończony"
+            case "AET": // match finished after extra time
+                return "Zakończony"
+            case "PEN": // match finished after penalties
+                return "Zakończony"
+            case "BT": // break time in extra time
+                return "Przerwa"
+            case "SUSP": // match suspended
+                return "Zawieszony"
+            case "INT": // match interrupted
+                return "Przerwany"
+            case "PST": // match postponed
+                return "Przełożony"
+            case "CANC": // match canceled
+                return "Anulowany"
+            case "ABD": // match abandoned
+                return "Porzucony"
+            case "AWD": // technical loss
+                return "Porażka techniczna"
+            case "WO": // walkover
+                return "Walkover"
+            case "Live": // in progress
+                return "W trakcie"
+                
+            default:
+                return "aaa"
+        }
     }
 
     
@@ -93,10 +139,7 @@ class FNGameOverviewView: UIView {
         scoreView.addSubview(gameStatusLabel)
         scoreView.addSubview(gameScoreLabel)
         scoreView.addSubview(timeElapsedLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         self.translatesAutoresizingMaskIntoConstraints = false
         homeTeamView.translatesAutoresizingMaskIntoConstraints = false
         awayTeamView.translatesAutoresizingMaskIntoConstraints = false

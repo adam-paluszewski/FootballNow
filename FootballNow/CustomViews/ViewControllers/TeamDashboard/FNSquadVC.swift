@@ -9,7 +9,7 @@ import UIKit
 
 class FNSquadVC: UIViewController {
 
-    let sectionView = FNSectionView(title: "Zawodnicy")
+    let sectionView = FNSectionView(title: "ZAWODNICY")
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     var players: [PlayerSq] = []
@@ -71,7 +71,7 @@ class FNSquadVC: UIViewController {
                             return
                         }
                         self.players = squad[0].players ?? []
-                        self.sectionView.button.setTitle("Zobacz listę", for: .normal)
+                        self.sectionView.button.setTitle("LISTA", for: .normal)
                         self.collectionView.reloadData()
                     }
                 case .failure(let error):
@@ -87,8 +87,7 @@ class FNSquadVC: UIViewController {
             sender.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
         } completion: { finished in
             sender.transform = .identity
-            let squadListVC = SquadListVC()
-            squadListVC.players = self.players
+            let squadListVC = SquadListVC(players: self.players)
             self.navigationController?.pushViewController(squadListVC, animated: true)
         }
     }

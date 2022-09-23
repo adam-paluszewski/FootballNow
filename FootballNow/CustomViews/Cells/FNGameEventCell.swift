@@ -27,7 +27,6 @@ class FNGameEventCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -63,10 +62,7 @@ class FNGameEventCell: UITableViewCell {
         addSubview(awayStackView)
         awayStackView.addArrangedSubview(awayEventPlayerLabel)
         awayStackView.addArrangedSubview(awayExtraInfoLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         homeEventImageView.translatesAutoresizingMaskIntoConstraints = false
         homeStackView.translatesAutoresizingMaskIntoConstraints = false
         awayEventImageView.translatesAutoresizingMaskIntoConstraints = false

@@ -20,7 +20,6 @@ class FNSectionView: UIView {
         super.init(frame: frame)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -34,14 +33,14 @@ class FNSectionView: UIView {
         sectionTitleLabel.text = title
         button.setTitle(buttonText, for: .normal)
         
-        translatesAutoresizingMaskIntoConstraints = false
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
     func configure() {
+        translatesAutoresizingMaskIntoConstraints = false
+        
         headerView.backgroundColor = FNColors.sectionColor
         separatorView.backgroundColor = FNColors.separatorColor
         bodyView.backgroundColor = FNColors.sectionColor
@@ -62,10 +61,7 @@ class FNSectionView: UIView {
         
         headerView.addSubview(sectionTitleLabel)
         headerView.addSubview(button)
-    }
-    
-    
-    func addConstraints() {
+        
         self.translatesAutoresizingMaskIntoConstraints = false
         headerView.translatesAutoresizingMaskIntoConstraints = false
         separatorView.translatesAutoresizingMaskIntoConstraints = false

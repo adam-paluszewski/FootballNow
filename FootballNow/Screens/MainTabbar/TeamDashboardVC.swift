@@ -11,10 +11,10 @@ class TeamDashboardVC: UIViewController {
     
     let scrollView = UIScrollView()
     let stackView = UIStackView()
-    let lastGameSectionView = FNSectionView(title: "Ostatni mecz")
-    let standingsSectionView = FNSectionView(title: "Tabela ligowa")
-    let nextGamesSectionView = FNSectionView(title: "Kolejne mecze")
-    let squadSectionView = FNSectionView(title: "Zawodnicy")
+    let lastGameSectionView = FNSectionView(title: "OSTATNI MECZ")
+    let standingsSectionView = FNSectionView(title: "TABELA")
+    let nextGamesSectionView = FNSectionView(title: "KOLEJNE MECZE")
+    let squadSectionView = FNSectionView(title: "ZAWODNICY")
     
     var addToFavoritesButton = UIBarButtonItem()
     

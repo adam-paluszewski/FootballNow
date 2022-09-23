@@ -13,11 +13,11 @@ struct Players: Codable {
 }
 
 struct PlayersResponse: Codable {
-    var player: PlayersPlayer
-    var statistics: [PlayerStatistics]
+    var player: PlayerP
+    var statistics: [StatisticsP]
 }
 
-struct PlayersPlayer: Codable {
+struct PlayerP: Codable {
     var id: Int
     var name: String?
     var firstname: String?
@@ -28,32 +28,32 @@ struct PlayersPlayer: Codable {
     var weight: String?
     var injured: Bool?
     var photo: String?
-    var birth: PlayersBirth?
+    var birth: BirthP?
 }
 
-struct PlayersBirth: Codable {
+struct BirthP: Codable {
     var date: String?
     var place: String?
     var country: String?
 }
 
-struct PlayerStatistics: Codable {
-    var team: TeamDetails
-    var league: League
-    var games: PlayerGames
-    var substitutes: PlayerSubstitutes
-    var shots: PlayerShots
-    var goals: PlayerGoals
-    var passes: PlayerPasses
-    var tackles: PlayerTackles
-    var duels: PlayerDuels
-    var dribbles: PlayerDribbles
-    var fouls: PlayerFouls
-    var cards: PlayerCards
-    var penalty: PlayerPenalty
+struct StatisticsP: Codable {
+    var team: TeamDetails?
+    var league: League?
+    var games: GamesP?
+    var substitutes: SubstitutesP?
+    var shots: ShotsP?
+    var goals: GoalsP?
+    var passes: PassesP?
+    var tackles: TacklesP?
+    var duels: DuelsP?
+    var dribbles: DribblesP?
+    var fouls: FoulsP?
+    var cards: CardsP?
+    var penalty: PenaltyP?
 }
 
-struct PlayerGames: Codable {
+struct GamesP: Codable {
     var appearences: Int?
     var lineups: Int?
     var minutes: Int?
@@ -63,7 +63,7 @@ struct PlayerGames: Codable {
     var captain: Bool?
 }
 
-struct PlayerSubstitutes: Codable {
+struct SubstitutesP: Codable {
     var inNumber: Int?
     var outNumber: Int?
     var bench: Int?
@@ -75,51 +75,51 @@ struct PlayerSubstitutes: Codable {
     }
 }
 
-struct PlayerShots: Codable {
+struct ShotsP: Codable {
     var total: Int?
     var on: Int?
 }
 
-struct PlayerGoals: Codable {
+struct GoalsP: Codable {
     var total: Int?
     var conceded: Int?
     var assists: Int?
     var saves: Int?
 }
 
-struct PlayerPasses: Codable {
+struct PassesP: Codable {
     var total: Int?
     var key: Int?
     var accuracy: Int?
 }
 
-struct PlayerTackles: Codable {
+struct TacklesP: Codable {
     var total: Int?
 }
 
-struct PlayerDuels: Codable {
+struct DuelsP: Codable {
     var total: Int?
     var won: Int?
 }
 
-struct PlayerDribbles: Codable {
+struct DribblesP: Codable {
     var attempts: Int?
     var success: Int?
     var past: Int?
 }
 
-struct PlayerFouls: Codable {
+struct FoulsP: Codable {
     var drawn: Int?
     var committed: Int?
 }
 
-struct PlayerCards: Codable {
+struct CardsP: Codable {
     var yellow: Int?
     var yellowred: Int?
     var red: Int?
 }
 
-struct PlayerPenalty: Codable {
+struct PenaltyP: Codable {
     var won: Int?
     var committed: Int?
     var scored: Int?

@@ -24,7 +24,6 @@ class FNFormationCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -112,10 +111,7 @@ class FNFormationCell: UITableViewCell {
         addSubview(awayNameLabel)
         addSubview(homeImageView)
         addSubview(awayImageView)
-    }
-    
-    
-    func addConstraints() {
+        
         homeNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         homeNameLabel.translatesAutoresizingMaskIntoConstraints = false
         awayNumberLabel.translatesAutoresizingMaskIntoConstraints = false

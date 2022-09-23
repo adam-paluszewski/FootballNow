@@ -18,7 +18,6 @@ class FNSelectLeagueCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -28,6 +27,7 @@ class FNSelectLeagueCell: UITableViewCell {
     
     
     func configure() {
+        backgroundColor = FNColors.sectionColor
         self.accessoryType = .disclosureIndicator
     }
     
@@ -35,10 +35,7 @@ class FNSelectLeagueCell: UITableViewCell {
     func addSubviews() {
         addSubview(leagueImageView)
         addSubview(leagueNameLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         leagueImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -52,7 +49,7 @@ class FNSelectLeagueCell: UITableViewCell {
             leagueNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
         ])
     }
-    
+
     
     func set(league: League) {
         leagueNameLabel.text = league.name

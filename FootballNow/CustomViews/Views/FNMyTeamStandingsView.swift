@@ -35,7 +35,6 @@ class FNMyTeamStandingsView: UIView {
         super.init(frame: frame)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -112,12 +111,7 @@ class FNMyTeamStandingsView: UIView {
         standingsView.addSubview(pointsLabel)
         standingsView.addSubview(teamLogoImageView)
         standingsView.addSubview(teamNameLabel)
-    }
-    
-    
-    
-    
-    func addConstraints() {
+        
         self.translatesAutoresizingMaskIntoConstraints = false
         descriptionView.translatesAutoresizingMaskIntoConstraints = false
         standingsView.translatesAutoresizingMaskIntoConstraints = false
@@ -158,7 +152,7 @@ class FNMyTeamStandingsView: UIView {
             positionLabel.centerYAnchor.constraint(equalTo: standingsView.centerYAnchor),
             positionLabel.leadingAnchor.constraint(equalTo: standingsView.leadingAnchor, constant: 15),
             positionLabel.heightAnchor.constraint(equalToConstant: 30),
-            positionLabel.widthAnchor.constraint(equalToConstant: 25),
+            positionLabel.widthAnchor.constraint(equalToConstant: 27),
             
             positionChangeImageView.centerYAnchor.constraint(equalTo: standingsView.centerYAnchor),
             positionChangeImageView.leadingAnchor.constraint(equalTo: positionLabel.trailingAnchor, constant: 0),

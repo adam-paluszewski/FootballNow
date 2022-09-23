@@ -84,13 +84,13 @@ extension GameFormationsVC: UITableViewDelegate, UITableViewDataSource {
         var header = UIView()
         switch section {
             case 0:
-                header = FNFormationsHeaderView(title: "Formacja", allingment: .center)
+                header = FNFormationsHeaderView(title: "FORMACJA", allingment: .center)
             case 1:
-                header = FNFormationsHeaderView(title: "Trener", allingment: .center)
+                header = FNFormationsHeaderView(title: "TRENER", allingment: .center)
             case 2:
-                header = FNFormationsHeaderView(title: "Wyjściowa jedenastka", allingment: .center)
+                header = FNFormationsHeaderView(title: "WYJŚCIOWA JEDENSTKA", allingment: .center)
             case 3:
-                header = FNFormationsHeaderView(title: "Rezerwowi", allingment: .center)
+                header = FNFormationsHeaderView(title: "REZEROWI", allingment: .center)
             default:
                 header = FNFormationsHeaderView(title: "", allingment: .center)
         }

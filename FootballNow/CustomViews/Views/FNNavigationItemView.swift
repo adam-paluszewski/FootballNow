@@ -15,6 +15,7 @@ class FNNavigationItemView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
+        addSubviews()
     }
     
     required init?(coder: NSCoder) {
@@ -23,6 +24,11 @@ class FNNavigationItemView: UIView {
     
     
     func configure() {
+        
+    }
+    
+    
+    func addSubviews() {
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "FNLogo")

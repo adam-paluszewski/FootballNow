@@ -21,7 +21,6 @@ class FNCollectionPlayerCell: UICollectionViewCell {
         super.init(frame: frame)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -58,10 +57,7 @@ class FNCollectionPlayerCell: UICollectionViewCell {
         addSubview(nameLabel)
         addSubview(positionLabel)
         addSubview(tshirtImageView)
-    }
-    
-    
-    func addConstraints() {
+        
         tshirtImageView.translatesAutoresizingMaskIntoConstraints = false
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false

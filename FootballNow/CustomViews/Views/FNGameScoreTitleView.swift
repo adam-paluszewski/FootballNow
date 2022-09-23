@@ -39,7 +39,6 @@ class FNGameScoreTitleView: UIView {
         
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -58,10 +57,7 @@ class FNGameScoreTitleView: UIView {
         addSubview(homeTeamImageView)
         addSubview(awayTeamImageView)
         addSubview(scoreLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         homeTeamImageView.translatesAutoresizingMaskIntoConstraints = false
         awayTeamImageView.translatesAutoresizingMaskIntoConstraints = false
         scoreLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -84,5 +80,4 @@ class FNGameScoreTitleView: UIView {
             
         ])
     }
-
 }

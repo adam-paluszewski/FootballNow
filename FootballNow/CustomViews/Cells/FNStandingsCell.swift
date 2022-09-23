@@ -25,7 +25,6 @@ class FNStandingsCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
         addSubviews()
-        addConstraints()
     }
     
     
@@ -92,17 +91,14 @@ class FNStandingsCell: UITableViewCell {
         addSubview(gamesDrawLabel)
         addSubview(gamesLostLabel)
         addSubview(pointsLabel)
-    }
-    
-    
-    func addConstraints() {
+        
         teamLogoImageView.translatesAutoresizingMaskIntoConstraints = false
         positionChangeImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             positionLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             positionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            positionLabel.widthAnchor.constraint(equalToConstant: 16),
+            positionLabel.widthAnchor.constraint(equalToConstant: 17),
             
             positionChangeImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             positionChangeImageView.leadingAnchor.constraint(equalTo: positionLabel.trailingAnchor, constant: 3),

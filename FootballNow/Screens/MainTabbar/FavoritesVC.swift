@@ -68,6 +68,7 @@ class FavoritesVC: UIViewController {
         tableView.dataSource = self
         tableView.register(FNSearchResultCell.self, forCellReuseIdentifier: FNSearchResultCell.cellId)
         tableView.isScrollEnabled = true
+        tableView.backgroundColor = FNColors.backgroundColor
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
