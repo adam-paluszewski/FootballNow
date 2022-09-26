@@ -14,32 +14,24 @@ class GamesVC: UIViewController {
     var observedLeagues: [LeaguesResponse] = []
     var gamesPerLeague: [[FixturesResponse]] = []
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.backBarButtonItem = UIBarButtonItem()
-        createObservers()
-        checkObservedLeagues()
         configureViewController()
         configureTableView()
-        fetchDataForGames()
     }
+
     
-    
-    func createObservers() {
-        let leagues = Notification.Name(NotificationKeys.myLeaguesChanged)
-        NotificationCenter.default.addObserver(self, selector: #selector(fireObserver), name: leagues, object: nil)
-    }
-    
-    
-    @objc func fireObserver(notification: NSNotification) {
-        observedLeagues = notification.object as! [LeaguesResponse]
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        checkObservedLeagues()
         fetchDataForGames()
     }
     
 
     func configureViewController() {
-        navigationItem.title = "Najbliższy tydzień"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Zarządzaj", style: .plain, target: self, action: #selector(manageLeagues))
+        navigationItem.title = "Twoje ligi"
     }
     
     
@@ -49,6 +41,7 @@ class GamesVC: UIViewController {
         tableView.backgroundColor = FNColors.backgroundColor
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.prepareForDynamicHeight()
 
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,53 +55,65 @@ class GamesVC: UIViewController {
     }
     
     
-    @objc func manageLeagues() {
+    @objc func manageLeaguesTapped() {
         let manageLeaguesVC = ManageLeaguesVC()
-        manageLeaguesVC.observedLeagues = self.observedLeagues
         navigationController?.pushViewController(manageLeaguesVC, animated: true)
     }
     
     
-    func checkObservedLeagues() {
-        if let data = UserDefaults.standard.data(forKey: "myLeagues") {
-            let decoder = JSONDecoder()
-            
-            if let observedLeagues = try? decoder.decode([LeaguesResponse].self, from: data) {
-                self.observedLeagues = observedLeagues
-            }
+    @objc func addLeaguesTapped() {
+        let selectLeagueVC = SelectLeagueVC()
+        selectLeagueVC.VCDismissed = { [weak self] in
+            self?.checkObservedLeagues()
+            self?.fetchDataForGames()
         }
-        
-        if observedLeagues.isEmpty {
-            let selectLeagueVC = SelectLeagueVC()
-            let navController = UINavigationController(rootViewController: selectLeagueVC)
-            present(navController, animated: true)
+        let navController = UINavigationController(rootViewController: selectLeagueVC)
+        present(navController, animated: true)
+    }
+    
+    
+    func checkObservedLeagues() {
+        gamesPerLeague.removeAll()
+        PersistenceManager.shared.retrieveMyLeagues { result in
+            switch result {
+                case .success(let leagues):
+                    self.observedLeagues = leagues
+                    if leagues.isEmpty {
+                        showEmptyState(in: view, text: "Nie obserwujesz żadnych rozgrywek. Wybierz swoje ulubione ligi i nie przegap żadnego meczu.", image: .noMyLeagues, axis: .vertical)
+                        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addLeaguesTapped))
+
+                    } else {
+                        self.dismissEmptyState()
+                        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "EDYTUJ", style: .plain, target: self, action: #selector(manageLeaguesTapped))
+                    }
+                case .failure(let error):
+                    print()
+            }
+            tableView.reloadData()
         }
     }
     
     
     func fetchDataForGames() {
-//        gamesPerLeague.removeAll()
-//        let semaphore = DispatchSemaphore(value: 1)
-//        for i in observedLeagues {
-//
-//            let leagueId = i.league.id
-//
-//            guard let leagueId = leagueId else { return }
-//            NetworkManager.shared.getFixtures(parameters: "league=\(leagueId)&from=\(FNDateFormatting.getDateYYYYMMDD(for: .current))&to=\(FNDateFormatting.getDateYYYYMMDD(for: .oneWeekAhead))&season=2022&timezone=Europe/Warsaw") { [weak self] result in
-//                semaphore.wait()
-//                guard let self = self else { return }
-//                switch result {
-//                    case .success(let fixtures):
-//                        self.gamesPerLeague.append(fixtures)
-//                        DispatchQueue.main.async {
-//                            self.tableView.reloadData()
-//                        }
-//                        semaphore.signal()
-//                    case .failure(let error):
-//                        print(error)
-//                }
-//            }
-//        }
+        let semaphore = DispatchSemaphore(value: 1)
+        for i in observedLeagues {
+
+            let leagueId = i.league?.id
+
+            guard let leagueId = leagueId else { return }
+            NetworkManager.shared.getFixtures(parameters: "league=\(leagueId)&from=\(FNDateFormatting.getDateYYYYMMDD(for: .current))&to=\(FNDateFormatting.getDateYYYYMMDD(for: .oneWeekAhead))&season=2022&timezone=Europe/Warsaw") { [weak self] result in
+                semaphore.wait()
+                guard let self = self else { return }
+                switch result {
+                    case .success(let fixtures):
+                        self.gamesPerLeague.append(fixtures)
+                        self.tableView.reloadDataOnMainThread()
+                        semaphore.signal()
+                    case .failure(let error):
+                        print(error)
+                }
+            }
+        }
     }
 
 }
@@ -116,20 +121,20 @@ class GamesVC: UIViewController {
 
 extension GamesVC: UITableViewDelegate, UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(gamesPerLeague[indexPath.row].count * 90 + 41 + 15)
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard !observedLeagues.isEmpty else { return 0}
         return gamesPerLeague.count
     }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CGFloat(gamesPerLeague[indexPath.row].count * 90 + 41 + 15) //+sectionView height +item spacing
+    }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNLeagueCell.cellId, for: indexPath) as! FNLeagueCell
         cell.games = gamesPerLeague[indexPath.row]
-        cell.view.sectionTitleLabel.text = gamesPerLeague[indexPath.row][0].league.name
+        cell.view.sectionTitleLabel.text = gamesPerLeague[indexPath.row][0].league.name?.uppercased()
         return cell
     }
-
 }

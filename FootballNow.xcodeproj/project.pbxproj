@@ -390,10 +390,10 @@
 				E96CE48728BB75E400B7D08F /* SettingsVC.swift */,
 				E990E8D428C0B17C00880FDE /* GameDetailsVC.swift */,
 				E984AD9228C616220006B320 /* PlayerVC.swift */,
-				E9AC0BA528C76440007E50E9 /* ManageLeaguesVC.swift */,
 				E96CE49A28BCEC7200B7D08F /* SelectTeamVC.swift */,
-				E9AC0BA728C76724007E50E9 /* SelectLeagueVC.swift */,
 				E9928DB028DB666E001AE554 /* LicensesVC.swift */,
+				E9AC0BA528C76440007E50E9 /* ManageLeaguesVC.swift */,
+				E9AC0BA728C76724007E50E9 /* SelectLeagueVC.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";

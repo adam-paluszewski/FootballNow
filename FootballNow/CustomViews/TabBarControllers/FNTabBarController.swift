@@ -12,7 +12,7 @@ class FNTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.tintColor = UIColor(named: "FNNavigationTint")
-        viewControllers = [createTeamDashboardNC(), createFavoritesNC(), createSearchNC()] //createGamesNC(),
+        viewControllers = [createTeamDashboardNC(), createGamesNC(), createFavoritesNC(), createSearchNC()] //createGamesNC(),
             
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.backgroundColor = UIColor(named: "FNNavBarColor")
@@ -33,6 +33,7 @@ class FNTabBarController: UITabBarController {
                     print("myTeam not found")
             }
         }
+
         
         let teamDashboardVC = TeamDashboardVC(isMyTeamShowing: true, team: team)
         teamDashboardVC.tabBarItem = UITabBarItem(title: "Moja drużyna", image: UIImage(systemName: "person.2"),selectedImage: UIImage(systemName: "person.2.fill"))

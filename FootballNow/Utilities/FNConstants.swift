@@ -61,6 +61,7 @@ enum EmptyStateImages: String {
     case progress = "FNProgress"
     case favorite = "FNFavorite"
     case noSearchResults = "FNNoSearchResults"
+    case noMyLeagues = "FNGames"
 }
 
 

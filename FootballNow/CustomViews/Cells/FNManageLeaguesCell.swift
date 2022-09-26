@@ -30,6 +30,7 @@ class FNManageLeaguesCell: UITableViewCell {
     func configure() {
         self.accessoryType = .none
         removeFromLeaguesButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        removeFromLeaguesButton.tintColor = UIColor(named: "FNNavigationTint")
         self.backgroundColor = FNColors.sectionColor
     }
     

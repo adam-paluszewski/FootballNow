@@ -27,7 +27,7 @@ class SelectTeamVC: UIViewController {
         let team = Notification.Name(NotificationKeys.selectedTeam)
         NotificationCenter.default.post(name: team, object: teamData)
         
-        PersistenceManager.shared.save(team: teamData)
+        PersistenceManager.shared.save(teamData, for: .myTeam)
         view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
   

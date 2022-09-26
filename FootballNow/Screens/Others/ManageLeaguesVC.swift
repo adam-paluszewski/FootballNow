@@ -10,53 +10,32 @@ import UIKit
 class ManageLeaguesVC: UIViewController {
     
     let tableView = UITableView()
-    var observedLeagues: [LeaguesResponse] = []
+    var observedLeagues: [LeaguesResponse] = [] {
+        didSet {
+            if observedLeagues.isEmpty {
+                showEmptyState(in: view, text: "Nie obserwujesz żadnych rozgrywek. Wybierz swoje ulubione ligi i nie przegap żadnego meczu.", image: .noMyLeagues, axis: .vertical)
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        createObservers()
         configureViewController()
         configureTableView()
     }
     
     
-    func createObservers() {
-        let leagues = Notification.Name(NotificationKeys.myLeaguesChanged)
-        NotificationCenter.default.addObserver(self, selector: #selector(fireObserver), name: leagues, object: nil)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getObservedLeagues()
     }
     
-    
-    @objc func fireObserver(notification: NSNotification) {
-        observedLeagues = notification.object as! [LeaguesResponse]
-        tableView.reloadData()
-    }
-    
-
-    @objc func addLeaguePressed() {
-        let selectLeagueVC = SelectLeagueVC()
-        selectLeagueVC.observedLeagues = self.observedLeagues
-        let navController = UINavigationController(rootViewController: selectLeagueVC)
-        present(navController, animated: true)
-    }
-    
-    
-    @objc func removeFromLeaguesButtonPressed(sender: UIButton) {
-        observedLeagues.remove(at: sender.tag)
-        tableView.reloadData()
-        
-        let leagues = Notification.Name(NotificationKeys.myLeaguesChanged)
-        NotificationCenter.default.post(name: leagues, object: observedLeagues)
-        
-        let encoder = JSONEncoder()
-        if let data = try? encoder.encode(observedLeagues) {
-            UserDefaults.standard.set(data, forKey: "myLeagues")
-        }
-    }
-
     
     func configureViewController() {
         navigationItem.title = "Zarządzaj ligami"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addLeaguePressed))
+        
+        
         
         layoutUI()
     }
@@ -71,15 +50,46 @@ class ManageLeaguesVC: UIViewController {
     }
     
     
+    func getObservedLeagues() {
+        PersistenceManager.shared.retrieveMyLeagues { result in
+            switch result {
+                case .success(let leagues):
+                    self.observedLeagues = leagues
+                    self.tableView.reloadDataOnMainThread()
+                case .failure(let error):
+                    presentAlertOnMainThread(title: "Błąd", message: error.rawValue, buttonTitle: "OK", buttonColor: .systemRed, buttonSystemImage: SFSymbols.error)
+            }
+        }
+    }
+
+
+    @objc func addLeaguePressed() {
+        let selectLeagueVC = SelectLeagueVC()
+        selectLeagueVC.VCDismissed = { [weak self] in
+            self?.getObservedLeagues()
+        }
+        let navController = UINavigationController(rootViewController: selectLeagueVC)
+        present(navController, animated: true)
+    }
+    
+    
+    @objc func removeFromLeaguesButtonPressed(sender: UIButton) {
+        PersistenceManager.shared.updateWith(league: observedLeagues[sender.tag], actionType: .remove) { error in
+            observedLeagues.remove(at: sender.tag)
+            tableView.reloadData()
+        }
+    }
+
+    
     func layoutUI() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }
@@ -88,7 +98,7 @@ class ManageLeaguesVC: UIViewController {
 extension ManageLeaguesVC: UITableViewDelegate, UITableViewDataSource {
   
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 60
     }
     
     

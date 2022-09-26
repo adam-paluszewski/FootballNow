@@ -12,19 +12,19 @@ struct Leagues: Codable {
     var response: [LeaguesResponse]
 }
 
-struct LeaguesResponse: Codable {
+struct LeaguesResponse: Codable, Hashable {
     var league: League?
     var country: CountryL?
 }
 
-struct League: Codable {
+struct League: Codable, Hashable {
     var id: Int?
     var name: String?
     var type: String?
     var logo: String?
 }
 
-struct CountryL: Codable {
+struct CountryL: Codable, Hashable {
     var name: String?
     var code: String?
     var flag: String?

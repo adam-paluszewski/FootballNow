@@ -16,7 +16,8 @@ class FNLeagueCell: UITableViewCell {
     
     var games: [FixturesResponse] = [] {
         didSet {
-//            games.sort {$0.fixture.timestamp < $1.fixture.timestamp}
+            games.sort {$0.fixture?.timestamp ?? 0 < $1.fixture?.timestamp ?? 0}
+            tableView.reloadData()
         }
     }
     
@@ -32,12 +33,13 @@ class FNLeagueCell: UITableViewCell {
     
     
     func configure() {
-        backgroundColor = FNColors.sectionColor
+        view.bodyView.backgroundColor = FNColors.backgroundColor
         tableView.register(FNNextGameCell.self, forCellReuseIdentifier: FNNextGameCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = false
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
+        tableView.prepareForDynamicHeight()
     }
     
     

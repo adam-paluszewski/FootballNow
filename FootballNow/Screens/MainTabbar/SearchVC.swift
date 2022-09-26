@@ -188,7 +188,7 @@ extension SearchVC: UISearchBarDelegate, UISearchControllerDelegate {
                     }
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
-                        PersistenceManager.shared.save(searched: self.searchedTeams)
+                        PersistenceManager.shared.save(self.searchedTeams, for: .lastSearched)
                     }
                 case .failure(let error):
                     print(error)

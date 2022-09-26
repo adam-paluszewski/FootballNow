@@ -11,30 +11,24 @@ class SelectLeagueVC: UIViewController {
 
     let tableView = UITableView()
     var leagues: [LeaguesResponse] = []
-    var observedLeagues: [LeaguesResponse] = []
     var isCancelable = false
+    
+    var VCDismissed: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
         configureTableView()
         configureSearchController()
-        fetchDataForTeams(parameters: "season=2022")
+        fetchDataForLeagues(parameters: "season=2022")
     }
     
 
     func passSelectedLeague(leagueData: LeaguesResponse) {
-        observedLeagues.append(leagueData)
-        
-        let leagues = Notification.Name(NotificationKeys.myLeaguesChanged)
-        NotificationCenter.default.post(name: leagues, object: observedLeagues)
-        
-        let encoder = JSONEncoder()
-        if let data = try? encoder.encode(observedLeagues) {
-            UserDefaults.standard.set(data, forKey: "myLeagues")
+        PersistenceManager.shared.updateWith(league: leagueData, actionType: .add) { error in
+            
         }
-        dismiss(animated: true)
-        dismiss(animated: true)
+        view.window?.rootViewController?.dismiss(animated: true, completion: VCDismissed)
     }
   
     
@@ -75,7 +69,7 @@ class SelectLeagueVC: UIViewController {
     }
     
     
-    func fetchDataForTeams(parameters: String) {
+    func fetchDataForLeagues(parameters: String) {
         NetworkManager.shared.getLeagues(parameters: parameters) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -94,10 +88,10 @@ class SelectLeagueVC: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }
@@ -106,7 +100,7 @@ class SelectLeagueVC: UIViewController {
 extension SelectLeagueVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 60
     }
     
     
@@ -117,7 +111,7 @@ extension SelectLeagueVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNSelectLeagueCell.cellId, for: indexPath) as! FNSelectLeagueCell
-        cell.set(league: leagues[indexPath.row].league!)
+        cell.set(league: leagues[indexPath.row])
         return cell
     }
     
@@ -133,10 +127,10 @@ extension SelectLeagueVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searched = searchBar.text else { return }
-        fetchDataForTeams(parameters: "search=\(searched)")
+        fetchDataForLeagues(parameters: "search=\(searched)")
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        fetchDataForTeams(parameters: "season=2022")
+        fetchDataForLeagues(parameters: "season=2022")
     }
 }
