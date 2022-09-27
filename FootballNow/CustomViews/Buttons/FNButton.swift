@@ -24,6 +24,7 @@ class FNButton: UIButton {
     func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         configuration = .filled()
+        configuration?.baseForegroundColor = .label
         configuration?.cornerStyle = .medium
         configuration?.imagePlacement = .leading
         configuration?.imagePadding = 5

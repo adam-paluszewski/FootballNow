@@ -9,10 +9,14 @@ import UIKit
 
 class GamesVC: UIViewController {
     
+    let chipsView = UIView()
     var tableView = UITableView()
     
     var observedLeagues: [LeaguesResponse] = []
     var gamesPerLeague: [[FixturesResponse]] = []
+    
+    var startDate = FNDateFormatting.getDateYYYYMMDD(for: .current)
+    var endDate = FNDateFormatting.getDateYYYYMMDD(for: .current)
 
     
     override func viewDidLoad() {
@@ -31,7 +35,12 @@ class GamesVC: UIViewController {
     
 
     func configureViewController() {
-        navigationItem.title = "Twoje ligi"
+        navigationItem.title = "Najbliższe mecze"
+        let child = FNGamesChipsVC()
+        child.delegate = self
+        add(childVC: child, to: chipsView)
+
+        layoutUI()
     }
     
     
@@ -42,16 +51,6 @@ class GamesVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.prepareForDynamicHeight()
-
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
     }
     
     
@@ -84,7 +83,7 @@ class GamesVC: UIViewController {
 
                     } else {
                         self.dismissEmptyState()
-                        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "EDYTUJ", style: .plain, target: self, action: #selector(manageLeaguesTapped))
+                        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "slider.vertical.3"), style: .plain, target: self, action: #selector(manageLeaguesTapped))
                     }
                 case .failure(let error):
                     print()
@@ -95,13 +94,13 @@ class GamesVC: UIViewController {
     
     
     func fetchDataForGames() {
+        gamesPerLeague.removeAll()
         let semaphore = DispatchSemaphore(value: 1)
         for i in observedLeagues {
 
             let leagueId = i.league?.id
-
             guard let leagueId = leagueId else { return }
-            NetworkManager.shared.getFixtures(parameters: "league=\(leagueId)&from=\(FNDateFormatting.getDateYYYYMMDD(for: .current))&to=\(FNDateFormatting.getDateYYYYMMDD(for: .oneWeekAhead))&season=2022&timezone=Europe/Warsaw") { [weak self] result in
+            NetworkManager.shared.getFixtures(parameters: "league=\(leagueId)&from=\(startDate)&to=\(endDate)&season=2022&timezone=Europe/Warsaw") { [weak self] result in
                 semaphore.wait()
                 guard let self = self else { return }
                 switch result {
@@ -116,6 +115,26 @@ class GamesVC: UIViewController {
         }
     }
 
+    
+    func layoutUI() {
+        view.addSubview(chipsView)
+        chipsView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            chipsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            chipsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            chipsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            chipsView.heightAnchor.constraint(equalToConstant: 50),
+            
+            tableView.topAnchor.constraint(equalTo: chipsView.bottomAnchor, constant: 15),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
 }
 
 
@@ -127,14 +146,30 @@ extension GamesVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(gamesPerLeague[indexPath.row].count * 90 + 41 + 15) //+sectionView height +item spacing
+        if gamesPerLeague[indexPath.row].count != 0 {
+            return CGFloat(gamesPerLeague[indexPath.row].count * 90 + 41 + 15) //+sectionView height +item spacing
+        } else {
+            return 0
+        }
+        
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FNLeagueCell.cellId, for: indexPath) as! FNLeagueCell
         cell.games = gamesPerLeague[indexPath.row]
-        cell.view.sectionTitleLabel.text = gamesPerLeague[indexPath.row][0].league.name?.uppercased()
+        cell.view.sectionTitleLabel.text = observedLeagues[indexPath.row].league?.name?.uppercased()
+        
         return cell
+    }
+}
+
+
+extension GamesVC: DatesPassedDelegate {
+    
+    func datesPassed(startDate: String, endDate: String) {
+        self.startDate = startDate
+        self.endDate = endDate
+        fetchDataForGames()
     }
 }

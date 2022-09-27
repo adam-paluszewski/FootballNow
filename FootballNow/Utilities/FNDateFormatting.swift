@@ -29,6 +29,8 @@ struct FNDateFormatting {
         let matchDate = Date(timeIntervalSince1970: timestamp)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "E d MMM"
+//        dateFormatter.dateStyle = .medium
+//        dateFormatter.doesRelativeDateFormatting = true
             
         let dateString = dateFormatter.string(from: matchDate)
         

@@ -38,7 +38,7 @@ class FNLeagueCell: UITableViewCell {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = false
-        tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
+        tableView.separatorStyle = .none
         tableView.prepareForDynamicHeight()
     }
     
@@ -72,7 +72,7 @@ extension FNLeagueCell: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return games.count
+        return max(games.count, 1)
     }
     
     
