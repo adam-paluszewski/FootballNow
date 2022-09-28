@@ -26,7 +26,7 @@ class FNFormationsHeaderView: UIView {
     }
     
     
-    init(title: String, allingment: NSTextAlignment) {
+    init(title: String?, allingment: NSTextAlignment) {
         super.init(frame: .zero)
         sectionTitleLabel.text = title
         sectionTitleLabel.textAlignment = allingment

@@ -62,6 +62,7 @@ enum EmptyStateImages: String {
     case favorite = "FNFavorite"
     case noSearchResults = "FNNoSearchResults"
     case noMyLeagues = "FNGames"
+    case noGames = "FNNoGames"
 }
 
 

@@ -8,6 +8,7 @@
 import UIKit
 
 fileprivate var loadingViews: [UIView : UIView] = [:]
+fileprivate var emptyStateViews: [UIView : UIView] = [:]
 fileprivate var emptyStateView: UIView!
 
 extension UIViewController {
@@ -60,7 +61,7 @@ extension UIViewController {
         guard !loadingViews.isEmpty else { return }
         DispatchQueue.main.async {
             let containerView = loadingViews[view]
-            containerView!.removeFromSuperview()
+            containerView?.removeFromSuperview()
             loadingViews.removeValue(forKey: view)
         }
     }
@@ -99,22 +100,27 @@ extension UIViewController {
     
     
     func showEmptyState(in view: UIView, text: String, image: EmptyStateImages, axis: UIAxis) {
-        DispatchQueue.main.async {
-            emptyStateView = FNEmptyStateView(text: text, image: image, axis: axis)
-            view.addSubview(emptyStateView)
-            
-            NSLayoutConstraint.activate([
-                emptyStateView.topAnchor.constraint(equalTo: view.topAnchor),
-                emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                emptyStateView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-        }
+        guard emptyStateViews[view] == nil else { return }
+        let emptyStateView = FNEmptyStateView(text: text, image: image, axis: axis)
+        view.addSubview(emptyStateView)
+        emptyStateViews[view] = emptyStateView
+
+        NSLayoutConstraint.activate([
+            emptyStateView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
+            emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            emptyStateView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+
+    func dismissEmptyState(in view: UIView) {
+        guard !emptyStateViews.isEmpty else { return }
+        let emptyStateView = emptyStateViews[view]
+        emptyStateView?.removeFromSuperview()
+        emptyStateViews.removeValue(forKey: view)
     }
     
     
-    func dismissEmptyState() {
-        guard emptyStateView != nil else { return }
-        emptyStateView.removeFromSuperview()
-    }
+
 }

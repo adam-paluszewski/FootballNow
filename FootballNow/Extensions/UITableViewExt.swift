@@ -22,4 +22,29 @@ extension UITableView {
             self.reloadData()
         }
     }
+    
+    
+    func setEmptyMessage(text: String, image: EmptyStateImages, axis: UIAxis) {
+        print(backgroundView?.frame)
+        let emptyView = FNEmptyStateView(text: text, image: image, axis: axis)
+        backgroundView = emptyView
+        backgroundView?.addSubview(emptyView)
+        
+
+        
+        NSLayoutConstraint.activate([
+            emptyView.topAnchor.constraint(equalTo: backgroundView!.topAnchor),
+            emptyView.leadingAnchor.constraint(equalTo: backgroundView!.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: backgroundView!.trailingAnchor),
+            emptyView.bottomAnchor.constraint(equalTo: backgroundView!.bottomAnchor)
+        ])
+        
+        
+        self.separatorStyle = .none
+        }
+
+        func restore() {
+            self.backgroundView = nil
+            self.separatorStyle = .singleLine
+        }
 }

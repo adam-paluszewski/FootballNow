@@ -34,7 +34,7 @@ class FNTableViewHeaderView: UIView {
     
     func configure() {
         backgroundColor = FNColors.backgroundColor
-        titleLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        titleLabel.font = .systemFont(ofSize: 14, weight: .bold)
 //        titleLabel.textColor = .secondaryLabel
     }
     

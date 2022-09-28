@@ -35,6 +35,7 @@ class FNSquadVC: UIViewController {
     }
     
     
+    
     func createObservers() {
         let team = Notification.Name(NotificationKeys.selectedTeam)
         NotificationCenter.default.addObserver(self, selector: #selector(fireObserver), name: team, object: nil)

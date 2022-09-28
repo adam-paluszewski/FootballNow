@@ -8,9 +8,18 @@
 import UIKit
 
 class NetworkManager {
+    
     static let shared = NetworkManager()
     private let baseURL = "https://v3.football.api-sports.io/"
     let cache = NSCache<NSString, UIImage>()
+    
+    func stopTasks() {
+        URLSession.shared.getAllTasks { tasks in
+            for task in tasks {
+                task.cancel()
+            }
+        }
+    }
     
     func getFixtures(parameters: String, completionHandler: @escaping (Result<[FixturesResponse], FNError>) -> Void) {
         let endpoint = baseURL + "fixtures/?\(parameters)"
@@ -26,6 +35,7 @@ class NetworkManager {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let _ = error {
                 completionHandler(.failure(.unableToComplete))
+                return
             }
             
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {

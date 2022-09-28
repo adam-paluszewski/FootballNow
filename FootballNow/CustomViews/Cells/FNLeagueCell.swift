@@ -11,7 +11,6 @@ class FNLeagueCell: UITableViewCell {
     
     static let cellId = "LeaguesCell"
     
-    let view = FNSectionView(title: "")
     let tableView = UITableView()
     
     var games: [FixturesResponse] = [] {
@@ -33,46 +32,39 @@ class FNLeagueCell: UITableViewCell {
     
     
     func configure() {
-        view.bodyView.backgroundColor = FNColors.backgroundColor
         tableView.register(FNNextGameCell.self, forCellReuseIdentifier: FNNextGameCell.cellId)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = false
-        tableView.separatorStyle = .none
+        tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
         tableView.prepareForDynamicHeight()
     }
     
     
     func addSubviews() {
-        contentView.addSubview(view)
-        view.bodyView.addSubview(tableView)
+        addSubview(tableView)
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.topAnchor),
-            view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
-            
-            tableView.topAnchor.constraint(equalTo: view.bodyView.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.bodyView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.bodyView.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bodyView.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
 
 
 extension FNLeagueCell: UITableViewDelegate, UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
     }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return max(games.count, 1)
+        return games.count
     }
     
     

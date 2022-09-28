@@ -14,6 +14,8 @@ class ManageLeaguesVC: UIViewController {
         didSet {
             if observedLeagues.isEmpty {
                 showEmptyState(in: view, text: "Nie obserwujesz żadnych rozgrywek. Wybierz swoje ulubione ligi i nie przegap żadnego meczu.", image: .noMyLeagues, axis: .vertical)
+            } else {
+                dismissEmptyState(in: view)
             }
         }
     }
@@ -32,6 +34,7 @@ class ManageLeaguesVC: UIViewController {
     
     
     func configureViewController() {
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Zarządzaj ligami"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addLeaguePressed))
         
@@ -47,6 +50,8 @@ class ManageLeaguesVC: UIViewController {
         tableView.register(FNManageLeaguesCell.self, forCellReuseIdentifier: FNManageLeaguesCell.cellId)
         tableView.backgroundColor = FNColors.backgroundColor
         tableView.separatorInset = UIElementsSizes.standardTableViewSeparatorInsets
+        tableView.sectionHeaderHeight = 40
+        tableView.rowHeight = 60
     }
     
     
@@ -96,9 +101,9 @@ class ManageLeaguesVC: UIViewController {
 
 
 extension ManageLeaguesVC: UITableViewDelegate, UITableViewDataSource {
-  
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return FNFormationsHeaderView(title: "OBSERWOWANE LIGI", allingment: .left)
     }
     
     

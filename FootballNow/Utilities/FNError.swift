@@ -16,6 +16,7 @@ enum FNError: String, Error {
     case unableToFavorites = "sdsd"
     case unableToMyTeam = "vv"
     case alreadyInFavorites = " ffdfd"
+    case taskCanceled = "Task canceled"
     
     case unableAddToFavorites = "Nie udało się dodać drużyny do ulubionych. Spróbuj ponownie"
     case unableRemoveFromFavorites = "Nie udało się usunąć drużyny z ulubionych. Spróbuj ponownie"

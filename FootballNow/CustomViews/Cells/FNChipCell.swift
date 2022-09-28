@@ -75,8 +75,9 @@ class FNChipCell: UICollectionViewCell {
     
     func selected() {
         backgroundColor = .tertiarySystemBackground
-//        titleLabel.textColor = UIColor(named: "FNNavigationTint")
         layer.borderColor = UIColor(named: "FNNavigationTint")?.cgColor
+        layer.borderWidth = 2
+        thumbnailImage.tintColor = UIColor(named: "FNNavigationTint")
     }
     
     
@@ -84,5 +85,7 @@ class FNChipCell: UICollectionViewCell {
         backgroundColor = FNColors.sectionColor
         titleLabel.textColor = .label
         layer.borderColor = UIColor.label.cgColor
+        layer.borderWidth = 1
+        thumbnailImage.tintColor = .label
     }
 }

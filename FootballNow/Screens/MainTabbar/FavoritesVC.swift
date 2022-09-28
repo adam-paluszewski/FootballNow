@@ -16,7 +16,7 @@ class FavoritesVC: UIViewController {
             if favoriteTeams.isEmpty {
                 showEmptyState(in: view, text: "Nie masz ulubionych drużyn", image: .favorite, axis: .vertical)
             } else {
-                dismissEmptyState()
+                dismissEmptyState(in: view)
             }
         }
     }

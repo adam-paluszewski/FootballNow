@@ -44,7 +44,8 @@ class FNEmptyStateView: UIView {
         addSubview(imageView)
         addSubview(textLabel)
         
-        self.translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.textColor = .secondaryLabel
@@ -68,7 +69,7 @@ class FNEmptyStateView: UIView {
     func configureVertical() {
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -80),
+            imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -150),
             imageView.widthAnchor.constraint(equalToConstant: 120),
             imageView.heightAnchor.constraint(equalToConstant: 120),
 

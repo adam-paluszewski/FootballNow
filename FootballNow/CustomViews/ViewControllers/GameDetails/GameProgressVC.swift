@@ -26,6 +26,7 @@ class GameProgressVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
         configureViewController()
         configureTableView()
     }
@@ -70,7 +71,7 @@ extension GameProgressVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let events = game.events, !events.isEmpty else {
-            showEmptyState(in: view, text: "Brak informacji o przebiegu meczu", image: .progress, axis: .vertical)
+            showEmptyState(in: tableView, text: "Brak informacji o przebiegu meczu", image: .progress, axis: .vertical)
             return 0
         }
         return events.count

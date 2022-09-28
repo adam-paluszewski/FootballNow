@@ -88,7 +88,7 @@ class FNGamesChipsVC: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 10
 //        layout.itemSize = CGSize(width: 80, height: 40)
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 15, bottom: 0, right: 15)
+        layout.sectionInset = UIEdgeInsets(top: 15, left: 15, bottom: 0, right: 15)
         layout.scrollDirection = .horizontal
         
         return layout

@@ -175,7 +175,7 @@ extension SearchVC: UISearchBarDelegate, UISearchControllerDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searched = searchBar.text else { return }
-        dismissEmptyState()
+        dismissEmptyState(in: view)
         lastSearchedTitleView.removeAllButton.isHidden = false
         NetworkManager.shared.getTeams(parameters: "search=\(searched)") { [weak self] result in
             guard let self = self else { return }
