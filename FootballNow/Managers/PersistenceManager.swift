@@ -16,6 +16,7 @@ struct PersistenceManager {
   static let shared = PersistenceManager()
   private let defaults = UserDefaults.standard
 
+  @discardableResult
   func save<T: Codable>(_ passed: T, for key: Keys) -> FNError? {
     do {
       let encoder = JSONEncoder()

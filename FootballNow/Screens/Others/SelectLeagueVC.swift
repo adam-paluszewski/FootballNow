@@ -12,7 +12,7 @@ class SelectLeagueVC: UIViewController {
     configureViewController()
     configureTableView()
     configureSearchController()
-    fetchDataForLeagues(parameters: "season=2022")
+    fetchDataForLeagues(parameters: "season=2023")
   }
 
   func passSelectedLeague(leagueData: LeaguesResponse) {
@@ -109,7 +109,7 @@ extension SelectLeagueVC: UISearchBarDelegate {
   }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    fetchDataForLeagues(parameters: "season=2022")
+    fetchDataForLeagues(parameters: "season=2023")
   }
 
 }

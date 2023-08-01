@@ -37,7 +37,7 @@ class StandingsVC: UIViewController {
   func fetchDataForStandings() {
     showLoadingView(in: view)
     guard leagueId != nil else { return }
-    NetworkManager.shared.getStandings(parameters: "league=\(leagueId!)&season=2022") { [weak self] result in
+    NetworkManager.shared.getStandings(parameters: "league=\(leagueId!)&season=2023") { [weak self] result in
       guard let self = self else { return }
       switch result {
         case .success(let standings):

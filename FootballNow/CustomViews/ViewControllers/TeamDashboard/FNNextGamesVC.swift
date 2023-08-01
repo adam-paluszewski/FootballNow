@@ -56,7 +56,7 @@ class FNNextGamesVC: UIViewController {
 
   func fetchDataForNextGamesSection() {
     guard let teamId = teamId else { return }
-    NetworkManager.shared.getFixtures(parameters: "team=\(teamId)&season=2022&next=15&timezone=Europe/Warsaw") { [weak self] result in
+    NetworkManager.shared.getFixtures(parameters: "team=\(teamId)&season=2023&next=15&timezone=Europe/Warsaw") { [weak self] result in
       guard let self = self else { return }
       switch result {
         case .success(let fixtures):

@@ -21,7 +21,7 @@ class FNCollectionPlayerCell: UICollectionViewCell {
   func set(player: PlayerSq) {
     nameLabel.text = player.name
     positionLabel.text = FNTranslateToPolish.shared.translatePlayerPosition(from: player.position)
-    if let photo =player.photo {
+    if let photo = player.photo {
       NetworkManager.shared.downloadImage(from: photo) { [weak self] image in
         guard let self = self else { return }
         DispatchQueue.main.async {

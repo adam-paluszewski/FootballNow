@@ -15,7 +15,6 @@ extension UITableView {
   }
 
   func setEmptyMessage(text: String, image: EmptyStateImages, axis: UIAxis) {
-    print(backgroundView?.frame)
     let emptyView = FNEmptyStateView(text: text, image: image, axis: axis)
     backgroundView = emptyView
     backgroundView?.addSubview(emptyView)

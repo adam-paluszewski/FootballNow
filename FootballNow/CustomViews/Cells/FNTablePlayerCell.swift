@@ -22,7 +22,7 @@ class FNTablePlayerCell: UITableViewCell {
   func set(player: PlayerSq) {
     nameLabel.text = player.name
     ageLabel.text = FNAgeSuffix.shared.ageSuffix(age: player.age)
-    if let photo =player.photo {
+    if let photo = player.photo {
       NetworkManager.shared.downloadImage(from: photo) { [weak self] image in
         guard let self = self else { return }
         DispatchQueue.main.async {

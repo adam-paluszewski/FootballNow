@@ -37,7 +37,7 @@ class SelectTeamVC: UIViewController {
   }
 
   func fetchDataForTeams() {
-    NetworkManager.shared.getTeams(parameters: "league=106&season=2022") { [weak self] result in
+    NetworkManager.shared.getTeams(parameters: "league=106&season=2023") { [weak self] result in
       guard let self = self else { return }
       switch result {
         case .success(let teams):

@@ -37,7 +37,7 @@ class PlayerVC: UIViewController {
 
   func fetchDataforPlayerDetails() {
     guard let playerId = playerId else { return }
-    NetworkManager.shared.getPlayer(parameters: "id=\(playerId)&season=2022") { [weak self] result in
+    NetworkManager.shared.getPlayer(parameters: "id=\(playerId)&season=2023") { [weak self] result in
       guard let self = self else { return }
       switch result {
         case .success(let player):

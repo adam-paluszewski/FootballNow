@@ -97,7 +97,7 @@ extension FavoritesVC: UITableViewDelegate, UITableViewDataSource {
     guard editingStyle == .delete else { return }
     let favorite = favoriteTeams[indexPath.row]
     PersistenceManager.shared.updateWith(favorite: favorite, actionType: .remove) { error in
-      guard let _ = errorelse {
+      guard let _ = error else {
         favoriteTeams.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .left)
         return

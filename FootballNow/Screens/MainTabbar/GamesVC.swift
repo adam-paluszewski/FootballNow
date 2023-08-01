@@ -72,7 +72,7 @@ class GamesVC: UIViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "slider.vertical.3"), style: .plain, target: self, action: #selector(manageLeaguesTapped))
           }
         case .failure(let error):
-          print()
+          print(error)
       }
     }
   }
@@ -85,7 +85,7 @@ class GamesVC: UIViewController {
     for i in observedLeagues {
       let leagueId = i.league?.id
       guard let leagueId = leagueId else { return }
-      NetworkManager.shared.getFixtures(parameters: "league=\(leagueId)&from=\(startDate)&to=\(endDate)&season=2022&timezone=Europe/Warsaw") { [weak self] result in
+      NetworkManager.shared.getFixtures(parameters: "league=\(leagueId)&from=\(startDate)&to=\(endDate)&season=2023&timezone=Europe/Warsaw") { [weak self] result in
         semaphore.wait()
         guard let self = self else { return }
         switch result {
@@ -96,7 +96,7 @@ class GamesVC: UIViewController {
             self.tableView.reloadDataOnMainThread()
             self.updateTableViewHeight()
           case .failure(let error):
-            print()
+            print(error)
         }
         semaphore.signal()
       }

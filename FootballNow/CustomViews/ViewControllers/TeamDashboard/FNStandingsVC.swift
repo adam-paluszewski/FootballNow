@@ -39,7 +39,7 @@ class FNStandingsVC: UIViewController {
 
   func fetchDataForStandingsSection() {
     guard let teamId = teamId else { return }
-    NetworkManager.shared.getStandings(parameters: "season=2022&team=\(teamId)") { [weak self] result in
+    NetworkManager.shared.getStandings(parameters: "season=2023&team=\(teamId)") { [weak self] result in
       guard let self = self else { return }
       switch result {
         case .success(let standings):
@@ -71,7 +71,7 @@ class FNStandingsVC: UIViewController {
   //We need id to fetch data for League Standings(next screen) and to know which league to show (this screen)
   //Extra endpoint is needed, then we check which league is Country League and we show data from only this one
   func fetchDataForLeagues(yourTeamStandings: [StandingsResponse]) {
-    NetworkManager.shared.getLeagues(parameters: "season=2022&team=\(teamId!)") { [weak self] result in
+    NetworkManager.shared.getLeagues(parameters: "season=2023&team=\(teamId!)") { [weak self] result in
       guard let self = self else { return }
       switch result {
         case .success(let leagues):
